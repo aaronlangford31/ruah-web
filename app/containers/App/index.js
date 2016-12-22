@@ -21,8 +21,8 @@ function App(props) {
           titleTemplate="%s - Ruah Logistics"
           defaultTitle="Team Ruah"
           meta={[
-          { name: 'description', content: 'Team Ruah Product Management' },
-        ]}
+            { name: 'description', content: 'Team Ruah Product Management' },
+          ]}
         />
         <Header />
         {React.Children.toArray(props.children)}
