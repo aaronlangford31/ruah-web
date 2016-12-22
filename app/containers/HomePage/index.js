@@ -4,27 +4,22 @@
  * This is the first thing users see of our App, at the '/' route
  */
 
-import React, { PureComponent } from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-export class HomePage extends PureComponent {
-
-  render() {
-    return (
-      <article>
-        <Helmet
-          title="Home Page"
-          meta={[
-            { name: 'description', content: 'Ruah Home Page' },
-          ]}
-        />
-        App
-      </article>
-    );
-  }
-}
+export const HomePage = () => (
+  <article>
+    <Helmet
+      title="Home Page"
+      meta={[
+        { name: 'description', content: 'Ruah Home Page' },
+      ]}
+    />
+    App
+  </article>
+);
 
 HomePage.propTypes = {};
 
