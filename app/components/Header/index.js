@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import Logo from './logo.png';
 import colors from '../../containers/App/colors';
