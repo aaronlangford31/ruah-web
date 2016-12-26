@@ -11,7 +11,6 @@ import request from 'utils/request';
 import { selectSignUpCode, selectSignUpFields } from './selectors';
 
 export function* checkSignUpCode() {
-
   const signUpCode = yield select(selectSignUpCode());
 
   const requestURL = `http://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${signUpCode}`;
