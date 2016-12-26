@@ -8,15 +8,34 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
+import colors from './colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+const styles = {
+  app: {
+    width: '1200px',
+    margin: 'auto',
+    padding: '0 16px',
+  },
+};
 
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
+const muiTheme = getMuiTheme({
+  palette: {
+    textColor: colors.darkBlue,
+  },
+  appBar: {
+    height: 50,
+  },
+});
+
+
 function App(props) {
   return (
-    <MuiThemeProvider>
-      <div>
+    <MuiThemeProvider muiTheme={muiTheme}>
+      <div style={styles.app}>
         <Helmet
           titleTemplate="%s - Ruah Logistics"
           defaultTitle="Team Ruah"
