@@ -17,7 +17,7 @@ const Header = () => (
       </ToolbarGroup>
       <ToolbarGroup>
         <Link to={'/sign-up'} style={{ color: colors.darkBlue, textDecoration: 'none' }}>
-          <ToolbarTitle text="Sign Up" />
+          <RaisedButton label="Sign Up" secondary />
         </Link>
         <ToolbarSeparator />
         <Link to={'/login'}>
