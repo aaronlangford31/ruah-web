@@ -9,10 +9,11 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import SignUpForm from '../../components/forms/SignUpForm/index';
-import { checkSignUpCode, submitSignUp } from './actions';
+import { checkSignUpCode, submitSignUp, removeError } from './actions';
 import { selectValidSignUpCodeStatus, selectError } from './selectors';
+import ErrorBox from '../App/ErrorBox';
 
-export const SignUpPage = ({ checkCode, handleSubmit, validSignUpCodeStatus, error }) => (
+export const SignUpPage = ({ checkCode, handleSubmit, validSignUpCodeStatus, error, close }) => (
   <article>
     <Helmet
       title="Sign Up"
@@ -27,6 +28,7 @@ export const SignUpPage = ({ checkCode, handleSubmit, validSignUpCodeStatus, err
       validSignUpCodeStatus={validSignUpCodeStatus}
       error={error}
     />
+    <ErrorBox error={error} show={!!error} close={close} />
   </article>
 );
 
@@ -35,6 +37,7 @@ SignUpPage.propTypes = {
   handleSubmit: PropTypes.func,
   validSignUpCodeStatus: PropTypes.bool,
   error: PropTypes.string,
+  close: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -47,6 +50,10 @@ export function mapDispatchToProps(dispatch) {
     handleSubmit: (e) => {
       dispatch(submitSignUp());
       e.preventDefault();
+    },
+
+    close: () => {
+      dispatch(removeError());
     },
   };
 }

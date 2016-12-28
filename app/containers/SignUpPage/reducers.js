@@ -15,6 +15,7 @@ import {
   CHECK_SIGN_UP_CODE_SUCCESS,
   CHECK_SIGN_UP_CODE_ERROR,
   INVALID_USER_ID_DETECTED,
+  REMOVE_ERROR,
 } from './constants';
 import { fromJS } from 'immutable';
 
@@ -39,6 +40,9 @@ function signUpPageReducer(state = initialState, action) {
       return state
         .set('error', action.error)
         .set('loading', false);
+    case REMOVE_ERROR:
+      return state
+        .set('error', false);
     case INVALID_USER_ID_DETECTED:
       return state
         .set('error', action.error)

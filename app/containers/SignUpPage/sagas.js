@@ -20,7 +20,11 @@ export function* checkSignUpCode() {
   try {
     // Call our request helper (see 'utils/request')
     const validSignUpCodeStatus = yield call(request, requestURL);
-    yield put(signUpCodeChecked(validSignUpCodeStatus));
+    if (validSignUpCodeStatus) {
+      yield put(signUpCodeChecked(validSignUpCodeStatus));
+    } else {
+      yield put(signUpCodeCheckingError('Invalid Sign Up Code'));
+    }
   } catch (err) {
     yield put(signUpCodeCheckingError(err));
   }
@@ -36,7 +40,7 @@ export function* submitSignUp() {
 
   const validUserId = yield call(request, validUserIdURL);
 
-  if (validUserId) {
+  if (!validUserId) {
     const body = {
       signUpCode: yield select(selectSignUpCode()),
       userId,

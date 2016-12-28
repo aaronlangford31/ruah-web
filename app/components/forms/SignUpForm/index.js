@@ -1,15 +1,17 @@
 import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form/immutable'; // <--- immutable import
 import validate from './validate';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
-const renderField = ({ input, label, type, meta: { touched, error } }) => (
-  <div>
-    <label htmlFor="for">{label}</label>
-    <div>
-      <input {...input} type={type} placeholder={label} />
-      {touched && error && <span>{error}</span>}
-    </div>
-  </div>
+const renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
+  <TextField
+    floatingLabelText={label}
+    type={type}
+    errorText={touched && error}
+    {...input}
+    {...custom}
+  />
 );
 
 renderField.propTypes = {
@@ -22,24 +24,24 @@ renderField.propTypes = {
 const SignUpForm = ({ checkCode, handleSubmit, validSignUpCodeStatus, error }) => (
   <div>
     {!validSignUpCodeStatus ? <form onSubmit={checkCode}>
-      <Field name="code" type="text" component={renderField} label="Code" />
+      <Field name="code" type="text" component={renderField} label="Code" /><br />
       <div>
-        <button type="submit">Submit</button>
+        <RaisedButton type="submit">Submit</RaisedButton>
       </div>
     </form> : <form onSubmit={(e) => handleSubmit(e)}>
       <div>
-        <Field name="email" type="text" component={renderField} label="Email" />
-        <Field name="password" type="password" component={renderField} label="Password" />
+        <Field name="email" type="text" component={renderField} label="Email" /><br />
+        <Field name="password" type="password" component={renderField} label="Password" /><br />
         <Field
           name="password_confirmation"
           type="password"
           component={renderField}
           label="Confirm Password"
-        />
+        /><br />
       </div>
       <div>{error}</div>
       <div>
-        <button type="submit">Submit</button>
+        <RaisedButton type="submit">Submit</RaisedButton>
       </div>
     </form>}
   </div>

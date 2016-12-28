@@ -23,6 +23,7 @@ import {
   CHECK_SIGN_UP_CODE,
   CHECK_SIGN_UP_CODE_SUCCESS,
   CHECK_SIGN_UP_CODE_ERROR,
+  REMOVE_ERROR,
 } from './constants';
 
 export function invalidUserIdDetected() {
@@ -69,5 +70,11 @@ export function signUpCodeCheckingError(error) {
   return {
     type: CHECK_SIGN_UP_CODE_ERROR,
     error,
+  };
+}
+
+export function removeError() {
+  return {
+    type: REMOVE_ERROR,
   };
 }

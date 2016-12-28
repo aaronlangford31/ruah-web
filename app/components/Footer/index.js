@@ -1,10 +1,16 @@
 import React from 'react';
 
+const styles = {
+  footer: {
+    marginTop: '24px',
+  },
+};
+
 function Footer() {
   return (
-    <div>
+    <footer style={styles.footer}>
       &copy; Ruah Logistics
-    </div>
+    </footer>
   );
 }
 
