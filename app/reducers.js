@@ -6,6 +6,9 @@
 import { fromJS } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import { reducer as form } from 'redux-form/immutable';
+import signUpPageReducer from 'containers/SignUpPage/reducers';
+import loginPageReducer from 'containers/LoginPage/reducers';
 
 /*
  * routeReducer
@@ -40,7 +43,10 @@ function routeReducer(state = routeInitialState, action) {
  */
 export default function createReducer(asyncReducers) {
   return combineReducers({
+    form,
     route: routeReducer,
+    loginPage: loginPageReducer,
+    signUpPage: signUpPageReducer,
     ...asyncReducers,
   });
 }

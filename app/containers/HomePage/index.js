@@ -12,12 +12,12 @@ import { createStructuredSelector } from 'reselect';
 export const HomePage = () => (
   <article>
     <Helmet
-      title="Home Page"
+      title="Home"
       meta={[
         { name: 'description', content: 'Ruah Home Page' },
       ]}
     />
-    App
+    <h2>Home</h2>
   </article>
 );
 
