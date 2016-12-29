@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
-import validate from './validate';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 const renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
   <TextField
@@ -21,28 +20,20 @@ renderField.propTypes = {
   meta: PropTypes.object,
 };
 
-const SignUpForm = ({ handleSubmit, signUp }) => (
-  <form onSubmit={handleSubmit(signUp)}>
-    <Field name="email" type="text" component={renderField} label="Email" /><br />
-    <Field name="password" type="password" component={renderField} label="Password" /><br />
-    <Field
-      name="password_confirmation"
-      type="password"
-      component={renderField}
-      label="Confirm Password"
-    /><br />
+const CodeForm = ({ handleSubmit, checkCode }) => (
+  <form onSubmit={handleSubmit(checkCode)}>
+    <Field name="code" type="text" component={renderField} label="Code" /><br />
     <div>
       <RaisedButton type="submit">Submit</RaisedButton>
     </div>
   </form>
 );
 
-SignUpForm.propTypes = {
+CodeForm.propTypes = {
   handleSubmit: PropTypes.func,
-  signUp: PropTypes.func,
+  checkCode: PropTypes.func,
 };
 
 export default reduxForm({
-  form: 'signUpForm',  // a unique identifier for this form
-  validate,
-})(SignUpForm);
+  form: 'codeForm',  // a unique identifier for this form
+})(CodeForm);

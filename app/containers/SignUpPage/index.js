@@ -9,11 +9,12 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import SignUpForm from '../../components/forms/SignUpForm/index';
+import CodeForm from '../../components/forms/CodeForm/index';
 import { checkSignUpCode, submitSignUp, removeError } from './actions';
 import { selectValidSignUpCodeStatus, selectError } from './selectors';
 import ErrorBox from '../App/ErrorBox';
 
-export const SignUpPage = ({ checkCode, handleSubmit, validSignUpCodeStatus, error, close }) => (
+export const SignUpPage = ({ checkCode, signUp, validSignUpCodeStatus, error, close }) => (
   <article>
     <Helmet
       title="Sign Up"
@@ -22,19 +23,18 @@ export const SignUpPage = ({ checkCode, handleSubmit, validSignUpCodeStatus, err
       ]}
     />
     <h2>Sign Up</h2>
-    <SignUpForm
+    {!validSignUpCodeStatus ? <CodeForm
       checkCode={checkCode}
-      handleSubmit={handleSubmit}
-      validSignUpCodeStatus={validSignUpCodeStatus}
-      error={error}
-    />
+    /> : <SignUpForm
+      signUp={signUp}
+    />}
     <ErrorBox error={error} show={!!error} close={close} />
   </article>
 );
 
 SignUpPage.propTypes = {
   checkCode: PropTypes.func,
-  handleSubmit: PropTypes.func,
+  signUp: PropTypes.func,
   validSignUpCodeStatus: PropTypes.bool,
   error: PropTypes.string,
   close: PropTypes.func,
@@ -42,14 +42,12 @@ SignUpPage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    checkCode: (e) => {
+    checkCode: () => {
       dispatch(checkSignUpCode());
-      e.preventDefault();
     },
 
-    handleSubmit: (e) => {
+    signUp: () => {
       dispatch(submitSignUp());
-      e.preventDefault();
     },
 
     close: () => {
