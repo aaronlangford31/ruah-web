@@ -8,11 +8,16 @@ const selectForms = () => (state) => state.get('form');
 
 const selectSignUpFields = () => createSelector(
   selectForms(),
-  (state) => state.getIn(['signUpCodeForm', 'values']),
+  (state) => state.getIn(['signUpForm', 'values']),
 );
 
-const selectSignUpCode = () => createSelector(
-  selectSignUpFields(),
+const selectCodeFields = () => createSelector(
+  selectForms(),
+  (state) => state.getIn(['codeForm', 'values']),
+);
+
+const selectCode = () => createSelector(
+  selectCodeFields(),
   (state) => state && state.get('code'),
 );
 
@@ -29,7 +34,7 @@ const selectError = () => createSelector(
 );
 
 export {
-  selectSignUpCode,
+  selectCode,
   selectValidSignUpCodeStatus,
   selectSignUpFields,
   selectError,

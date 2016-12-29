@@ -8,10 +8,10 @@ import { CHECK_SIGN_UP_CODE, SUBMIT_SIGN_UP } from './constants';
 import { signUpCodeChecked, signUpCodeCheckingError, invalidUserIdDetected } from './actions';
 
 import request from 'utils/request';
-import { selectSignUpCode, selectSignUpFields } from './selectors';
+import { selectCode, selectSignUpFields } from './selectors';
 
 export function* checkSignUpCode() {
-  const signUpCode = yield select(selectSignUpCode());
+  const signUpCode = yield select(selectCode());
 
   const requestURL = `http://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${signUpCode}`;
 
@@ -26,7 +26,7 @@ export function* checkSignUpCode() {
       yield put(signUpCodeCheckingError('Invalid Sign Up Code'));
     }
   } catch (err) {
-    yield put(signUpCodeCheckingError(err));
+    yield put(signUpCodeCheckingError(`Error: ${err.message}`));
   }
 }
 
@@ -34,7 +34,7 @@ export function* submitSignUp() {
   yield put(invalidUserIdDetected());
 
   const signUpFields = (yield select(selectSignUpFields())).toJS();
-  const userId = signUpFields.email.toLowerCase();
+  const userId = signUpFields.email ? signUpFields.email.toLowerCase() : '';
 
   const validUserIdURL = `http://api.teamruah.com/v1/user/userIdExists?userId=${userId}`;
 
@@ -42,7 +42,7 @@ export function* submitSignUp() {
 
   if (!validUserId) {
     const body = {
-      signUpCode: yield select(selectSignUpCode()),
+      signUpCode: yield select(selectCode()),
       userId,
       password: signUpFields.password,
     };
@@ -57,7 +57,7 @@ export function* submitSignUp() {
       });
       yield put(signUpCodeChecked(validSignUpCodeStatus));
     } catch (err) {
-      yield put(signUpCodeCheckingError(err));
+      yield put(signUpCodeCheckingError(`Error: ${err.message}`));
     }
   } else {
     yield put(invalidUserIdDetected());
