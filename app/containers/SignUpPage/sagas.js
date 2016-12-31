@@ -53,6 +53,9 @@ export function* submitSignUp() {
       // Call our request helper (see 'utils/request')
       const validSignUpCodeStatus = yield call(request, userSignUpURL, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(body),
       });
       yield put(signUpCodeChecked(validSignUpCodeStatus));
