@@ -11,10 +11,10 @@ import { createStructuredSelector } from 'reselect';
 import SignUpForm from '../../components/forms/SignUpForm/index';
 import CodeForm from '../../components/forms/CodeForm/index';
 import { checkSignUpCode, submitSignUp, removeError } from './actions';
-import { selectValidSignUpCodeStatus, selectError } from './selectors';
+import { selectValidSignUpCode, selectError } from './selectors';
 import ErrorBox from '../App/ErrorBox';
 
-export const SignUpPage = ({ checkCode, signUp, validSignUpCodeStatus, error, close }) => (
+export const SignUpPage = ({ checkCode, signUp, validSignUpCode, error, close }) => (
   <article>
     <Helmet
       title="Sign Up"
@@ -23,7 +23,7 @@ export const SignUpPage = ({ checkCode, signUp, validSignUpCodeStatus, error, cl
       ]}
     />
     <h2>Sign Up</h2>
-    {!validSignUpCodeStatus ? <CodeForm
+    {!validSignUpCode ? <CodeForm
       checkCode={checkCode}
     /> : <SignUpForm
       signUp={signUp}
@@ -35,7 +35,7 @@ export const SignUpPage = ({ checkCode, signUp, validSignUpCodeStatus, error, cl
 SignUpPage.propTypes = {
   checkCode: PropTypes.func,
   signUp: PropTypes.func,
-  validSignUpCodeStatus: PropTypes.bool,
+  validSignUpCode: PropTypes.string,
   error: PropTypes.string,
   close: PropTypes.func,
 };
@@ -57,7 +57,7 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  validSignUpCodeStatus: selectValidSignUpCodeStatus(),
+  validSignUpCode: selectValidSignUpCode(),
   error: selectError(),
 });
 

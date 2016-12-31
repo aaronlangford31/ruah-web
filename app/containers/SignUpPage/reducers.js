@@ -22,7 +22,7 @@ import { fromJS } from 'immutable';
 const initialState = fromJS({
   loading: false,
   error: '',
-  validSignUpCodeStatus: false,
+  validSignUpCode: '',
 });
 
 function signUpPageReducer(state = initialState, action) {
@@ -31,10 +31,10 @@ function signUpPageReducer(state = initialState, action) {
       return state
         .set('loading', true)
         .set('error', false)
-        .set('validSignUpCodeStatus', false);
+        .set('validSignUpCode', '');
     case CHECK_SIGN_UP_CODE_SUCCESS:
       return state
-        .set('validSignUpCodeStatus', true || action.validSignUpCodeStatus)
+        .set('validSignUpCode', action.code)
         .set('loading', false);
     case CHECK_SIGN_UP_CODE_ERROR:
       return state
