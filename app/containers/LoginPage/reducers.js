@@ -14,6 +14,7 @@ import {
   LOGIN_SUBMIT,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
+  REMOVE_ERROR,
 } from './constants';
 import { fromJS } from 'immutable';
 
@@ -35,6 +36,9 @@ function loginPageReducer(state = initialState, action) {
       return state
         .set('error', action.error)
         .set('loading', false);
+    case REMOVE_ERROR:
+      return state
+        .set('error', false);
     default:
       return state;
   }

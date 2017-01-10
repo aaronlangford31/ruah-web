@@ -31,8 +31,8 @@ export const SignUpPage = ({ checkCode, signUp, validSignUpCode, error, close })
       /> : <SignUpForm
         signUp={signUp}
       />}
-      <ErrorBox error={error} show={!!error} close={close} />
     </Body>
+    <ErrorBox error={error} show={!!error} close={close} />
   </article>
 );
 

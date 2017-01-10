@@ -37,12 +37,11 @@ renderCheckbox.propTypes = {
   label: PropTypes.string,
 };
 
-const LoginForm = ({ handleSubmit, error }) => (
-  <BasicForm onSubmit={handleSubmit}>
+const LoginForm = ({ handleSubmit, login }) => (
+  <BasicForm onSubmit={handleSubmit(login)}>
     <Field name="email" type="email" component={renderField} label="Email" /><br />
     <Field name="password" type="password" component={renderField} label="Password" /><br />
     <Field name="remember" type="checkbox" component={renderCheckbox} label="Remember Me" /><br />
-    <div>{error}</div>
     <div style={{ marginTop: '12px' }}>
       <RaisedButton type="submit">Submit</RaisedButton>
     </div>
@@ -51,7 +50,7 @@ const LoginForm = ({ handleSubmit, error }) => (
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func,
-  error: PropTypes.string,
+  login: PropTypes.func,
 };
 
 export default reduxForm({
