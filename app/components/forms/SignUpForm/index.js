@@ -3,6 +3,7 @@ import { Field, reduxForm } from 'redux-form/immutable';
 import validate from './validate';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import BasicForm from '../../styled/BasicForm';
 
 const renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
   <TextField
@@ -22,7 +23,7 @@ renderField.propTypes = {
 };
 
 const SignUpForm = ({ handleSubmit, signUp }) => (
-  <form onSubmit={handleSubmit(signUp)}>
+  <BasicForm onSubmit={handleSubmit(signUp)}>
     <Field name="email" type="text" component={renderField} label="Email" /><br />
     <Field name="password" type="password" component={renderField} label="Password" /><br />
     <Field
@@ -34,7 +35,7 @@ const SignUpForm = ({ handleSubmit, signUp }) => (
     <div>
       <RaisedButton type="submit">Submit</RaisedButton>
     </div>
-  </form>
+  </BasicForm>
 );
 
 SignUpForm.propTypes = {

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Toolbar, ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import Logo from './logo.png';
-import colors from '../../containers/App/colors';
+
+// import colors from '../../containers/App/colors';
 
 const Header = () => (
   <nav>
@@ -16,10 +17,9 @@ const Header = () => (
         </div>
       </ToolbarGroup>
       <ToolbarGroup>
-        <Link to={'/sign-up'} style={{ color: colors.darkBlue, textDecoration: 'none' }}>
+        <Link to={'/sign-up'} style={{ marginRight: '12px' }}>
           <RaisedButton label="Sign Up" secondary />
         </Link>
-        <ToolbarSeparator />
         <Link to={'/login'}>
           <RaisedButton label="Login" primary />
         </Link>

@@ -59,10 +59,10 @@ export function checkSignUpCode() {
   };
 }
 
-export function signUpCodeChecked(validSignUpCodeStatus) {
+export function signUpCodeChecked(code) {
   return {
     type: CHECK_SIGN_UP_CODE_SUCCESS,
-    validSignUpCodeStatus,
+    code,
   };
 }
 

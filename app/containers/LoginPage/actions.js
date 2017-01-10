@@ -19,6 +19,7 @@ import {
   LOGIN_SUBMIT,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
+  REMOVE_ERROR,
 } from './constants';
 
 export function submitLogin() {
@@ -38,5 +39,11 @@ export function loginError(error) {
   return {
     type: LOGIN_ERROR,
     error,
+  };
+}
+
+export function removeError() {
+  return {
+    type: REMOVE_ERROR,
   };
 }

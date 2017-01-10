@@ -12,3 +12,4 @@
 export const LOGIN_SUBMIT = 'ruah/LoginPage/LOGIN';
 export const LOGIN_SUCCESS = 'ruah/LoginPage/LOGIN_SUCCESS';
 export const LOGIN_ERROR = 'ruah/LoginPage/LOGIN_ERROR';
+export const REMOVE_ERROR = 'ruah/LoginPage/REMOVE_ERROR';

@@ -8,7 +8,7 @@ import { CHECK_SIGN_UP_CODE, SUBMIT_SIGN_UP } from './constants';
 import { signUpCodeChecked, signUpCodeCheckingError, invalidUserIdDetected } from './actions';
 
 import request from 'utils/request';
-import { selectCode, selectSignUpFields } from './selectors';
+import { selectCode, selectSignUpFields, selectValidSignUpCode } from './selectors';
 
 export function* checkSignUpCode() {
   const signUpCode = yield select(selectCode());
@@ -21,7 +21,7 @@ export function* checkSignUpCode() {
     // Call our request helper (see 'utils/request')
     const validSignUpCodeStatus = yield call(request, requestURL);
     if (validSignUpCodeStatus) {
-      yield put(signUpCodeChecked(validSignUpCodeStatus));
+      yield put(signUpCodeChecked(signUpCode));
     } else {
       yield put(signUpCodeCheckingError('Invalid Sign Up Code'));
     }
@@ -31,8 +31,6 @@ export function* checkSignUpCode() {
 }
 
 export function* submitSignUp() {
-  yield put(invalidUserIdDetected());
-
   const signUpFields = (yield select(selectSignUpFields())).toJS();
   const userId = signUpFields.email ? signUpFields.email.toLowerCase() : '';
 
@@ -42,7 +40,7 @@ export function* submitSignUp() {
 
   if (!validUserId) {
     const body = {
-      signUpCode: yield select(selectCode()),
+      signUpCode: yield select(selectValidSignUpCode()),
       userId,
       password: signUpFields.password,
     };
@@ -53,6 +51,9 @@ export function* submitSignUp() {
       // Call our request helper (see 'utils/request')
       const validSignUpCodeStatus = yield call(request, userSignUpURL, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(body),
       });
       yield put(signUpCodeChecked(validSignUpCodeStatus));

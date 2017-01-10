@@ -3,6 +3,8 @@ import { Field, reduxForm } from 'redux-form/immutable'; // <--- immutable impor
 import validate from './validate';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
+import BasicForm from '../../styled/BasicForm';
 
 const renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
   <TextField
@@ -14,6 +16,15 @@ const renderField = ({ input, label, type, meta: { touched, error }, ...custom }
   />
 );
 
+const renderCheckbox = ({ input, label }) => (
+  <Checkbox
+    label={label}
+    style={{ marginTop: '24px' }}
+    checked={!!input.value}
+    onCheck={input.onChange}
+  />
+);
+
 renderField.propTypes = {
   input: PropTypes.object,
   label: PropTypes.string,
@@ -21,20 +32,25 @@ renderField.propTypes = {
   meta: PropTypes.object,
 };
 
-const LoginForm = ({ handleSubmit, error }) => (
-  <form onSubmit={handleSubmit}>
+renderCheckbox.propTypes = {
+  input: PropTypes.object,
+  label: PropTypes.string,
+};
+
+const LoginForm = ({ handleSubmit, login }) => (
+  <BasicForm onSubmit={handleSubmit(login)}>
     <Field name="email" type="email" component={renderField} label="Email" /><br />
     <Field name="password" type="password" component={renderField} label="Password" /><br />
-    <div>{error}</div>
-    <div>
+    <Field name="remember" type="checkbox" component={renderCheckbox} label="Remember Me" /><br />
+    <div style={{ marginTop: '12px' }}>
       <RaisedButton type="submit">Submit</RaisedButton>
     </div>
-  </form>
+  </BasicForm>
 );
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func,
-  error: PropTypes.string,
+  login: PropTypes.func,
 };
 
 export default reduxForm({
