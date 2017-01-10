@@ -13,11 +13,21 @@ export function* submitLogin() {
   const loginFields = (yield select(selectLoginFields())).toJS();
   const email = loginFields.email;
 
-  const requestURL = `http://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${email}`;
+  const requestURL = 'http://api.teamruah.com/v1/user/authenticate';
 
   try {
     // Call our request helper (see 'utils/request')
-    const validSignUpCodeStatus = yield call(request, requestURL);
+    const validSignUpCodeStatus = yield call(request, requestURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        UserId: email.toLowerCase(),
+        Password: loginFields.password,
+        PersistAuthTicket: loginFields.remember,
+      }),
+    });
     yield put(loginSuccess(validSignUpCodeStatus));
   } catch (err) {
     yield put(loginError(err));

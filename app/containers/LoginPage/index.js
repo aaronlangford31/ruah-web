@@ -11,6 +11,8 @@ import { createStructuredSelector } from 'reselect';
 import LoginForm from '../../components/forms/LoginForm/index';
 import { submitLogin } from './actions';
 import { selectError } from './selectors';
+import Body from '../../components/styled/Body';
+import H2 from '../../components/styled/H2';
 
 export const LoginPage = ({ handleSubmit, error }) => (
   <article>
@@ -20,8 +22,10 @@ export const LoginPage = ({ handleSubmit, error }) => (
         { name: 'description', content: 'Login Page' },
       ]}
     />
-    <h2>Login</h2>
-    <LoginForm handleSubmit={handleSubmit} error={error} />
+    <H2>Login</H2>
+    <Body>
+      <LoginForm handleSubmit={handleSubmit} error={error} />
+    </Body>
   </article>
 );
 

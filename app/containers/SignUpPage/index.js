@@ -13,6 +13,8 @@ import CodeForm from '../../components/forms/CodeForm/index';
 import { checkSignUpCode, submitSignUp, removeError } from './actions';
 import { selectValidSignUpCode, selectError } from './selectors';
 import ErrorBox from '../App/ErrorBox';
+import Body from '../../components/styled/Body';
+import H2 from '../../components/styled/H2';
 
 export const SignUpPage = ({ checkCode, signUp, validSignUpCode, error, close }) => (
   <article>
@@ -22,13 +24,15 @@ export const SignUpPage = ({ checkCode, signUp, validSignUpCode, error, close })
         { name: 'description', content: 'Sign Up Page' },
       ]}
     />
-    <h2>Sign Up</h2>
-    {!validSignUpCode ? <CodeForm
-      checkCode={checkCode}
-    /> : <SignUpForm
-      signUp={signUp}
-    />}
-    <ErrorBox error={error} show={!!error} close={close} />
+    <H2>Sign Up</H2>
+    <Body>
+      {!validSignUpCode ? <CodeForm
+        checkCode={checkCode}
+      /> : <SignUpForm
+        signUp={signUp}
+      />}
+      <ErrorBox error={error} show={!!error} close={close} />
+    </Body>
   </article>
 );
 

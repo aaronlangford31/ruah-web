@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import BasicForm from '../../styled/BasicForm';
 
 const renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
   <TextField
@@ -21,12 +22,12 @@ renderField.propTypes = {
 };
 
 const CodeForm = ({ handleSubmit, checkCode }) => (
-  <form onSubmit={handleSubmit(checkCode)}>
+  <BasicForm onSubmit={handleSubmit(checkCode)}>
     <Field name="code" type="text" component={renderField} label="Code" /><br />
     <div>
       <RaisedButton type="submit">Submit</RaisedButton>
     </div>
-  </form>
+  </BasicForm>
 );
 
 CodeForm.propTypes = {
