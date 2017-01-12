@@ -20,7 +20,7 @@ export function* submitLogin() {
     const loginStatus = yield call(request, requestURL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain',
       },
       body: JSON.stringify({
         userId: email.toLowerCase(),
