@@ -17,18 +17,20 @@ export function* submitLogin() {
 
   try {
     // Call our request helper (see 'utils/request')
-    const loginStatus = yield call(request, requestURL, {
+    const response = yield call(request, requestURL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'text/plain',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         userId: email.toLowerCase(),
         password: loginFields.password,
         persistAuthTicket: loginFields.remember,
       }),
+      credentials: 'include',
     });
-    yield put(loginSuccess(loginStatus));
+
+    yield put(loginSuccess(response.userType));
   } catch (err) {
     yield put(loginError(`Error: ${err.message}`));
   }

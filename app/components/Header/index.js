@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -6,7 +6,7 @@ import Logo from './logo.png';
 
 // import colors from '../../containers/App/colors';
 
-const Header = () => (
+const Header = ({ userType }) => (
   <nav>
     <Toolbar>
       <ToolbarGroup>
@@ -17,15 +17,28 @@ const Header = () => (
         </div>
       </ToolbarGroup>
       <ToolbarGroup>
-        <Link to={'/sign-up'} style={{ marginRight: '12px' }}>
+        {userType === 'Supplier' && <Link to={'/'} style={{ marginRight: '12px' }}>
+          <RaisedButton label="Orders" secondary />
+        </Link>}
+        {userType === 'Supplier' && <Link to={'/catalog'} style={{ marginRight: '12px' }}>
+          <RaisedButton label="Catalog" secondary />
+        </Link>}
+        {!userType && <Link to={'/sign-up'} style={{ marginRight: '12px' }}>
           <RaisedButton label="Sign Up" secondary />
-        </Link>
-        <Link to={'/login'}>
+        </Link>}
+        {!userType && <Link to={'/login'}>
           <RaisedButton label="Login" primary />
-        </Link>
+        </Link>}
+        {userType && <Link to={'/'}>
+          <RaisedButton label="Logout" secondary />
+        </Link>}
       </ToolbarGroup>
     </Toolbar>
   </nav>
 );
+
+Header.propTypes = {
+  userType: PropTypes.string,
+};
 
 export default Header;
