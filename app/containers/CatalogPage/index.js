@@ -7,23 +7,37 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import _ from 'underscore';
 import { getProducts } from './actions';
 import { selectProducts } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
+import CatalogTable from '../../components/styled/CatalogTable';
 
 class CatalogPage extends Component {
 
   componentDidMount() {
-    this.props.getProducts();
+    if (this.props.products.length === 0) {
+      this.props.getProducts();
+    }
   }
 
   renderProducts = () => {
     const { products } = this.props;
     return _.map(products, (product, i) => (
-      <div key={i}>{product.Name}</div>
+      <tr key={i}>
+        <td><Link to={`/product/${product.Id}`}>{product.Name}</Link></td>
+        <td>
+          <div className="image" style={{ backgroundImage: `url(${product.MainImageUri})` }} />
+        </td>
+        <td>{product.SKU}</td>
+        <td>TBD</td>
+        <td>{product.Price}</td>
+        <td>{product.ShippingFee}</td>
+        <td>Edit This Product</td>
+      </tr>
     ));
   };
 
@@ -38,7 +52,21 @@ class CatalogPage extends Component {
         />
         <H2>Catalog</H2>
         <Body>
-          {this.renderProducts()}
+          <CatalogTable>
+            <thead>
+              <tr>
+                <td>Product Name</td>
+                <td>Image</td>
+                <td>SKU</td>
+                <td>Inventory Available</td>
+                <td>Retail Price</td>
+                <td>Shipping Price</td>
+              </tr>
+            </thead>
+            <tbody>
+              {this.renderProducts()}
+            </tbody>
+          </CatalogTable>
         </Body>
       </article>
     );

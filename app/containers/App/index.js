@@ -22,8 +22,8 @@ const styles = {
   },
 };
 
-import Header from 'components/Header';
-import Footer from 'components/Footer';
+import Header from 'components/partials/Header';
+import Footer from 'components/partials/Footer';
 
 const muiTheme = getMuiTheme({
   palette: {
