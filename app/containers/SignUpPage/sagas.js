@@ -50,7 +50,7 @@ export function* submitSignUp() {
       yield call(request, userSignUpURL, {
         method: 'POST',
         headers: {
-          'Content-Type': 'text/plain',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
       });
