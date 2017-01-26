@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
-import { Field, reduxForm } from 'redux-form/immutable'; // <--- immutable import
+import { Field, reduxForm } from 'redux-form/immutable';
 import validate from './validate';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
 import BasicForm from '../../styled/BasicForm';
+import Spinner from '../../../components/styled/Spinner';
 
 const renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
   <TextField
@@ -37,13 +38,13 @@ renderCheckbox.propTypes = {
   label: PropTypes.string,
 };
 
-const LoginForm = ({ handleSubmit, login }) => (
+const LoginForm = ({ handleSubmit, login, loading }) => (
   <BasicForm onSubmit={handleSubmit(login)}>
     <Field name="email" type="email" component={renderField} label="Email" /><br />
     <Field name="password" type="password" component={renderField} label="Password" /><br />
     <Field name="remember" type="checkbox" component={renderCheckbox} label="Remember Me" /><br />
-    <div style={{ marginTop: '12px' }}>
-      <RaisedButton type="submit">Submit</RaisedButton>
+    <div style={{ marginTop: 12 }}>
+      {!loading ? <RaisedButton type="submit">Submit</RaisedButton> : <Spinner />}
     </div>
   </BasicForm>
 );
@@ -51,6 +52,7 @@ const LoginForm = ({ handleSubmit, login }) => (
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func,
   login: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 export default reduxForm({

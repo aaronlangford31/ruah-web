@@ -6,8 +6,11 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectUserType } from './selectors';
 import colors from './colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -19,8 +22,8 @@ const styles = {
   },
 };
 
-import Header from 'components/Header';
-import Footer from 'components/Footer';
+import Header from 'components/partials/Header';
+import Footer from 'components/partials/Footer';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -46,7 +49,7 @@ const muiTheme = getMuiTheme({
   },
 });
 
-function App(props) {
+function App({ children, userType }) {
   return (
     <MuiThemeProvider muiTheme={muiTheme}>
       <div style={styles.app}>
@@ -57,8 +60,8 @@ function App(props) {
             { name: 'description', content: 'Team Ruah Product Management' },
           ]}
         />
-        <Header />
-        {React.Children.toArray(props.children)}
+        <Header userType={userType} />
+        {React.Children.toArray(children)}
         <Footer />
       </div>
     </MuiThemeProvider>
@@ -66,7 +69,17 @@ function App(props) {
 }
 
 App.propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
+  userType: PropTypes.string,
 };
 
-export default App;
+export function mapDispatchToProps() {
+  return {};
+}
+
+const mapStateToProps = createStructuredSelector({
+  userType: selectUserType(),
+});
+
+// Wrap the component to inject dispatch and state into it
+export default connect(mapStateToProps, mapDispatchToProps)(App);

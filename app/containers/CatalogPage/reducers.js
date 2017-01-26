@@ -11,9 +11,9 @@
  */
 
 import {
-  LOGIN_SUBMIT,
-  LOGIN_SUCCESS,
-  LOGIN_ERROR,
+  GET_PRODUCTS,
+  GET_PRODUCTS_SUCCESS,
+  GET_PRODUCTS_ERROR,
   REMOVE_ERROR,
 } from './constants';
 import { fromJS } from 'immutable';
@@ -21,23 +21,22 @@ import { fromJS } from 'immutable';
 const initialState = fromJS({
   loading: false,
   error: '',
-  userType: null,
+  products: [],
 });
 
-function loginPageReducer(state = initialState, action) {
+function catalogPageReducer(state = initialState, action) {
   switch (action.type) {
-    case LOGIN_SUBMIT:
+    case GET_PRODUCTS_SUCCESS:
       return state
-        .set('loading', true)
-        .set('error', false);
-    case LOGIN_SUCCESS:
-      return state
-        .set('userType', action.userType)
+        .set('products', fromJS(action.products))
         .set('loading', false);
-    case LOGIN_ERROR:
+    case GET_PRODUCTS_ERROR:
       return state
         .set('error', action.error)
         .set('loading', false);
+    case GET_PRODUCTS:
+      return state
+        .set('loading', true);
     case REMOVE_ERROR:
       return state
         .set('error', false);
@@ -46,4 +45,4 @@ function loginPageReducer(state = initialState, action) {
   }
 }
 
-export default loginPageReducer;
+export default catalogPageReducer;

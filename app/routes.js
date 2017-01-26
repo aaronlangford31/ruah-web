@@ -74,6 +74,42 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/catalog',
+      name: 'catalog',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/CatalogPage/reducers'),
+          System.import('containers/CatalogPage/sagas'),
+          System.import('containers/CatalogPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('catalogPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/product/:productId',
+      name: 'product',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/ProductPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

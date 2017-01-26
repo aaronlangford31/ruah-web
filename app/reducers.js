@@ -9,6 +9,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { reducer as form } from 'redux-form/immutable';
 import signUpPageReducer from 'containers/SignUpPage/reducers';
 import loginPageReducer from 'containers/LoginPage/reducers';
+import catalogPageReducer from 'containers/CatalogPage/reducers';
 
 /*
  * routeReducer
@@ -47,6 +48,7 @@ export default function createReducer(asyncReducers) {
     route: routeReducer,
     loginPage: loginPageReducer,
     signUpPage: signUpPageReducer,
+    catalogPage: catalogPageReducer,
     ...asyncReducers,
   });
 }

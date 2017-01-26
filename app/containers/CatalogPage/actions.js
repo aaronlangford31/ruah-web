@@ -16,29 +16,28 @@
  */
 
 import {
-  LOGIN_SUBMIT,
-  LOGIN_SUCCESS,
-  LOGIN_ERROR,
+  GET_PRODUCTS,
+  GET_PRODUCTS_SUCCESS,
+  GET_PRODUCTS_ERROR,
   REMOVE_ERROR,
 } from './constants';
 
-export function submitLogin() {
+export function getProducts() {
   return {
-    type: LOGIN_SUBMIT,
+    type: GET_PRODUCTS,
   };
 }
 
-export function loginSuccess(userType) {
+export function getProductsSuccess(products) {
   return {
-    type: LOGIN_SUCCESS,
-    userType,
+    type: GET_PRODUCTS_SUCCESS,
+    products,
   };
 }
 
-export function loginError(error) {
+export function getProductsError() {
   return {
-    type: LOGIN_ERROR,
-    error,
+    type: GET_PRODUCTS_ERROR,
   };
 }
 

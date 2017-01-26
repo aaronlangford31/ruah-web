@@ -11,12 +11,12 @@ import { createStructuredSelector } from 'reselect';
 import SignUpForm from '../../components/forms/SignUpForm/index';
 import CodeForm from '../../components/forms/CodeForm/index';
 import { checkSignUpCode, submitSignUp, removeError } from './actions';
-import { selectValidSignUpCode, selectError } from './selectors';
+import { selectValidSignUpCode, selectError, selectLoading } from './selectors';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 
-export const SignUpPage = ({ checkCode, signUp, validSignUpCode, error, close }) => (
+export const SignUpPage = ({ checkCode, signUp, validSignUpCode, error, close, loading }) => (
   <article>
     <Helmet
       title="Sign Up"
@@ -28,8 +28,10 @@ export const SignUpPage = ({ checkCode, signUp, validSignUpCode, error, close })
     <Body>
       {!validSignUpCode ? <CodeForm
         checkCode={checkCode}
+        loading={loading}
       /> : <SignUpForm
         signUp={signUp}
+        loading={loading}
       />}
     </Body>
     <ErrorBox error={error} show={!!error} close={close} />
@@ -63,6 +65,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   validSignUpCode: selectValidSignUpCode(),
   error: selectError(),
+  loading: selectLoading(),
 });
 
 // Wrap the component to inject dispatch and state into it

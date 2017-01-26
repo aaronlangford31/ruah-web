@@ -18,7 +18,19 @@ const selectError = () => createSelector(
   (state) => state.get('error') || '',
 );
 
+const selectLoading = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('loading'),
+);
+
+const selectUserType = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('userType'),
+);
+
 export {
   selectLoginFields,
   selectError,
+  selectUserType,
+  selectLoading,
 };

@@ -4,6 +4,7 @@ import validate from './validate';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import BasicForm from '../../styled/BasicForm';
+import Spinner from '../../../components/styled/Spinner';
 
 const renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
   <TextField
@@ -22,7 +23,7 @@ renderField.propTypes = {
   meta: PropTypes.object,
 };
 
-const SignUpForm = ({ handleSubmit, signUp }) => (
+const SignUpForm = ({ handleSubmit, signUp, loading }) => (
   <BasicForm onSubmit={handleSubmit(signUp)}>
     <Field name="email" type="text" component={renderField} label="Email" /><br />
     <Field name="password" type="password" component={renderField} label="Password" /><br />
@@ -33,7 +34,7 @@ const SignUpForm = ({ handleSubmit, signUp }) => (
       label="Confirm Password"
     /><br />
     <div>
-      <RaisedButton type="submit">Submit</RaisedButton>
+      {!loading ? <RaisedButton type="submit">Submit</RaisedButton> : <Spinner />}
     </div>
   </BasicForm>
 );
@@ -41,6 +42,7 @@ const SignUpForm = ({ handleSubmit, signUp }) => (
 SignUpForm.propTypes = {
   handleSubmit: PropTypes.func,
   signUp: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 export default reduxForm({
