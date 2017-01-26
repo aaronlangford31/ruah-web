@@ -18,6 +18,7 @@ import {
   SUBMIT_SIGN_UP_SUCCESS,
   SUBMIT_SIGN_UP_ERROR,
   REMOVE_ERROR,
+  SUBMIT_SIGN_UP,
 } from './constants';
 import { fromJS } from 'immutable';
 
@@ -49,6 +50,10 @@ function signUpPageReducer(state = initialState, action) {
       return state
         .set('error', action.error)
         .set('loading', false);
+    case SUBMIT_SIGN_UP:
+      return state
+        .set('error', false)
+        .set('loading', true);
     case SUBMIT_SIGN_UP_SUCCESS:
       return state
         .set('authenticated', true)

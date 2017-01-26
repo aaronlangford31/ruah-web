@@ -36,7 +36,7 @@ class CatalogPage extends Component {
         <td>TBD</td>
         <td>{product.Price}</td>
         <td>{product.ShippingFee}</td>
-        <td>Edit This Product</td>
+        <td><Link to={`/product/${product.Id}`}>Edit This Product</Link></td>
       </tr>
     ));
   };

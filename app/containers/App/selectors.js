@@ -22,18 +22,12 @@ const selectLocationState = () => {
 
 const selectLoginPage = () => (state) => state.get('loginPage');
 
-const selectAuthenticated = () => createSelector(
-  selectLoginPage(),
-  (state) => state.get('authenticated'),
-);
-
 const selectUserType = () => createSelector(
   selectLoginPage(),
   (state) => state.get('userType'),
 );
 
 export {
-  selectAuthenticated,
   selectLocationState,
   selectUserType,
 };

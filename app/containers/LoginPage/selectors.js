@@ -18,9 +18,9 @@ const selectError = () => createSelector(
   (state) => state.get('error') || '',
 );
 
-const selectAuthenticated = () => createSelector(
+const selectLoading = () => createSelector(
   selectLoginPage(),
-  (state) => state.get('authenticated'),
+  (state) => state.get('loading'),
 );
 
 const selectUserType = () => createSelector(
@@ -31,6 +31,6 @@ const selectUserType = () => createSelector(
 export {
   selectLoginFields,
   selectError,
-  selectAuthenticated,
   selectUserType,
+  selectLoading,
 };

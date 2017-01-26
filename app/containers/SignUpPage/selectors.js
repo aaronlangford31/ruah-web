@@ -28,9 +28,15 @@ const selectError = () => createSelector(
   (state) => state.get('error') || '',
 );
 
+const selectLoading = () => createSelector(
+  selectSignUpPage(),
+  (state) => state.get('loading'),
+);
+
 export {
   selectCode,
   selectValidSignUpCode,
   selectSignUpFields,
   selectError,
+  selectLoading,
 };

@@ -9,7 +9,7 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { submitLogin, removeError } from './actions';
-import { selectError, selectAuthenticated } from './selectors';
+import { selectError, selectUserType, selectLoading } from './selectors';
 import LoginForm from '../../components/forms/LoginForm/index';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
@@ -28,7 +28,7 @@ class LoginPage extends Component {
   }
 
   render() {
-    const { login, error, close } = this.props;
+    const { login, error, close, loading } = this.props;
 
     return (
       <article>
@@ -40,7 +40,7 @@ class LoginPage extends Component {
         />
         <H2>Login</H2>
         <Body>
-          <LoginForm login={login} error={error} />
+          <LoginForm login={login} error={error} loading={loading} />
         </Body>
         <ErrorBox error={error} show={!!error} close={close} />
       </article>
@@ -53,6 +53,7 @@ LoginPage.propTypes = {
   error: PropTypes.string,
   close: PropTypes.func,
   authenticated: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -69,7 +70,8 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   error: selectError(),
-  authenticated: selectAuthenticated(),
+  authenticated: selectUserType(),
+  loading: selectLoading(),
 });
 
 // Wrap the component to inject dispatch and state into it
