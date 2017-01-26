@@ -15,6 +15,7 @@ import { selectProducts } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import CatalogTable from '../../components/styled/CatalogTable';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class CatalogPage extends Component {
 
@@ -52,6 +53,13 @@ class CatalogPage extends Component {
         />
         <H2>Catalog</H2>
         <Body>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
+            <Link to={'product/create'}>
+              <RaisedButton>
+                Create
+              </RaisedButton>
+            </Link>
+          </div>
           <CatalogTable>
             <thead>
               <tr>

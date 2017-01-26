@@ -14,6 +14,9 @@ import { selectUserType } from './selectors';
 import colors from './colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
 const styles = {
   app: {
     width: '1200px',
