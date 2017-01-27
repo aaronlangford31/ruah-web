@@ -11,7 +11,10 @@
  */
 
 import {
-  CREATE_PRODUCT,
+  SUBMIT_CREATE_PRODUCT,
+  SUBMIT_CREATE_PRODUCT_SUCCESS,
+  SUBMIT_CREATE_PRODUCT_ERROR,
+  INVALID_SKU_ERROR,
   REMOVE_ERROR,
 } from './constants';
 import { fromJS } from 'immutable';
@@ -23,10 +26,22 @@ const initialState = fromJS({
 
 function productCreatePageReducer(state = initialState, action) {
   switch (action.type) {
-    case CREATE_PRODUCT:
+    case SUBMIT_CREATE_PRODUCT:
       return state
         .set('loading', true)
         .set('error', false);
+    case SUBMIT_CREATE_PRODUCT_SUCCESS:
+      return state
+        .set('loading', true)
+        .set('error', false);
+    case SUBMIT_CREATE_PRODUCT_ERROR:
+      return state
+        .set('loading', true)
+        .set('error', false);
+    case INVALID_SKU_ERROR:
+      return state
+        .set('error', action.error)
+        .set('loading', false);
     case REMOVE_ERROR:
       return state
         .set('error', false);

@@ -28,10 +28,11 @@ export function submitLogin() {
   };
 }
 
-export function loginSuccess(userType) {
+export function loginSuccess(userType, supplierId) {
   return {
     type: LOGIN_SUCCESS,
     userType,
+    supplierId,
   };
 }
 

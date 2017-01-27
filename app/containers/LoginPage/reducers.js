@@ -33,6 +33,7 @@ function loginPageReducer(state = initialState, action) {
     case LOGIN_SUCCESS:
       return state
         .set('userType', action.userType)
+        .set('supplierId', action.supplierId)
         .set('loading', false);
     case LOGIN_ERROR:
       return state

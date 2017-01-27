@@ -16,13 +16,35 @@
  */
 
 import {
-  CREATE_PRODUCT,
+  SUBMIT_CREATE_PRODUCT,
+  SUBMIT_CREATE_PRODUCT_SUCCESS,
+  SUBMIT_CREATE_PRODUCT_ERROR,
+  INVALID_SKU_ERROR,
   REMOVE_ERROR,
 } from './constants';
 
 export function submitCreateProduct() {
   return {
-    type: CREATE_PRODUCT,
+    type: SUBMIT_CREATE_PRODUCT,
+  };
+}
+
+export function submitCreateProductSuccess() {
+  return {
+    type: SUBMIT_CREATE_PRODUCT_SUCCESS,
+  };
+}
+
+export function submitCreateProductError(error) {
+  return {
+    type: SUBMIT_CREATE_PRODUCT_ERROR,
+    error,
+  };
+}
+
+export function invalidSkuDetected() {
+  return {
+    type: INVALID_SKU_ERROR,
   };
 }
 

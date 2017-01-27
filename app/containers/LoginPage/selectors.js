@@ -28,9 +28,15 @@ const selectUserType = () => createSelector(
   (state) => state.get('userType'),
 );
 
+const selectSupplierId = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('supplierId'),
+);
+
 export {
   selectLoginFields,
   selectError,
   selectUserType,
   selectLoading,
+  selectSupplierId,
 };
