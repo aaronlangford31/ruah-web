@@ -6,6 +6,7 @@ import FileInput from './FileInput';
 import _ from 'underscore';
 import { Field } from 'redux-form/immutable';
 import RaisedButton from 'material-ui/RaisedButton';
+import Close from 'material-ui/svg-icons/navigation/close';
 
 const renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
   <TextField
@@ -108,7 +109,7 @@ const renderFileInputs = ({ fields, label }) => (
             type="button"
             onClick={() => fields.remove(i)}
             style={{ cursor: 'pointer' }}
-          >x
+          ><Close />
           </button>
         </li>
       )}
@@ -138,7 +139,7 @@ const renderBullets = ({ fields, label }) => (
             type="button"
             onClick={() => fields.remove(i)}
             style={{ cursor: 'pointer' }}
-          >x
+          ><Close />
           </button>
         </li>
       )}
