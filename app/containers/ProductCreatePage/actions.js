@@ -16,30 +16,35 @@
  */
 
 import {
-  LOGIN_SUBMIT,
-  LOGIN_SUCCESS,
-  LOGIN_ERROR,
+  SUBMIT_CREATE_PRODUCT,
+  SUBMIT_CREATE_PRODUCT_SUCCESS,
+  SUBMIT_CREATE_PRODUCT_ERROR,
+  INVALID_SKU_ERROR,
   REMOVE_ERROR,
 } from './constants';
 
-export function submitLogin() {
+export function submitCreateProduct() {
   return {
-    type: LOGIN_SUBMIT,
+    type: SUBMIT_CREATE_PRODUCT,
   };
 }
 
-export function loginSuccess(userType, supplierId) {
+export function submitCreateProductSuccess() {
   return {
-    type: LOGIN_SUCCESS,
-    userType,
-    supplierId,
+    type: SUBMIT_CREATE_PRODUCT_SUCCESS,
   };
 }
 
-export function loginError(error) {
+export function submitCreateProductError(error) {
   return {
-    type: LOGIN_ERROR,
+    type: SUBMIT_CREATE_PRODUCT_ERROR,
     error,
+  };
+}
+
+export function invalidSkuDetected() {
+  return {
+    type: INVALID_SKU_ERROR,
   };
 }
 

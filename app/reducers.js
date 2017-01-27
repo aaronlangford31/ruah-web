@@ -10,6 +10,7 @@ import { reducer as form } from 'redux-form/immutable';
 import signUpPageReducer from 'containers/SignUpPage/reducers';
 import loginPageReducer from 'containers/LoginPage/reducers';
 import catalogPageReducer from 'containers/CatalogPage/reducers';
+import productCreatePageReducer from 'containers/ProductCreatePage/reducers';
 
 /*
  * routeReducer
@@ -49,6 +50,7 @@ export default function createReducer(asyncReducers) {
     loginPage: loginPageReducer,
     signUpPage: signUpPageReducer,
     catalogPage: catalogPageReducer,
+    productCreatePage: productCreatePageReducer,
     ...asyncReducers,
   });
 }

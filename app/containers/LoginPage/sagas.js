@@ -30,7 +30,7 @@ export function* submitLogin() {
       credentials: 'include',
     });
 
-    yield put(loginSuccess(response.userType));
+    yield put(loginSuccess(response.userType, response.supplierId));
   } catch (err) {
     yield put(loginError('There is no flavor. There are no spices. Where are the chips? ...credentials could not be found.'));
   }
