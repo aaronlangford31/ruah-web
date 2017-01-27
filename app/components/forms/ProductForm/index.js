@@ -30,7 +30,7 @@ const ProductForm = ({ handleSubmit, createProduct, loading }) => (
         {renderFields(categoryInfoFields)}
       </Tab>
     </Tabs>
-    <div>
+    <div style={{ marginTop: 12 }}>
       {!loading ? <RaisedButton type="submit">Create</RaisedButton> : <Spinner />}
     </div>
   </BasicForm>
@@ -56,7 +56,7 @@ export default reduxForm({
     Bullets: [],
     Type: '',
     TypeKeyword: '',
-    BrowseNode: 0,
+    BrowseNode: '',
     TaxCategory: '',
     AltImageUris: [],
     MainImageUri: '',

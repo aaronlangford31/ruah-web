@@ -108,7 +108,7 @@ const renderFileInputs = ({ fields, label }) => (
             type="button"
             onClick={() => fields.remove(i)}
             style={{ cursor: 'pointer' }}
-          >
+          >x
           </button>
         </li>
       )}
