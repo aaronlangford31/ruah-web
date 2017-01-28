@@ -4,13 +4,13 @@ import validate from './validate';
 import RaisedButton from 'material-ui/RaisedButton';
 import BasicForm from '../../styled/BasicForm';
 import Spinner from '../../../components/styled/Spinner';
-import { renderField, renderCheckbox } from '../Fields';
+import { TextField, CheckboxField } from '../Fields';
 
 const LoginForm = ({ handleSubmit, login, loading }) => (
   <BasicForm onSubmit={handleSubmit(login)}>
-    <Field name="email" type="email" component={renderField} label="Email" /><br />
-    <Field name="password" type="password" component={renderField} label="Password" /><br />
-    <Field name="remember" type="checkbox" component={renderCheckbox} label="Remember Me" /><br />
+    <Field name="email" type="email" component={TextField} label="Email" /><br />
+    <Field name="password" type="password" component={TextField} label="Password" /><br />
+    <Field name="remember" type="checkbox" component={CheckboxField} label="Remember Me" /><br />
     <div style={{ marginTop: 12 }}>
       {!loading ? <RaisedButton type="submit">Submit</RaisedButton> : <Spinner />}
     </div>

@@ -3,11 +3,11 @@ import { Field, reduxForm } from 'redux-form/immutable';
 import RaisedButton from 'material-ui/RaisedButton';
 import BasicForm from '../../styled/BasicForm';
 import Spinner from '../../../components/styled/Spinner';
-import { renderField } from '../Fields';
+import { TextField } from '../Fields';
 
 const CodeForm = ({ handleSubmit, checkCode, loading }) => (
   <BasicForm onSubmit={handleSubmit(checkCode)}>
-    <Field name="code" type="text" component={renderField} label="Code" /><br />
+    <Field name="code" type="text" component={TextField} label="Code" /><br />
     <div>
       {!loading ? <RaisedButton type="submit">Next</RaisedButton> : <Spinner />}
     </div>

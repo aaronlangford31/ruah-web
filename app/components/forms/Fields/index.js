@@ -1,15 +1,14 @@
 import React, { PropTypes } from 'react';
-import TextField from 'material-ui/TextField';
+import { Field } from 'redux-form/immutable';
+import { TextField as MaterialTextField } from 'material-ui';
 import Checkbox from 'material-ui/Checkbox';
 import ChipInput from 'material-ui-chip-input';
-import FileInput from './FileInput';
-import _ from 'underscore';
-import { Field } from 'redux-form/immutable';
 import RaisedButton from 'material-ui/RaisedButton';
 import Close from 'material-ui/svg-icons/navigation/close';
+import _ from 'underscore';
 
-const renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
-  <TextField
+export const TextField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
+  <MaterialTextField
     floatingLabelText={label}
     type={type}
     errorText={touched && error}
@@ -19,14 +18,14 @@ const renderField = ({ input, label, type, meta: { touched, error }, ...custom }
   />
 );
 
-renderField.propTypes = {
+TextField.propTypes = {
   input: PropTypes.object,
   label: PropTypes.string,
   type: PropTypes.string,
   meta: PropTypes.object,
 };
 
-const renderCheckbox = ({ input, label }) => (
+export const CheckboxField = ({ input, label }) => (
   <Checkbox
     label={label}
     style={{ marginTop: '24px' }}
@@ -35,12 +34,12 @@ const renderCheckbox = ({ input, label }) => (
   />
 );
 
-renderCheckbox.propTypes = {
+CheckboxField.propTypes = {
   input: PropTypes.object,
   label: PropTypes.string,
 };
 
-const renderChip = ({ input, hintText, label }) => (
+export const ChipsField = ({ input, label, hintText }) => (
   <ChipInput
     style={{ margin: '0 10px' }}
     {...input}
@@ -62,47 +61,69 @@ const renderChip = ({ input, hintText, label }) => (
   />
 );
 
-renderChip.propTypes = {
+ChipsField.propTypes = {
   input: PropTypes.object,
-  hintText: PropTypes.string,
   label: PropTypes.string,
+  hintText: PropTypes.string,
 };
 
-const renderFileInput = ({ ...rest }) => (
-  <FileInput
+export const FileField = ({ label, ...custom }) => (
+  <RaisedButton
+    label={label}
+    labelPosition="before"
     style={{ margin: '0 10px' }}
-    {...rest}
-  />
+    containerElement="label"
+  >
+    <input
+      type="file"
+      style={{
+        cursor: 'pointer',
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        right: 0,
+        left: 0,
+        width: '100%',
+        opacity: 0,
+      }}
+      {...custom}
+    />
+  </RaisedButton>
 );
 
-renderCheckbox.propTypes = {
+FileField.propTypes = {
   input: PropTypes.object,
   label: PropTypes.string,
 };
 
-const renderFields = (fields) => (
+export const TextFields = ({ fields }) => (
   <div>
     {_.map(fields, (field, i) => (
-      <Field key={i} name={field.name} type="text" component={renderField} label={field.label} style={{ margin: '0 10px' }} />
+      <Field key={i} name={field.name} type="text" component={TextField} label={field.label} style={{ margin: '0 10px' }} />
     ))}
   </div>
 );
 
-const renderFileInputs = ({ fields, label }) => (
+TextFields.propTypes = {
+  fields: PropTypes.array,
+};
+
+export const FileFields = ({ label, fields }) => (
   <div>
-    <div>{label}</div>
     <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
       {fields.map((field, i) =>
         <li key={i}>
           <Field
             name={`${field}.name`}
             type="text"
-            component={renderField}
+            component={TextField}
+            hintText="Filename"
           />
           <Field
             name={`${field}.value`}
             type="file"
-            component={renderFileInput}
+            label={label}
+            component={FileField}
             multiLine
           />
           <button
@@ -118,12 +139,12 @@ const renderFileInputs = ({ fields, label }) => (
   </div>
 );
 
-renderFileInputs.propTypes = {
+FileFields.propTypes = {
   label: PropTypes.string,
   fields: PropTypes.object,
 };
 
-const renderBullets = ({ fields, label }) => (
+export const BulletFields = ({ label, fields }) => (
   <div>
     <div>{label}</div>
     <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
@@ -132,7 +153,7 @@ const renderBullets = ({ fields, label }) => (
           <Field
             name={`${field}.value`}
             type="text"
-            component={renderField}
+            component={TextField}
             multiLine
           />
           <button
@@ -148,17 +169,7 @@ const renderBullets = ({ fields, label }) => (
   </div>
 );
 
-renderBullets.propTypes = {
+BulletFields.propTypes = {
   label: PropTypes.string,
   fields: PropTypes.object,
-};
-
-export {
-  renderField,
-  renderCheckbox,
-  renderChip,
-  renderFileInput,
-  renderFields,
-  renderFileInputs,
-  renderBullets,
 };
