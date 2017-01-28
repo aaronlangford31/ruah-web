@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import _ from 'underscore';
+import TextField from './TextField';
+import { Field } from 'redux-form/immutable';
 
 const TextFields = ({ fields }) => (
   <div>
