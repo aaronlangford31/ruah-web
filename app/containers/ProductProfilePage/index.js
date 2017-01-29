@@ -13,7 +13,7 @@ import { selectProducts } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 
-class ProductPage extends Component {
+class ProductProfilePage extends Component {
 
   renderProduct() {
     const { router, products } = this.props;
@@ -41,12 +41,12 @@ class ProductPage extends Component {
   }
 }
 
-ProductPage.propTypes = {
+ProductProfilePage.propTypes = {
   products: PropTypes.array,
   router: PropTypes.object,
 };
 
-ProductPage.contextTypes = {
+ProductProfilePage.contextTypes = {
   router: PropTypes.object,
 };
 
@@ -59,4 +59,4 @@ const mapStateToProps = createStructuredSelector({
 });
 
 // Wrap the component to inject dispatch and state into it
-export default connect(mapStateToProps, mapDispatchToProps)(ProductPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductProfilePage);

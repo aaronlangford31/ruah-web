@@ -1,27 +1,10 @@
 import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
 import validate from './validate';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import BasicForm from '../../styled/BasicForm';
 import Spinner from '../../../components/styled/Spinner';
-
-const renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
-  <TextField
-    floatingLabelText={label}
-    type={type}
-    errorText={touched && error}
-    {...input}
-    {...custom}
-  />
-);
-
-renderField.propTypes = {
-  input: PropTypes.object,
-  label: PropTypes.string,
-  type: PropTypes.string,
-  meta: PropTypes.object,
-};
+import { renderField } from '../Fields';
 
 const SignUpForm = ({ handleSubmit, signUp, loading }) => (
   <BasicForm onSubmit={handleSubmit(signUp)}>

@@ -1,42 +1,10 @@
 import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
 import validate from './validate';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import Checkbox from 'material-ui/Checkbox';
 import BasicForm from '../../styled/BasicForm';
 import Spinner from '../../../components/styled/Spinner';
-
-const renderField = ({ input, label, type, meta: { touched, error }, ...custom }) => (
-  <TextField
-    floatingLabelText={label}
-    type={type}
-    errorText={touched && error}
-    {...input}
-    {...custom}
-  />
-);
-
-const renderCheckbox = ({ input, label }) => (
-  <Checkbox
-    label={label}
-    style={{ marginTop: '24px' }}
-    checked={!!input.value}
-    onCheck={input.onChange}
-  />
-);
-
-renderField.propTypes = {
-  input: PropTypes.object,
-  label: PropTypes.string,
-  type: PropTypes.string,
-  meta: PropTypes.object,
-};
-
-renderCheckbox.propTypes = {
-  input: PropTypes.object,
-  label: PropTypes.string,
-};
+import { renderField, renderCheckbox } from '../Fields';
 
 const LoginForm = ({ handleSubmit, login, loading }) => (
   <BasicForm onSubmit={handleSubmit(login)}>

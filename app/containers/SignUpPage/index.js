@@ -44,6 +44,7 @@ SignUpPage.propTypes = {
   validSignUpCode: PropTypes.string,
   error: PropTypes.string,
   close: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 export function mapDispatchToProps(dispatch) {

@@ -94,11 +94,31 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/product/:productId',
-      name: 'product',
+      path: '/product/create',
+      name: 'product-create',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/ProductPage'),
+          System.import('containers/ProductCreatePage/reducers'),
+          System.import('containers/ProductCreatePage/sagas'),
+          System.import('containers/ProductCreatePage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('productCreatePage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/product/:productId',
+      name: 'product-profile',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/ProductProfilePage'),
         ]);
 
         const renderRoute = loadModule(cb);

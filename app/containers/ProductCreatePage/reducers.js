@@ -11,9 +11,10 @@
  */
 
 import {
-  LOGIN_SUBMIT,
-  LOGIN_SUCCESS,
-  LOGIN_ERROR,
+  SUBMIT_CREATE_PRODUCT,
+  SUBMIT_CREATE_PRODUCT_SUCCESS,
+  SUBMIT_CREATE_PRODUCT_ERROR,
+  INVALID_SKU_ERROR,
   REMOVE_ERROR,
 } from './constants';
 import { fromJS } from 'immutable';
@@ -21,21 +22,23 @@ import { fromJS } from 'immutable';
 const initialState = fromJS({
   loading: false,
   error: '',
-  userType: null,
 });
 
-function loginPageReducer(state = initialState, action) {
+function productCreatePageReducer(state = initialState, action) {
   switch (action.type) {
-    case LOGIN_SUBMIT:
+    case SUBMIT_CREATE_PRODUCT:
       return state
         .set('loading', true)
         .set('error', false);
-    case LOGIN_SUCCESS:
+    case SUBMIT_CREATE_PRODUCT_SUCCESS:
       return state
-        .set('userType', action.userType)
-        .set('supplierId', action.supplierId)
-        .set('loading', false);
-    case LOGIN_ERROR:
+        .set('loading', true)
+        .set('error', false);
+    case SUBMIT_CREATE_PRODUCT_ERROR:
+      return state
+        .set('loading', true)
+        .set('error', false);
+    case INVALID_SKU_ERROR:
       return state
         .set('error', action.error)
         .set('loading', false);
@@ -47,4 +50,4 @@ function loginPageReducer(state = initialState, action) {
   }
 }
 
-export default loginPageReducer;
+export default productCreatePageReducer;
