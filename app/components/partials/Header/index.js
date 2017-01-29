@@ -17,7 +17,7 @@ const Header = ({ userType }) => (
         </div>
       </ToolbarGroup>
       <ToolbarGroup>
-        {userType === 'Supplier' && <Link to={'/'} style={{ marginRight: '12px' }}>
+        {userType === 'Supplier' && <Link to={'/orders'} style={{ marginRight: '12px' }}>
           <RaisedButton label="Orders" secondary />
         </Link>}
         {userType === 'Supplier' && <Link to={'/catalog'} style={{ marginRight: '12px' }}>

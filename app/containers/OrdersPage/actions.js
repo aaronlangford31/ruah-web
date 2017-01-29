@@ -11,10 +11,10 @@ export function getProducts() {
   };
 }
 
-export function getOrdersSuccess(products) {
+export function getOrdersSuccess(orders) {
   return {
     type: GET_ORDERS_SUCCESS,
-    products,
+    orders,
   };
 }
 
