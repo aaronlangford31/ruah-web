@@ -11,6 +11,7 @@ import signUpPageReducer from 'containers/SignUpPage/reducers';
 import loginPageReducer from 'containers/LoginPage/reducers';
 import catalogPageReducer from 'containers/CatalogPage/reducers';
 import productCreatePageReducer from 'containers/ProductCreatePage/reducers';
+import ordersPageReducer from 'containers/OrdersPage/reducers';
 
 /*
  * routeReducer
@@ -51,6 +52,7 @@ export default function createReducer(asyncReducers) {
     signUpPage: signUpPageReducer,
     catalogPage: catalogPageReducer,
     productCreatePage: productCreatePageReducer,
+    ordersPage: ordersPageReducer,
     ...asyncReducers,
   });
 }

@@ -20,6 +20,15 @@ const FileField = ({ label, ...custom }) => (
         width: '100%',
         opacity: 0,
       }}
+      onChange={
+        (e) => {
+          e.preventDefault();
+          const { fields } = this.props;
+          // convert files to an array
+          const files = [...e.target.files];
+          fields.yourField.handleChange(files);
+        }
+      }
       {...custom}
     />
   </RaisedButton>
