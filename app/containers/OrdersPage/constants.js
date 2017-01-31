@@ -1,4 +1,4 @@
-export const GET_ORDERS = 'ruah/CatalogPage/GET_PRODUCTS';
-export const GET_PRODUCTS_SUCCESS = 'ruah/CatalogPage/GET_PRODUCTS_SUCCESS';
-export const GET_PRODUCTS_ERROR = 'ruah/CatalogPage/GET_PRODUCTS_ERROR';
-export const REMOVE_ERROR = 'ruah/CatalogPage/REMOVE_ERROR';
+export const GET_ORDERS = 'ruah/OrdersPages/GET_PRODUCTS';
+export const GET_ORDERS_SUCCESS = 'ruah/OrdersPages/GET_ORDERS_SUCCESS';
+export const GET_ORDERS_ERROR = 'ruah/OrdersPages/GET_ORDERS_ERROR';
+export const REMOVE_ERROR = 'ruah/OrdersPages/REMOVE_ERROR';

@@ -142,7 +142,7 @@ export default function createRoutes(store) {
         const renderRoute = loadModule(cb);
 
         importModules.then(([reducer, sagas, component]) => {
-          injectReducer('orderPage', reducer.default);
+          injectReducer('ordersPage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });

@@ -73,7 +73,7 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  products: selectOrders(),
+  orders: selectOrders(),
 });
 
 // Wrap the component to inject dispatch and state into it

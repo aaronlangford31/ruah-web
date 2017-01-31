@@ -5,7 +5,7 @@ import {
   REMOVE_ERROR,
 } from './constants';
 
-export function getProducts() {
+export function getOrders() {
   return {
     type: GET_ORDERS,
   };
