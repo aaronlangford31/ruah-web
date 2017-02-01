@@ -75,8 +75,12 @@ class CatalogPage extends Component {
               </RaisedButton>
             </Link>
           </div>
-          <Table>
-            <TableHeader>
+          <Table selectable={false}>
+            <TableHeader
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+              enableSelectAll={false}
+            >
               <TableRow>
                 <TableHeaderColumn>Product Name</TableHeaderColumn>
                 <TableHeaderColumn>Image</TableHeaderColumn>
@@ -87,7 +91,7 @@ class CatalogPage extends Component {
                 <TableHeaderColumn> </TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody displayRowCheckbox={false}>
               {this.renderProducts()}
             </TableBody>
           </Table>
