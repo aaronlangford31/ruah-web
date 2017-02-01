@@ -14,8 +14,15 @@ import { getProducts } from './actions';
 import { selectProducts } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
-import CatalogTable from '../../components/styled/CatalogTable';
 import RaisedButton from 'material-ui/RaisedButton';
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHeaderColumn,
+  TableBody,
+  TableRowColumn,
+} from 'material-ui/Table';
 
 class CatalogPage extends Component {
 
@@ -28,17 +35,25 @@ class CatalogPage extends Component {
   renderProducts = () => {
     const { products } = this.props;
     return _.map(products, (product, i) => (
-      <tr key={i}>
-        <td><Link to={`/product/${product.Id}`}>{product.Name}</Link></td>
-        <td>
-          <div className="image" style={{ backgroundImage: `url(${product.MainImageUri})` }} />
-        </td>
-        <td>{product.SKU}</td>
-        <td>TBD</td>
-        <td>{product.Price}</td>
-        <td>{product.ShippingFee}</td>
-        <td><Link to={`/product/${product.Id}`}>Edit This Product</Link></td>
-      </tr>
+      <TableRow key={i}>
+        <TableRowColumn><Link to={`/product/${product.Id}`}>{product.Name}</Link></TableRowColumn>
+        <TableRowColumn>
+          <div
+            style={{
+              backgroundImage: `url(${product.MainImageUri})`,
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              height: 50,
+              width: 50,
+            }}
+          />
+        </TableRowColumn>
+        <TableRowColumn>{product.SKU}</TableRowColumn>
+        <TableRowColumn>TBD</TableRowColumn>
+        <TableRowColumn>{product.Price}</TableRowColumn>
+        <TableRowColumn>{product.ShippingFee}</TableRowColumn>
+        <TableRowColumn><Link to={`/product/${product.Id}`}>Edit This Product</Link></TableRowColumn>
+      </TableRow>
     ));
   };
 
@@ -60,21 +75,22 @@ class CatalogPage extends Component {
               </RaisedButton>
             </Link>
           </div>
-          <CatalogTable>
-            <thead>
-              <tr>
-                <td>Product Name</td>
-                <td>Image</td>
-                <td>SKU</td>
-                <td>Inventory Available</td>
-                <td>Retail Price</td>
-                <td>Shipping Price</td>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHeaderColumn>Product Name</TableHeaderColumn>
+                <TableHeaderColumn>Image</TableHeaderColumn>
+                <TableHeaderColumn>SKU</TableHeaderColumn>
+                <TableHeaderColumn>Inventory Available</TableHeaderColumn>
+                <TableHeaderColumn>Retail Price</TableHeaderColumn>
+                <TableHeaderColumn>Shipping Price</TableHeaderColumn>
+                <TableHeaderColumn> </TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {this.renderProducts()}
-            </tbody>
-          </CatalogTable>
+            </TableBody>
+          </Table>
         </Body>
       </article>
     );
