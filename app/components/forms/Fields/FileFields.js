@@ -5,8 +5,8 @@ import TextField from './TextField';
 import FileField from './FileField';
 import Close from 'material-ui/svg-icons/navigation/close';
 
-const FileFields = ({ label, fields }) => (
-  <div>
+const FileFields = ({ label, fields, style }) => (
+  <div style={style}>
     <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
       {fields.map((field, i) =>
         <li key={i}>
@@ -15,6 +15,7 @@ const FileFields = ({ label, fields }) => (
             type="text"
             component={TextField}
             hintText="Filename"
+            style={style}
           />
           <Field
             name={`${field}.value`}
@@ -22,6 +23,7 @@ const FileFields = ({ label, fields }) => (
             label={label}
             component={FileField}
             multiLine
+            style={style}
           />
           <button
             type="button"
@@ -39,6 +41,7 @@ const FileFields = ({ label, fields }) => (
 FileFields.propTypes = {
   label: PropTypes.string,
   fields: PropTypes.object,
+  style: PropTypes.object,
 };
 
 export default FileFields;

@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
-const FileField = ({ label, ...custom }) => (
+const FileField = ({ label, style, ...custom }) => (
   <RaisedButton
     label={label}
     labelPosition="before"
-    style={{ margin: '0 10px' }}
+    style={style}
     containerElement="label"
   >
     <input
@@ -35,8 +35,9 @@ const FileField = ({ label, ...custom }) => (
 );
 
 FileField.propTypes = {
-  input: PropTypes.object,
   label: PropTypes.string,
+  input: PropTypes.object,
+  style: PropTypes.object,
 };
 
 export default FileField;

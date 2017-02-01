@@ -4,11 +4,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from './TextField';
 import Close from 'material-ui/svg-icons/navigation/close';
 
-const BulletFields = ({ label, fields }) => (
-  <div>
+const BulletFields = ({ label, fields, style }) => (
+  <div style={style}>
     <div>{label}</div>
     <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-      {fields.map((field, i) =>
+      {fields.map((field, i) => (
         <li key={i}>
           <Field
             name={`${field}.value`}
@@ -23,7 +23,7 @@ const BulletFields = ({ label, fields }) => (
           ><Close />
           </button>
         </li>
-      )}
+      ))}
     </ul>
     <RaisedButton onClick={() => fields.push({})}>Add</RaisedButton>
   </div>
@@ -32,6 +32,7 @@ const BulletFields = ({ label, fields }) => (
 BulletFields.propTypes = {
   label: PropTypes.string,
   fields: PropTypes.object,
+  style: PropTypes.object,
 };
 
 export default BulletFields;
