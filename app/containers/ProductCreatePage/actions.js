@@ -19,8 +19,9 @@ import {
   SUBMIT_CREATE_PRODUCT,
   SUBMIT_CREATE_PRODUCT_SUCCESS,
   SUBMIT_CREATE_PRODUCT_ERROR,
-  INVALID_SKU_ERROR,
-  REMOVE_ERROR,
+  INVALID_SKU,
+  INVALID_SKU_REMOVE,
+  ERROR_REMOVE,
 } from './constants';
 
 export function submitCreateProduct() {
@@ -44,12 +45,18 @@ export function submitCreateProductError(error) {
 
 export function invalidSkuDetected() {
   return {
-    type: INVALID_SKU_ERROR,
+    type: INVALID_SKU,
+  };
+}
+
+export function removeInvalidSku() {
+  return {
+    type: INVALID_SKU_REMOVE,
   };
 }
 
 export function removeError() {
   return {
-    type: REMOVE_ERROR,
+    type: ERROR_REMOVE,
   };
 }

@@ -1,7 +1,3 @@
-/**
- * Gets the repositories of the user from Github
- */
-
 import { takeLatest } from 'redux-saga';
 import { call, put, select } from 'redux-saga/effects';
 import { SUBMIT_CREATE_PRODUCT } from './constants';
@@ -14,7 +10,7 @@ import {
 
 import request from 'utils/request';
 import { selectProductFields } from './selectors';
-import { selectSupplierId } from '../LoginPage/selectors';
+import { selectSupplierId } from '../App/selectors';
 
 export function* createProductSubmit() {
   const signUpFields = yield select(selectProductFields());
@@ -39,7 +35,6 @@ export function* createProductSubmit() {
     const userSignUpURL = 'http://api.teamruah.com/v1/product/batchCreate';
 
     try {
-      // Call our request helper (see 'utils/request')
       yield call(request, userSignUpURL, {
         method: 'POST',
         headers: {
@@ -57,15 +52,10 @@ export function* createProductSubmit() {
   }
 }
 
-/**
- * Root saga manages watcher lifecycle
- */
-
 export function* createProductSubmitData() {
   yield* takeLatest(SUBMIT_CREATE_PRODUCT, createProductSubmit);
 }
 
-// Bootstrap sagas
 export default [
   createProductSubmitData,
 ];

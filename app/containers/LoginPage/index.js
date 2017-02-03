@@ -8,14 +8,22 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { submitLogin, removeError } from './actions';
-import { selectError, selectUserType, selectLoading } from './selectors';
-import LoginForm from '../../components/forms/LoginForm/index';
+import { submitLogin, removeError } from '../App/actions';
+import { selectError, selectUserType, selectLoading } from '../App/selectors';
+import LoginForm from '../../components/forms/LoginForm';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 
 class LoginPage extends Component {
+
+  static propTypes = {
+    login: PropTypes.func,
+    error: PropTypes.string,
+    close: PropTypes.func,
+    authenticated: PropTypes.string,
+    loading: PropTypes.bool,
+  };
 
   static contextTypes = {
     router: PropTypes.object,
@@ -39,7 +47,7 @@ class LoginPage extends Component {
           ]}
         />
         <H2>Login</H2>
-        <Body>
+        <Body useBackground>
           <LoginForm login={login} error={error} loading={loading} />
         </Body>
         <ErrorBox error={error} show={!!error} close={close} />
@@ -47,14 +55,6 @@ class LoginPage extends Component {
     );
   }
 }
-
-LoginPage.propTypes = {
-  login: PropTypes.func,
-  error: PropTypes.string,
-  close: PropTypes.func,
-  authenticated: PropTypes.bool,
-  loading: PropTypes.bool,
-};
 
 export function mapDispatchToProps(dispatch) {
   return {

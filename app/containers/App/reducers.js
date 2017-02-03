@@ -14,6 +14,10 @@ import {
   LOGIN_SUBMIT,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
+  CHECK_LOGIN,
+  LOGOUT_SUBMIT,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR,
   REMOVE_ERROR,
 } from './constants';
 import { fromJS } from 'immutable';
@@ -21,10 +25,10 @@ import { fromJS } from 'immutable';
 const initialState = fromJS({
   loading: false,
   error: '',
-  userType: null,
+  loggedIn: false,
 });
 
-function loginPageReducer(state = initialState, action) {
+function appReducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN_SUBMIT:
       return state
@@ -39,6 +43,22 @@ function loginPageReducer(state = initialState, action) {
       return state
         .set('error', action.error)
         .set('loading', false);
+    case CHECK_LOGIN:
+      return state
+        .set('loadingCheckLogin', true);
+    case LOGOUT_SUBMIT:
+      return state
+        .set('loading', true)
+        .set('error', false);
+    case LOGOUT_SUCCESS:
+      return state
+        .set('userType', null)
+        .set('supplierId', null)
+        .set('loading', false);
+    case LOGOUT_ERROR:
+      return state
+        .set('error', action.error)
+        .set('loading', false);
     case REMOVE_ERROR:
       return state
         .set('error', false);
@@ -47,4 +67,4 @@ function loginPageReducer(state = initialState, action) {
   }
 }
 
-export default loginPageReducer;
+export default appReducer;

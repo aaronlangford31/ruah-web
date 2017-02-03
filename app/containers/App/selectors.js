@@ -20,14 +20,40 @@ const selectLocationState = () => {
   };
 };
 
-const selectLoginPage = () => (state) => state.get('loginPage');
+const selectLoginPage = () => (state) => state.get('app');
 
 const selectUserType = () => createSelector(
   selectLoginPage(),
   (state) => state.get('userType'),
 );
 
+const selectForms = () => (state) => state.get('form');
+
+const selectLoginFields = () => createSelector(
+  selectForms(),
+  (state) => state.getIn(['loginForm', 'values']),
+);
+
+const selectError = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('error') || '',
+);
+
+const selectLoading = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('loading'),
+);
+
+const selectSupplierId = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('supplierId'),
+);
+
 export {
   selectLocationState,
   selectUserType,
+  selectLoginFields,
+  selectError,
+  selectLoading,
+  selectSupplierId,
 };

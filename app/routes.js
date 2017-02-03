@@ -4,6 +4,8 @@
 // about the code splitting business
 import { getAsyncInjectors } from './utils/asyncInjectors';
 
+import AppSaga from 'containers/App/sagas';
+
 const errorLoading = (err) => {
   console.error('Dynamic page loading failed', err); // eslint-disable-line no-console
 };
@@ -16,13 +18,15 @@ export default function createRoutes(store) {
   // create reusable async injectors using getAsyncInjectors factory
   const { injectReducer, injectSagas } = getAsyncInjectors(store);
 
+  injectSagas(AppSaga);
+
   return [
     {
       path: '/',
       name: 'home',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/HomePage'),
+          System.import('containers/LoginPage'),
         ]);
 
         const renderRoute = loadModule(cb);
@@ -38,16 +42,12 @@ export default function createRoutes(store) {
       name: 'login',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/LoginPage/reducers'),
-          System.import('containers/LoginPage/sagas'),
           System.import('containers/LoginPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
-          injectReducer('loginPage', reducer.default);
-          injectSagas(sagas.default);
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 
@@ -124,6 +124,42 @@ export default function createRoutes(store) {
         const renderRoute = loadModule(cb);
 
         importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/order/:orderId',
+      name: 'order-profile',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/OrderProfilePage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/orders',
+      name: 'orders',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/OrdersPage/reducers'),
+          System.import('containers/OrdersPage/sagas'),
+          System.import('containers/OrdersPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('ordersPage', reducer.default);
+          injectSagas(sagas.default);
           renderRoute(component);
         });
 
