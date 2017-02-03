@@ -7,6 +7,7 @@ import { getOrders } from './actions';
 import { selectOrders } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
+import Menu from '../../components/partials/Menu';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
 class OrdersPage extends Component {
@@ -40,19 +41,30 @@ class OrdersPage extends Component {
         />
         <H2>Orders</H2>
         <Body>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHeaderColumn>Date of Order</TableHeaderColumn>
-                <TableHeaderColumn>Order Details</TableHeaderColumn>
-                <TableHeaderColumn>Order Status</TableHeaderColumn>
-                <TableHeaderColumn>Actions</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {this.renderOrders()}
-            </TableBody>
-          </Table>
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: 3, marginRight: 24 }}>
+              <Menu />
+            </div>
+            <div style={{ flex: 9 }}>
+              <Table>
+                <TableHeader
+                  displaySelectAll={false}
+                  adjustForCheckbox={false}
+                  enableSelectAll={false}
+                >
+                  <TableRow>
+                    <TableHeaderColumn>Date of Order</TableHeaderColumn>
+                    <TableHeaderColumn>Order Details</TableHeaderColumn>
+                    <TableHeaderColumn>Order Status</TableHeaderColumn>
+                    <TableHeaderColumn>Actions</TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false}>
+                  {this.renderOrders()}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
         </Body>
       </article>
     );

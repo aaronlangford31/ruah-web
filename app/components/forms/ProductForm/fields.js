@@ -23,9 +23,6 @@ export const basicInfoFields = [
     name: 'ManufacturerName',
     label: 'Manufacturer Name*',
   },
-];
-
-export const priceQuantityFields = [
   {
     name: 'PackageQuantity',
     label: 'Quantity Per Package',

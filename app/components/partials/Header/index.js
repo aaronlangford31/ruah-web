@@ -4,8 +4,6 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import Logo from './logo.png';
 
-// import colors from '../../containers/App/colors';
-
 const Header = ({ userType }) => (
   <nav>
     <Toolbar>
@@ -17,12 +15,6 @@ const Header = ({ userType }) => (
         </div>
       </ToolbarGroup>
       <ToolbarGroup>
-        {userType === 'Supplier' && <Link to={'/orders'} style={{ marginRight: '12px' }}>
-          <RaisedButton label="Orders" secondary />
-        </Link>}
-        {userType === 'Supplier' && <Link to={'/catalog'} style={{ marginRight: '12px' }}>
-          <RaisedButton label="Catalog" secondary />
-        </Link>}
         {!userType && <Link to={'/sign-up'} style={{ marginRight: '12px' }}>
           <RaisedButton label="Sign Up" secondary />
         </Link>}

@@ -14,6 +14,7 @@ import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import ProductForm from '../../components/forms/ProductForm';
 import ErrorBox from '../App/ErrorBox';
+import Menu from '../../components/partials/Menu';
 
 function ProductCreatePage({ loading, createProduct, invalidSku, removeSku, error, removeError }) {
   return (
@@ -26,10 +27,17 @@ function ProductCreatePage({ loading, createProduct, invalidSku, removeSku, erro
       />
       <H2>Create Product</H2>
       <Body>
-        <ProductForm
-          createProduct={createProduct}
-          loading={loading}
-        />
+        <div style={{ display: 'flex' }}>
+          <div style={{ flex: 3, marginRight: 24 }}>
+            <Menu />
+          </div>
+          <div style={{ flex: 9 }}>
+            <ProductForm
+              createProduct={createProduct}
+              loading={loading}
+            />
+          </div>
+        </div>
         <ErrorBox error="Invalid SKU" show={!!invalidSku} close={removeSku} />
         <ErrorBox error={error} show={!!error} close={removeError} />
       </Body>

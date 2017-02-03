@@ -14,7 +14,9 @@ import { getProducts } from './actions';
 import { selectProducts } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import AddIcon from 'material-ui/svg-icons/content/add';
+import Menu from '../../components/partials/Menu';
 import {
   Table,
   TableHeader,
@@ -68,33 +70,38 @@ class CatalogPage extends Component {
         />
         <H2>Catalog</H2>
         <Body>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
-            <Link to={'product/create'}>
-              <RaisedButton>
-                Create
-              </RaisedButton>
-            </Link>
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: 3, marginRight: 24 }}>
+              <Menu />
+            </div>
+            <div style={{ flex: 9 }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
+                <Link to={'product/create'}>
+                  <FlatButton label="Create" icon={<AddIcon />} labelPosition="before" />
+                </Link>
+              </div>
+              <Table selectable={false}>
+                <TableHeader
+                  displaySelectAll={false}
+                  adjustForCheckbox={false}
+                  enableSelectAll={false}
+                >
+                  <TableRow>
+                    <TableHeaderColumn>Product Name</TableHeaderColumn>
+                    <TableHeaderColumn>Image</TableHeaderColumn>
+                    <TableHeaderColumn>SKU</TableHeaderColumn>
+                    <TableHeaderColumn>Inventory Available</TableHeaderColumn>
+                    <TableHeaderColumn>Retail Price</TableHeaderColumn>
+                    <TableHeaderColumn>Shipping Price</TableHeaderColumn>
+                    <TableHeaderColumn> </TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false}>
+                  {this.renderProducts()}
+                </TableBody>
+              </Table>
+            </div>
           </div>
-          <Table selectable={false}>
-            <TableHeader
-              displaySelectAll={false}
-              adjustForCheckbox={false}
-              enableSelectAll={false}
-            >
-              <TableRow>
-                <TableHeaderColumn>Product Name</TableHeaderColumn>
-                <TableHeaderColumn>Image</TableHeaderColumn>
-                <TableHeaderColumn>SKU</TableHeaderColumn>
-                <TableHeaderColumn>Inventory Available</TableHeaderColumn>
-                <TableHeaderColumn>Retail Price</TableHeaderColumn>
-                <TableHeaderColumn>Shipping Price</TableHeaderColumn>
-                <TableHeaderColumn> </TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody displayRowCheckbox={false}>
-              {this.renderProducts()}
-            </TableBody>
-          </Table>
         </Body>
       </article>
     );

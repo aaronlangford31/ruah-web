@@ -4,7 +4,7 @@ import TextField from './TextField';
 import { Field } from 'redux-form/immutable';
 
 const TextFields = ({ fields, style }) => (
-  <div>
+  <div style={{ display: 'flex', flexWrap: 'wrap' }}>
     {_.map(fields, (field, i) => (
       <Field
         key={i}
@@ -12,7 +12,10 @@ const TextFields = ({ fields, style }) => (
         label={field.label}
         name={field.name}
         component={TextField}
-        style={style}
+        style={Object.assign({
+          flexBasis: 'calc(100% / 3 - 24px)',
+          margin: '0 12px',
+        }, style)}
       />
     ))}
   </div>
