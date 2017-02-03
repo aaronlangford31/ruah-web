@@ -19,6 +19,10 @@ import {
   LOGIN_SUBMIT,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
+  CHECK_LOGIN,
+  LOGOUT_SUBMIT,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR,
   REMOVE_ERROR,
 } from './constants';
 
@@ -43,8 +47,33 @@ export function loginError(error) {
   };
 }
 
+export function checkLogin() {
+  return {
+    type: CHECK_LOGIN,
+  };
+}
+
 export function removeError() {
   return {
     type: REMOVE_ERROR,
+  };
+}
+
+export function submitLogout() {
+  return {
+    type: LOGOUT_SUBMIT,
+  };
+}
+
+export function logoutSuccess() {
+  return {
+    type: LOGOUT_SUCCESS,
+  };
+}
+
+export function logoutError(error) {
+  return {
+    type: LOGOUT_ERROR,
+    error,
   };
 }

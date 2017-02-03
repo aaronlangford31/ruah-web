@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
-import DescriptionIcon from 'material-ui/svg-icons/action/description';
+import AssignmentIcon from 'material-ui/svg-icons/action/assignment';
 import ShoppingCartIcon from 'material-ui/svg-icons/action/shopping-cart';
 import Divider from 'material-ui/Divider';
 const catalogPath = '/catalog';
@@ -26,7 +26,7 @@ const Menu = (props, { router, muiTheme: { palette: { accent1Color } } }) => {
         <Link to={ordersPath} style={{ textDecoration: 'none' }}>
           <ListItem
             primaryText="Orders"
-            leftIcon={<DescriptionIcon color={location.pathname === ordersPath ? accent1Color : ''} />}
+            leftIcon={<AssignmentIcon color={location.pathname === ordersPath ? accent1Color : ''} />}
           />
         </Link>
       </List>

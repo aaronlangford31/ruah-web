@@ -11,7 +11,7 @@ const LoginForm = ({ handleSubmit, login, loading }) => (
     <Field name="email" type="email" component={TextField} label="Email" /><br />
     <Field name="password" type="password" component={TextField} label="Password" /><br />
     <Field name="remember" type="checkbox" component={CheckboxField} label="Remember Me" /><br />
-    <div style={{ marginTop: 12 }}>
+    <div style={{ marginTop: 12 }} className="button">
       {!loading ? <RaisedButton type="submit">Submit</RaisedButton> : <Spinner />}
     </div>
   </BasicForm>

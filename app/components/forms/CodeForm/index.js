@@ -7,8 +7,9 @@ import { TextField } from '../Fields';
 
 const CodeForm = ({ handleSubmit, checkCode, loading }) => (
   <BasicForm onSubmit={handleSubmit(checkCode)}>
+    <p>Please enter your code to sign up.</p>
     <Field name="code" type="text" component={TextField} label="Code" /><br />
-    <div>
+    <div className="button">
       {!loading ? <RaisedButton type="submit">Next</RaisedButton> : <Spinner />}
     </div>
   </BasicForm>

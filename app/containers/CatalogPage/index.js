@@ -41,19 +41,22 @@ class CatalogPage extends Component {
         <TableRowColumn><Link to={`/product/${product.Id}`}>{product.Name}</Link></TableRowColumn>
         <TableRowColumn>
           <div
-            style={{
+            style={product.MainImageUri ? {
               backgroundImage: `url(${product.MainImageUri})`,
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat',
               height: 50,
               width: 50,
+            } : {
+              background: 'repeating-linear-gradient(45deg,transparent,transparent 10px,#ccc 10px,#ccc 20px)',
+              height: '100%',
             }}
           />
         </TableRowColumn>
         <TableRowColumn>{product.SKU}</TableRowColumn>
-        <TableRowColumn>TBD</TableRowColumn>
-        <TableRowColumn>{product.Price}</TableRowColumn>
-        <TableRowColumn>{product.ShippingFee}</TableRowColumn>
+        <TableRowColumn>{product.Inventory}</TableRowColumn>
+        <TableRowColumn>{product.Price || '--'}</TableRowColumn>
+        <TableRowColumn>{product.ShippingFee || 'FREE'}</TableRowColumn>
         <TableRowColumn><Link to={`/product/${product.Id}`}>Edit This Product</Link></TableRowColumn>
       </TableRow>
     ));

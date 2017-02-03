@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { Link } from 'react-router';
 import _ from 'underscore';
+import moment from 'moment';
 import { getOrders } from './actions';
 import { selectOrders } from './selectors';
 import Body from '../../components/styled/Body';
@@ -22,10 +24,16 @@ class OrdersPage extends Component {
     const { orders } = this.props;
     return _.map(orders, (order, i) => (
       <TableRow key={i}>
-        <TableRowColumn>{order.OrderCreatedDate}</TableRowColumn>
-        <TableRowColumn>{order.OrderDetails}</TableRowColumn>
-        <TableRowColumn>{order.OrderPhaseLog[0].Phase}</TableRowColumn>
-        <TableRowColumn>Action!</TableRowColumn>
+        <TableRowColumn>{moment(order.OrderCreatedDate).fromNow()}</TableRowColumn>
+        <TableRowColumn>
+          {order.OrderPhaseLog[0].Details || '--'}
+        </TableRowColumn>
+        <TableRowColumn>{order.OrderPhaseLog[0].Phase || 'New'}</TableRowColumn>
+        <TableRowColumn>
+          <Link to={`/order/${order.OrderId}`}>
+            View
+          </Link>
+        </TableRowColumn>
       </TableRow>
     ));
   };
@@ -46,7 +54,7 @@ class OrdersPage extends Component {
               <Menu />
             </div>
             <div style={{ flex: 9 }}>
-              <Table>
+              <Table selectable={false}>
                 <TableHeader
                   displaySelectAll={false}
                   adjustForCheckbox={false}

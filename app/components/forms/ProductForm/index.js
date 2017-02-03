@@ -12,7 +12,7 @@ import validate from './validate';
 const inputStyle = { margin: '0 10px' };
 
 const ProductForm = ({ handleSubmit, createProduct, loading }) => (
-  <BasicForm onSubmit={handleSubmit(createProduct)}>
+  <BasicForm onSubmit={handleSubmit(createProduct)} style={{ padding: 0 }}>
     <Tabs>
       <Tab label={'Basic Info'}>
         {<TextFields fields={basicInfoFields} />}
@@ -33,7 +33,7 @@ const ProductForm = ({ handleSubmit, createProduct, loading }) => (
         {<TextFields fields={categoryInfoFields} style={inputStyle} />}
       </Tab>
     </Tabs>
-    <div style={{ marginTop: 24 }}>
+    <div style={{ marginTop: 24 }} className="button">
       {!loading ? <RaisedButton type="submit">Create</RaisedButton> : <Spinner />}
     </div>
   </BasicForm>

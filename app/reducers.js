@@ -8,10 +8,10 @@ import { combineReducers } from 'redux-immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { reducer as form } from 'redux-form/immutable';
 import signUpPageReducer from 'containers/SignUpPage/reducers';
-import loginPageReducer from 'containers/LoginPage/reducers';
 import catalogPageReducer from 'containers/CatalogPage/reducers';
 import productCreatePageReducer from 'containers/ProductCreatePage/reducers';
 import ordersPageReducer from 'containers/OrdersPage/reducers';
+import appReducer from 'containers/App/reducers';
 
 /*
  * routeReducer
@@ -48,7 +48,7 @@ export default function createReducer(asyncReducers) {
   return combineReducers({
     form,
     route: routeReducer,
-    loginPage: loginPageReducer,
+    app: appReducer,
     signUpPage: signUpPageReducer,
     catalogPage: catalogPageReducer,
     productCreatePage: productCreatePageReducer,

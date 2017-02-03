@@ -10,7 +10,7 @@ import {
 
 import request from 'utils/request';
 import { selectProductFields } from './selectors';
-import { selectSupplierId } from '../LoginPage/selectors';
+import { selectSupplierId } from '../App/selectors';
 
 export function* createProductSubmit() {
   const signUpFields = yield select(selectProductFields());
