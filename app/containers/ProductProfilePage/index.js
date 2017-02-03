@@ -19,7 +19,7 @@ import ProductIcon from 'material-ui/svg-icons/action/work';
 import DescriptionIcon from 'material-ui/svg-icons/action/description';
 
 class ProductProfilePage extends Component {
-
+  /* eslint-disable react/no-danger */
   renderProduct() {
     const { router, products } = this.props;
     const product = _.chain(products).filter({ Id: router.params.productId }).first().value() || {};
@@ -32,7 +32,9 @@ class ProductProfilePage extends Component {
         <p>Manufacturer Name: {product.ManufacturerName}</p>
         <Divider />
         <h3><DescriptionIcon /> Description</h3>
-        <p>Product Description: {product.Description}</p>
+        <p>Product Description:
+          <div dangerouslySetInnerHTML={{ __html: product.Description }} />
+        </p>
         <p>
           Product Features:
           <ul>
