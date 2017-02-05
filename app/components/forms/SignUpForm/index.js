@@ -8,13 +8,29 @@ import { TextField } from '../Fields';
 
 const SignUpForm = ({ handleSubmit, signUp, loading }) => (
   <BasicForm onSubmit={handleSubmit(signUp)}>
-    <Field name="email" type="text" component={TextField} label="Email" /><br />
-    <Field name="password" type="password" component={TextField} label="Password" /><br />
+    <Field
+      name="email"
+      type="text"
+      component={TextField}
+      label="Email"
+      floatingLabelStyle={{ color: 'black' }}
+      underlineStyle={{ borderColor: 'black' }}
+    /><br />
+    <Field
+      name="password"
+      type="password"
+      component={TextField}
+      label="Password"
+      floatingLabelStyle={{ color: 'black' }}
+      underlineStyle={{ borderColor: 'black' }}
+    /><br />
     <Field
       name="password_confirmation"
       type="password"
       component={TextField}
       label="Confirm Password"
+      floatingLabelStyle={{ color: 'black' }}
+      underlineStyle={{ borderColor: 'black' }}
     /><br />
     <div>
       {!loading ? <RaisedButton type="submit">Submit</RaisedButton> : <Spinner />}
