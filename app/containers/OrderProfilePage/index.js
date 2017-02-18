@@ -11,6 +11,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectOrders } from './selectors';
+import { updateOrderToProcessing as actionUpdateOrderToProcessing } from '../OrdersPage/actions';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import Menu from '../../components/partials/Menu';
@@ -33,6 +34,11 @@ class OrderProfilePage extends Component {
     finished: false,
     stepIndex: 1,
   };
+
+  getOrder() {
+    const { orders, router } = this.props;
+    return _.chain(orders).filter({ OrderId: router.params.orderId }).first().value() || {};
+  }
 
   getLabel(stepIndex) {
     switch (stepIndex) {
@@ -68,6 +74,7 @@ class OrderProfilePage extends Component {
   };
 
   renderOrder(order) {
+    const { updateToProcessing } = this.props;
     const { finished, stepIndex } = this.state;
     return (
       <div style={{ display: 'flex' }}>
@@ -98,7 +105,7 @@ class OrderProfilePage extends Component {
                 <RaisedButton
                   label={this.getLabel(stepIndex)}
                   primary
-                  onTouchTap={this.handleNext}
+                  onTouchTap={() => updateToProcessing(order.OrderId)}
                   disabled={finished}
                 />
               </div>
@@ -170,8 +177,7 @@ class OrderProfilePage extends Component {
   }
 
   render() {
-    const { orders, router } = this.props;
-    const order = _.chain(orders).filter({ OrderId: router.params.orderId }).first().value() || {};
+    const order = this.getOrder();
     return (
       <article>
         <Helmet
@@ -190,14 +196,19 @@ class OrderProfilePage extends Component {
 OrderProfilePage.propTypes = {
   orders: PropTypes.array,
   router: PropTypes.object,
+  updateToProcessing: PropTypes.func,
 };
 
 OrderProfilePage.contextTypes = {
   router: PropTypes.object,
 };
 
-export function mapDispatchToProps() {
-  return {};
+export function mapDispatchToProps(dispatch) {
+  return {
+    updateToProcessing: (orderId) => {
+      dispatch(actionUpdateOrderToProcessing(orderId));
+    },
+  };
 }
 
 const mapStateToProps = createStructuredSelector({

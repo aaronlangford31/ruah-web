@@ -33,8 +33,8 @@ export function* getOrders() {
   }
 }
 
-export function* updateOrderToProcessing() {
-  const requestURL = 'http://api.teamruah.com/v1/order/updateToProcessing?orderId=<string>';
+export function* updateOrderToProcessing({ orderId }) {
+  const requestURL = `http://api.teamruah.com/v1/order/updateToProcessing?orderId=${orderId}`;
 
   try {
     // Call our request helper (see 'utils/request')
