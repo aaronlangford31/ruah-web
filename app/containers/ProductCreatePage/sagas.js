@@ -10,7 +10,6 @@ import {
 
 import request from 'utils/request';
 import { selectProductFields } from './selectors';
-import { selectSupplierId } from '../App/selectors';
 
 export function* createProductSubmit() {
   const signUpFields = yield select(selectProductFields());
@@ -23,15 +22,14 @@ export function* createProductSubmit() {
   }
 
   const sku = body.SKU;
-  const supplierId = yield select(selectSupplierId());
 
-  const skuCheckURL = `http://api.teamruah.com/v1/product/SkuExists?sku=${sku}&supplierId=${supplierId}`;
+  const skuCheckURL = `http://api.teamruah.com/v1/product/SkuExists?sku=${sku}`;
 
   const validSku = yield call(request, skuCheckURL, {
     credentials: 'include',
   });
 
-  if (validSku) {
+  if (!validSku) {
     const userSignUpURL = 'http://api.teamruah.com/v1/product/batchCreate';
 
     try {
