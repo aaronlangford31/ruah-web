@@ -51,7 +51,6 @@ export default reduxForm({
     Parentage: 0,
     Keywords: [],
     SKU: '',
-    SupplierId: '',
     ManufacturerName: '',
     Name: '',
     Brand: '',
