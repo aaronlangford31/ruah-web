@@ -33,16 +33,16 @@ class ProductProfilePage extends Component {
         <Divider />
         <h3><DescriptionIcon /> Description</h3>
         <p>Product Description:
-          <div dangerouslySetInnerHTML={{ __html: product.Description }} />
+          <span dangerouslySetInnerHTML={{ __html: product.Description }} />
         </p>
-        <p>
+        <div>
           Product Features:
           <ul>
-            {_.map(product.Bullets, (bullet) => (
-              <li>{bullet}</li>
+            {_.map(product.Bullets, (bullet, i) => (
+              <li key={i}>{bullet}</li>
             ))}
           </ul>
-        </p>
+        </div>
         <Divider />
         <h3><LabelIcon /> Category Info</h3>
         <p>Product Type: {product.Type}</p>

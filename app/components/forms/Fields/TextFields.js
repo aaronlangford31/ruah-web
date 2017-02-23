@@ -2,9 +2,10 @@ import React, { PropTypes } from 'react';
 import _ from 'underscore';
 import TextField from './TextField';
 import { Field } from 'redux-form/immutable';
+import Grid from '../../styled/Grid';
 
 const TextFields = ({ fields, style }) => (
-  <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+  <Grid size={3} childStyle={style}>
     {_.map(fields, (field, i) => (
       <Field
         key={i}
@@ -12,13 +13,9 @@ const TextFields = ({ fields, style }) => (
         label={field.label}
         name={field.name}
         component={TextField}
-        style={Object.assign({
-          flexBasis: 'calc(100% / 3 - 24px)',
-          margin: '0 12px',
-        }, style)}
       />
     ))}
-  </div>
+  </Grid>
 );
 
 TextFields.propTypes = {

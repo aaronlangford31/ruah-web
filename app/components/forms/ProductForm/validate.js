@@ -37,6 +37,12 @@ const validate = (values) => {
     errors.Description = 'Required';
   }
 
+  if (!values.get('Inventory')) {
+    errors.Inventory = 'Required';
+  } else if (isNaN(values.get('Inventory')) || values.get('Inventory') < 0) {
+    errors.Inventory = 'Must be a positive number.';
+  }
+
   return errors;
 };
 

@@ -37,7 +37,7 @@ export const basicInfoFields = [
   },
   {
     name: 'Inventory',
-    label: 'Inventory on Hand',
+    label: 'Inventory on Hand*',
   },
 ];
 

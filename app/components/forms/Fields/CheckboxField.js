@@ -4,7 +4,7 @@ import Checkbox from 'material-ui/Checkbox';
 const CheckboxField = ({ input, label }) => (
   <Checkbox
     label={label}
-    style={{ marginTop: '24px' }}
+    style={{ marginTop: 24 }}
     checked={!!input.value}
     onCheck={input.onChange}
   />

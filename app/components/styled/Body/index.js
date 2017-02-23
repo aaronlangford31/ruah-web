@@ -28,7 +28,7 @@ const Paper = ({ children, useBackground }) =>
   </MaterialPaper>;
 
 Paper.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.node,
   useBackground: PropTypes.bool,
 };
 
