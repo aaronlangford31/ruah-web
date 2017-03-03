@@ -15,7 +15,9 @@ import { selectProducts } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import CatalogTable from '../../components/styled/CatalogTable';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import FileFileUpload from 'material-ui/svg-icons/file/file-upload';
 
 class CatalogPage extends Component {
 
@@ -23,6 +25,12 @@ class CatalogPage extends Component {
     if (this.props.products.length === 0) {
       this.props.getProducts();
     }
+  }
+
+  onCreateMenuOpen = () => {
+    this.setState({
+      openCreateMenu: true,
+    });
   }
 
   renderProducts = () => {
@@ -54,10 +62,21 @@ class CatalogPage extends Component {
         <H2>Catalog</H2>
         <Body>
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
-            <Link to={'product/create'}>
-              <RaisedButton>
-                Create
-              </RaisedButton>
+            <Link to="/product/create/">
+              <FlatButton
+                label="Create"
+                labelPosition="before"
+                icon={<ContentAdd />}
+                onTouchTap={this.onCreateMenuOpen}
+              />
+            </Link>
+            <Link to="/product/import/">
+              <FlatButton
+                label="Import"
+                labelPosition="before"
+                icon={<FileFileUpload />}
+                onTouchTap={this.onCreateMenuOpen}
+              />
             </Link>
           </div>
           <CatalogTable>
