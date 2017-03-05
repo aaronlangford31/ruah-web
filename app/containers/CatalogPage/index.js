@@ -35,12 +35,6 @@ class CatalogPage extends Component {
     }
   }
 
-  onCreateMenuOpen = () => {
-    this.setState({
-      openCreateMenu: true,
-    });
-  }
-
   renderProducts = () => {
     const { products } = this.props;
     return _.map(products, (product, i) => (
