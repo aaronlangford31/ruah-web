@@ -12,5 +12,7 @@
 export const SUBMIT_CREATE_PRODUCT = 'ruah/ProductCreatePage/SUBMIT_CREATE_PRODUCT';
 export const SUBMIT_CREATE_PRODUCT_SUCCESS = 'ruah/ProductCreatePage/SUBMIT_CREATE_PRODUCT_SUCCESS';
 export const SUBMIT_CREATE_PRODUCT_ERROR = 'ruah/ProductCreatePage/SUBMIT_CREATE_PRODUCT_ERROR';
-export const INVALID_SKU_ERROR = 'ruah/ProductCreatePage/INVALID_SKU_ERROR';
-export const REMOVE_ERROR = 'ruah/ProductCreatePage/REMOVE_ERROR';
+export const INVALID_SKU = 'ruah/ProductCreatePage/INVALID_SKU';
+export const INVALID_SKU_REMOVE = 'ruah/ProductCreatePage/INVALID_SKU_REMOVE';
+export const ERROR = 'ruah/ProductCreatePage/ERROR';
+export const ERROR_REMOVE = 'ruah/ProductCreatePage/ERROR_REMOVE';

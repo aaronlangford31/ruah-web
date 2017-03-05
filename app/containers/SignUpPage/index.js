@@ -25,7 +25,7 @@ export const SignUpPage = ({ checkCode, signUp, validSignUpCode, error, close, l
       ]}
     />
     <H2>Sign Up</H2>
-    <Body>
+    <Body useBackground>
       {!validSignUpCode ? <CodeForm
         checkCode={checkCode}
         loading={loading}

@@ -8,13 +8,15 @@ import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { submitCreateProduct } from './actions';
-import { selectProducts } from './selectors';
+import { submitCreateProduct, removeInvalidSku, removeError as removeErrorAction } from './actions';
+import { selectInvalidSku, selectError } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import ProductForm from '../../components/forms/ProductForm';
+import ErrorBox from '../App/ErrorBox';
+import Menu from '../../components/partials/Menu';
 
-function ProductCreatePage({ loading, createProduct }) {
+function ProductCreatePage({ loading, createProduct, invalidSku, removeSku, error, removeError }) {
   return (
     <article>
       <Helmet
@@ -25,10 +27,19 @@ function ProductCreatePage({ loading, createProduct }) {
       />
       <H2>Create Product</H2>
       <Body>
-        <ProductForm
-          createProduct={createProduct}
-          loading={loading}
-        />
+        <div style={{ display: 'flex' }}>
+          <div style={{ flex: 3, marginRight: 24 }}>
+            <Menu />
+          </div>
+          <div style={{ flex: 9 }}>
+            <ProductForm
+              createProduct={createProduct}
+              loading={loading}
+            />
+          </div>
+        </div>
+        <ErrorBox error="Invalid SKU" show={!!invalidSku} close={removeSku} />
+        <ErrorBox error={error} show={!!error} close={removeError} />
       </Body>
     </article>
   );
@@ -37,6 +48,10 @@ function ProductCreatePage({ loading, createProduct }) {
 ProductCreatePage.propTypes = {
   loading: PropTypes.bool,
   createProduct: PropTypes.func,
+  removeSku: PropTypes.func,
+  removeError: PropTypes.func,
+  invalidSku: PropTypes.bool,
+  error: PropTypes.any,
 };
 
 ProductCreatePage.contextTypes = {
@@ -48,11 +63,18 @@ export function mapDispatchToProps(dispatch) {
     createProduct: () => {
       dispatch(submitCreateProduct());
     },
+    removeSku: () => {
+      dispatch(removeInvalidSku());
+    },
+    removeError: () => {
+      dispatch(removeErrorAction());
+    },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  products: selectProducts(),
+  invalidSku: selectInvalidSku(),
+  error: selectError(),
 });
 
 // Wrap the component to inject dispatch and state into it

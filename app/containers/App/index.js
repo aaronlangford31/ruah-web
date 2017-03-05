@@ -6,11 +6,12 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectUserType } from './selectors';
+import { checkLogin as actionCheckLogin, submitLogout as actionSubmitLogout } from './actions';
 import colors from './colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -52,32 +53,57 @@ const muiTheme = getMuiTheme({
   },
 });
 
-function App({ children, userType }) {
-  return (
-    <MuiThemeProvider muiTheme={muiTheme}>
-      <div style={styles.app}>
-        <Helmet
-          titleTemplate="%s - Ruah Logistics"
-          defaultTitle="Team Ruah"
-          meta={[
-            { name: 'description', content: 'Team Ruah Product Management' },
-          ]}
-        />
-        <Header userType={userType} />
-        {React.Children.toArray(children)}
-        <Footer />
-      </div>
-    </MuiThemeProvider>
-  );
+class App extends Component {
+
+  static propTypes = {
+    children: PropTypes.node,
+    userType: PropTypes.string,
+    checkLogin: PropTypes.func,
+    submitLogout: PropTypes.func,
+  };
+
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
+  componentWillMount() {
+    const { checkLogin } = this.props;
+    checkLogin();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.userType && !this.props.userType) {
+      this.context.router.push({ pathname: '/' });
+    }
+  }
+
+  render() {
+    const { children, userType, submitLogout } = this.props;
+
+    return (
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <div style={styles.app}>
+          <Helmet
+            titleTemplate="%s - Ruah Logistics"
+            defaultTitle="Team Ruah"
+            meta={[
+              { name: 'description', content: 'Team Ruah Product Management' },
+            ]}
+          />
+          <Header userType={userType} submitLogout={submitLogout} />
+          {React.Children.toArray(children)}
+          <Footer />
+        </div>
+      </MuiThemeProvider>
+    );
+  }
 }
 
-App.propTypes = {
-  children: PropTypes.node,
-  userType: PropTypes.string,
-};
-
-export function mapDispatchToProps() {
-  return {};
+export function mapDispatchToProps(dispatch) {
+  return {
+    checkLogin: () => dispatch(actionCheckLogin()),
+    submitLogout: () => dispatch(actionSubmitLogout()),
+  };
 }
 
 const mapStateToProps = createStructuredSelector({

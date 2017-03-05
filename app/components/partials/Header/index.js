@@ -4,9 +4,7 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import Logo from './logo.png';
 
-// import colors from '../../containers/App/colors';
-
-const Header = ({ userType }) => (
+const Header = ({ userType, submitLogout }) => (
   <nav>
     <Toolbar>
       <ToolbarGroup>
@@ -17,20 +15,14 @@ const Header = ({ userType }) => (
         </div>
       </ToolbarGroup>
       <ToolbarGroup>
-        {userType === 'Supplier' && <Link to={'/'} style={{ marginRight: '12px' }}>
-          <RaisedButton label="Orders" secondary />
-        </Link>}
-        {userType === 'Supplier' && <Link to={'/catalog'} style={{ marginRight: '12px' }}>
-          <RaisedButton label="Catalog" secondary />
-        </Link>}
         {!userType && <Link to={'/sign-up'} style={{ marginRight: '12px' }}>
           <RaisedButton label="Sign Up" secondary />
         </Link>}
-        {!userType && <Link to={'/login'}>
+        {!userType && <Link to={'/'}>
           <RaisedButton label="Login" primary />
         </Link>}
-        {userType && <Link to={'/'}>
-          <RaisedButton label="Logout" secondary />
+        {userType && <Link to={'#'}>
+          <RaisedButton label="Logout" secondary onClick={submitLogout} />
         </Link>}
       </ToolbarGroup>
     </Toolbar>
@@ -39,6 +31,7 @@ const Header = ({ userType }) => (
 
 Header.propTypes = {
   userType: PropTypes.string,
+  submitLogout: PropTypes.func,
 };
 
 export default Header;

@@ -1,7 +1,3 @@
-/**
- * The global state selectors
- */
-
 import { createSelector } from 'reselect';
 
 const selectForms = () => (state) => state.get('form');
@@ -11,20 +7,26 @@ const selectProductFields = () => createSelector(
   (state) => state.getIn(['productForm', 'values']),
 );
 
-const selectCatalogPage = () => (state) => state.get('catalogPage');
-
-const selectProducts = () => createSelector(
-  selectCatalogPage(),
-  (state) => state.get('products').toJS(),
-);
+const selectProductCreatePage = () => (state) => state.get('productCreatePage');
 
 const selectLoading = () => createSelector(
-  selectCatalogPage(),
+  selectProductCreatePage(),
   (state) => state.get('loading'),
+);
+
+const selectInvalidSku = () => createSelector(
+  selectProductCreatePage(),
+  (state) => state.get('invalidSku'),
+);
+
+const selectError = () => createSelector(
+  selectProductCreatePage(),
+  (state) => state.get('error'),
 );
 
 export {
   selectProductFields,
-  selectProducts,
+  selectInvalidSku,
   selectLoading,
+  selectError,
 };
