@@ -1,62 +1,40 @@
-import { takeLatest } from 'redux-saga';
-import { call, put, select } from 'redux-saga/effects';
-import { SUBMIT_CREATE_PRODUCT } from './constants';
-import _ from 'underscore';
-import {
-  submitCreateProductSuccess,
-  submitCreateProductError,
-  invalidSkuDetected,
-} from './actions';
+/**
+ * Gets the repositories of the user from Github
+ */
 
 import request from 'utils/request';
-import { selectProductFields } from './selectors';
+import { takeLatest } from 'redux-saga';
+import { call, put, select } from 'redux-saga/effects';
+import { UPLOAD_PRODUCT_TEMPLATE_FILE } from './constants';
+import { submitProductImport, submitProductImportSuccess, submitProductImportError } from './actions';
+import { selectCsvData } from './selectors';
 
-export function* createProductSubmit() {
-  const signUpFields = yield select(selectProductFields());
+export function* submitImport() {
+  const csvData = (yield select(selectCsvData())).toJS();
+  const requestURL = 'http://api.teamruah.com/v1/product/bulkUploadCsv';
 
-  let body = [];
-
-  if (signUpFields) {
-    body = signUpFields.toJS();
-    body.Bullets = _.pluck(body.Bullets, 'value');
-  }
-
-  const sku = body.SKU;
-
-  body.Created = (new Date()).toISOString();
-  body.Updated = (new Date()).toISOString();
-
-  const skuCheckURL = `http://api.teamruah.com/v1/product/SkuExists?sku=${sku}`;
-
-  const validSku = yield call(request, skuCheckURL, {
-    credentials: 'include',
-  });
-
-  if (!validSku) {
-    const userSignUpURL = 'http://api.teamruah.com/v1/product/batchCreate';
-
-    try {
-      yield call(request, userSignUpURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify([body]),
-        credentials: 'include',
-      });
-      yield put(submitCreateProductSuccess());
-    } catch (err) {
-      yield put(submitCreateProductError(`Error: ${err.message}`));
-    }
-  } else {
-    yield put(invalidSkuDetected());
+  try {
+    // Call our request helper (see 'utils/request')
+    yield put(submitProductImport());
+    yield call(request, requestURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/csv',
+      },
+      body: csvData,
+      credentials: 'include',
+    });
+    yield put(submitProductImportSuccess());
+  } catch (err) {
+    yield put(submitProductImportError(err));
   }
 }
 
-export function* createProductSubmitData() {
-  yield* takeLatest(SUBMIT_CREATE_PRODUCT, createProductSubmit);
+export function* getProductImportData() {
+  yield* takeLatest(UPLOAD_PRODUCT_TEMPLATE_FILE, submitImport);
 }
 
+// Bootstrap sagas
 export default [
-  createProductSubmitData,
+  getProductImportData,
 ];

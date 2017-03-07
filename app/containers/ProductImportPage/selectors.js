@@ -1,32 +1,18 @@
 import { createSelector } from 'reselect';
 
-const selectForms = () => (state) => state.get('form');
+const selectProductImportPage = () => (state) => state.get('productImportPage');
 
-const selectProductFields = () => createSelector(
-  selectForms(),
-  (state) => state.getIn(['productForm', 'values']),
+const selectDownloadedTemplateFile = () => createSelector(
+  selectProductImportPage(),
+  (state) => state.get('downloadedTemplateFile'),
 );
 
-const selectProductCreatePage = () => (state) => state.get('productCreatePage');
-
-const selectLoading = () => createSelector(
-  selectProductCreatePage(),
-  (state) => state.get('loading'),
-);
-
-const selectInvalidSku = () => createSelector(
-  selectProductCreatePage(),
-  (state) => state.get('invalidSku'),
-);
-
-const selectError = () => createSelector(
-  selectProductCreatePage(),
-  (state) => state.get('error'),
+const selectCsvData = () => createSelector(
+  selectProductImportPage(),
+  (state) => state.get('csvData'),
 );
 
 export {
-  selectProductFields,
-  selectInvalidSku,
-  selectLoading,
-  selectError,
+  selectDownloadedTemplateFile,
+  selectCsvData,
 };

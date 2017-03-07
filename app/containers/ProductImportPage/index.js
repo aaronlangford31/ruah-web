@@ -7,7 +7,9 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { submitProductImport, downloadImportTemplate } from './actions';
+import { selectDownloadedTemplateFile } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import Menu from '../../components/partials/Menu';
@@ -41,7 +43,7 @@ class ProductImportPage extends Component {
             </div>
             <div style={{ flex: 9 }}>
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
-                {!this.state.downloadedTemplateFile ? <FlatButton href={this.CSV_TEMPLATE_FILE} label="Get Template" icon={<FileDownloadIcon />} onClick={this.onTemplateFileDownload} labelPosition="before" /> : <FlatButton label="Upload File" icon={<FileUploadIcon />} labelPosition="before" />}
+                {!this.props.downloadedTemplateFile ? <FlatButton href={this.CSV_TEMPLATE_FILE} label="Get Template" icon={<FileDownloadIcon />} onClick={this.onTemplateFileDownload} labelPosition="before" /> : <FlatButton label="Upload File" icon={<FileUploadIcon />} labelPosition="before" />}
               </div>
               <H2>Bulk Upload</H2>
               <p>Uploading your products via CSV upload is the fastest and most efficient way to get your products onto the Ruah network. Once your products are uploaded, they will immediately be available for sale across our network of powersellers and online stores, giving you instant product exposure.</p>
@@ -74,6 +76,7 @@ class ProductImportPage extends Component {
 
 ProductImportPage.propTypes = {
   downloadImportTemplate: PropTypes.func.isRequired,
+  downloadedTemplateFile: PropTypes.bool,
 };
 
 ProductImportPage.contextTypes = {
@@ -91,8 +94,9 @@ export function mapDispatchToProps(dispatch) {
   };
 }
 
-const mapStateToProps = (_state) => ({
-  state: _state,
+// user selectors
+const mapStateToProps = createStructuredSelector({
+  downloadedTemplateFile: selectDownloadedTemplateFile(),
 });
 
 // Wrap the component to inject dispatch and state into it

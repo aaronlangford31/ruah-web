@@ -48,8 +48,9 @@ export function downloadImportTemplate() {
   };
 }
 
-export function uploadProductTemplateFile() {
+export function uploadProductTemplateFile(fileData) {
   return {
     type: UPLOAD_PRODUCT_TEMPLATE_FILE,
+    fileData,
   };
 }
