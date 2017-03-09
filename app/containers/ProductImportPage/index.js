@@ -8,7 +8,11 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { submitProductImport, downloadImportTemplate } from './actions';
+import {
+  submitProductImport,
+  downloadImportTemplate,
+  uploadProductTemplateFile,
+} from './actions';
 import { selectDownloadedTemplateFile } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
@@ -20,9 +24,6 @@ import FileUploadIcon from 'material-ui/svg-icons/file/file-upload';
 class ProductImportPage extends Component {
   state = {
     downloadedTemplateFile: false,
-  }
-  onTemplateFileDownload() {
-    this.props.downloadImportTemplate();
   }
   CSV_TEMPLATE_FILE = 'data:text/csv;charset=utf-8,SKU,ProductId,ProductIdType,ManufacturerName,ProductName,Brand,Description,Bullet_1_Title,Bullet_1_Content,Bullet_2_Title,Bullet_2_Content,Bullet_3_Title,Bullet_3_Content,Bullet_4_Title,Bullet_4_Content,Bullet_5_Title,Bullet_5_Content,Keywords,MainImageUri,AltImageUris,WholesalePrice,ShippingFee,Inventory,VariationGroupId,VariationTypes,Variations';
 
@@ -43,7 +44,29 @@ class ProductImportPage extends Component {
             </div>
             <div style={{ flex: 9 }}>
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
-                {!this.props.downloadedTemplateFile ? <FlatButton href={this.CSV_TEMPLATE_FILE} label="Get Template" icon={<FileDownloadIcon />} onClick={this.onTemplateFileDownload} labelPosition="before" /> : <FlatButton label="Upload File" icon={<FileUploadIcon />} labelPosition="before" />}
+                {!this.props.downloadedTemplateFile ?
+                  <FlatButton
+                    href={this.CSV_TEMPLATE_FILE}
+                    label="Get Template"
+                    icon={<FileDownloadIcon />}
+                    onClick={this.props.downloadImportTemplate}
+                    labelPosition="before"
+                  />
+                  : <FlatButton
+                    containerElement="label"
+                    label="Upload File"
+                    icon={<FileUploadIcon />}
+                    labelPosition="before"
+                    onClick={this.openFileDialog}
+                  >
+                    <input
+                      ref={(node) => { this.fileInput = node; }}
+                      type="file"
+                      style={{ display: 'none' }}
+                      onChange={(event) => { this.props.uploadTemplateFile(event.target.files[0]); }}
+                    />
+                  </FlatButton>
+                }
               </div>
               <H2>Bulk Upload</H2>
               <p>Uploading your products via CSV upload is the fastest and most efficient way to get your products onto the Ruah network. Once your products are uploaded, they will immediately be available for sale across our network of powersellers and online stores, giving you instant product exposure.</p>
@@ -77,6 +100,7 @@ class ProductImportPage extends Component {
 ProductImportPage.propTypes = {
   downloadImportTemplate: PropTypes.func.isRequired,
   downloadedTemplateFile: PropTypes.bool,
+  uploadTemplateFile: PropTypes.func.isRequired,
 };
 
 ProductImportPage.contextTypes = {
@@ -90,6 +114,9 @@ export function mapDispatchToProps(dispatch) {
     },
     downloadImportTemplate: () => {
       dispatch(downloadImportTemplate());
+    },
+    uploadTemplateFile: (fileData) => {
+      dispatch(uploadProductTemplateFile(fileData));
     },
   };
 }
