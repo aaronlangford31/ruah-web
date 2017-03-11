@@ -6,7 +6,7 @@ import Logo from './logo.png';
 
 const Header = ({ userType, submitLogout }) => (
   <nav>
-    <Toolbar style={{ backgroundColor: '#CAFCD8' }}>
+    <Toolbar style={{ backgroundColor: '#04BFBF' }}>
       <ToolbarGroup>
         <div style={{ height: '100%' }}>
           <Link to={'/'}>

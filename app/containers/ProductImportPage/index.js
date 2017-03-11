@@ -13,7 +13,9 @@ import {
   downloadImportTemplate,
   uploadProductTemplateFile,
 } from './actions';
-import { selectDownloadedTemplateFile } from './selectors';
+import {
+  selectDownloadedTemplateFile,
+} from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import Menu from '../../components/partials/Menu';
@@ -25,7 +27,7 @@ class ProductImportPage extends Component {
   state = {
     downloadedTemplateFile: false,
   }
-  CSV_TEMPLATE_FILE = 'data:text/csv;charset=utf-8,SKU,ProductId,ProductIdType,ManufacturerName,ProductName,Brand,Description,Bullet_1_Title,Bullet_1_Content,Bullet_2_Title,Bullet_2_Content,Bullet_3_Title,Bullet_3_Content,Bullet_4_Title,Bullet_4_Content,Bullet_5_Title,Bullet_5_Content,Keywords,MainImageUri,AltImageUris,WholesalePrice,ShippingFee,Inventory,VariationGroupId,VariationTypes,Variations';
+  CSV_TEMPLATE_FILE = 'data:text/csv;charset=utf-8,SKU,ProductId,ProductIdType,ManufacturerName,ProductName,Brand,Description,Bullet_1_Title,Bullet_1_Content,Bullet_2_Title,Bullet_2_Content,Bullet_3_Title,Bullet_3_Content,Bullet_4_Title,Bullet_4_Content,Bullet_5_Title,Bullet_5_Content,Keywords,MainImageUri,AltImageUris,WholesalePrice,ShippingFee,Inventory,VariationGroupId,VariationTypes,Variations\r\n';
 
   render() {
     return (
@@ -44,29 +46,31 @@ class ProductImportPage extends Component {
             </div>
             <div style={{ flex: 9 }}>
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
-                {!this.props.downloadedTemplateFile ?
-                  <FlatButton
-                    href={this.CSV_TEMPLATE_FILE}
-                    label="Get Template"
-                    icon={<FileDownloadIcon />}
-                    onClick={this.props.downloadImportTemplate}
-                    labelPosition="before"
+                <FlatButton
+                  href={this.CSV_TEMPLATE_FILE}
+                  label="Get Template"
+                  icon={<FileDownloadIcon />}
+                  onClick={this.props.downloadImportTemplate}
+                  labelPosition="before"
+                />
+                <FlatButton
+                  containerElement="label"
+                  label="Upload File"
+                  icon={<FileUploadIcon />}
+                  style={{ backgroundColor: '#A9CF54', color: 'white' }}
+                  labelPosition="before"
+                  onClick={this.openFileDialog}
+                >
+                  <input
+                    ref={(node) => { this.fileInput = node; }}
+                    type="file"
+                    accept=".csv"
+                    style={{ display: 'none' }}
+                    onChange={(event) => {
+                      this.props.uploadTemplateFile(event.target.files[0]);
+                    }}
                   />
-                  : <FlatButton
-                    containerElement="label"
-                    label="Upload File"
-                    icon={<FileUploadIcon />}
-                    labelPosition="before"
-                    onClick={this.openFileDialog}
-                  >
-                    <input
-                      ref={(node) => { this.fileInput = node; }}
-                      type="file"
-                      style={{ display: 'none' }}
-                      onChange={(event) => { this.props.uploadTemplateFile(event.target.files[0]); }}
-                    />
-                  </FlatButton>
-                }
+                </FlatButton>
               </div>
               <H2>Bulk Upload</H2>
               <p>Uploading your products via CSV upload is the fastest and most efficient way to get your products onto the Ruah network. Once your products are uploaded, they will immediately be available for sale across our network of powersellers and online stores, giving you instant product exposure.</p>
@@ -83,7 +87,7 @@ class ProductImportPage extends Component {
                   Fill in the spreadsheet with your product information, following the format in the table below.
                 </li>
                 <li>
-                  Save your work. Click the <FlatButton label="Upload File" disabled style={{ color: 'black!important' }} icon={<FileUploadIcon />} labelPosition="before" /> button above to upload your file (this appears after you have downloaded the CSV template file).
+                  Save your work. Click the <FlatButton label="Upload File" disabled style={{ backgroundColor: '#A9CF54', color: 'white' }} icon={<FileUploadIcon />} labelPosition="before" /> button above to upload your file.
                 </li>
                 <li>
                   Our system will check your spreadsheet for errors. If everything is fine, you will be given a message notifying you of the successful upload. At that point your products are in the Ruah Marketplace. If there are errors, you will get a list of errors found in your spreadsheet which you will need to fix in your file.
@@ -99,7 +103,6 @@ class ProductImportPage extends Component {
 
 ProductImportPage.propTypes = {
   downloadImportTemplate: PropTypes.func.isRequired,
-  downloadedTemplateFile: PropTypes.bool,
   uploadTemplateFile: PropTypes.func.isRequired,
 };
 
@@ -115,8 +118,8 @@ export function mapDispatchToProps(dispatch) {
     downloadImportTemplate: () => {
       dispatch(downloadImportTemplate());
     },
-    uploadTemplateFile: (fileData) => {
-      dispatch(uploadProductTemplateFile(fileData));
+    uploadTemplateFile: (csvData) => {
+      dispatch(uploadProductTemplateFile(csvData));
     },
   };
 }
