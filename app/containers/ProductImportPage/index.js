@@ -13,9 +13,6 @@ import {
   downloadImportTemplate,
   uploadProductTemplateFile,
 } from './actions';
-import {
-  selectDownloadedTemplateFile,
-} from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import Menu from '../../components/partials/Menu';
@@ -24,9 +21,6 @@ import FileDownloadIcon from 'material-ui/svg-icons/file/file-download';
 import FileUploadIcon from 'material-ui/svg-icons/file/file-upload';
 
 class ProductImportPage extends Component {
-  state = {
-    downloadedTemplateFile: false,
-  }
   CSV_TEMPLATE_FILE = 'data:text/csv;charset=utf-8,SKU,ProductId,ProductIdType,ManufacturerName,ProductName,Brand,Description,Bullet_1_Title,Bullet_1_Content,Bullet_2_Title,Bullet_2_Content,Bullet_3_Title,Bullet_3_Content,Bullet_4_Title,Bullet_4_Content,Bullet_5_Title,Bullet_5_Content,Keywords,MainImageUri,AltImageUris,WholesalePrice,ShippingFee,Inventory,VariationGroupId,VariationTypes,Variations\r\n';
 
   render() {
@@ -124,9 +118,7 @@ export function mapDispatchToProps(dispatch) {
 }
 
 // user selectors
-const mapStateToProps = createStructuredSelector({
-  downloadedTemplateFile: selectDownloadedTemplateFile(),
-});
+const mapStateToProps = createStructuredSelector({});
 
 // Wrap the component to inject dispatch and state into it
 export default connect(mapStateToProps, mapDispatchToProps)(ProductImportPage);

@@ -25,7 +25,7 @@ const initialState = fromJS({
   uploadToServerFailed: false,
   uploadedToServer: false,
   errors: [],
-  csvData: '',
+  csvFile: {},
 });
 
 function productImportPageReducer(state = initialState, action) {
@@ -36,7 +36,7 @@ function productImportPageReducer(state = initialState, action) {
     case UPLOAD_PRODUCT_TEMPLATE_FILE:
       return state
         .set('uploadedTemplateFile', true)
-        .set('csvData', action.csvData);
+        .set('csvFile', action.csvFile);
     case SUBMIT_PRODUCT_IMPORT:
       return state
         .set('uploadingToServer', true);

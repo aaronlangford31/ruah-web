@@ -36,7 +36,7 @@ export function* submitImport() {
     yield call(request, requestURL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'text/csv',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
       credentials: 'include',

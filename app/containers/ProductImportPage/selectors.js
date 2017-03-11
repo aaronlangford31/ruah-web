@@ -9,7 +9,7 @@ const selectDownloadedTemplateFile = () => createSelector(
 
 const selectCsvData = () => createSelector(
   selectProductImportPage(),
-  (state) => state.get('csvData'),
+  (state) => state.get('csvFile'),
 );
 
 export {
