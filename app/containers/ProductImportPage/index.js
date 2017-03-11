@@ -38,7 +38,6 @@ class ProductImportPage extends Component {
             { name: 'description', content: 'Product Import Page' },
           ]}
         />
-        <H2>Product Import</H2>
         <Body>
           <div style={{ display: 'flex' }}>
             <div style={{ flex: 3, marginRight: 24 }}>
