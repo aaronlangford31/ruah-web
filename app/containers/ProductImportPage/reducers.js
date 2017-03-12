@@ -12,27 +12,24 @@
 import {
   SUBMIT_PRODUCT_IMPORT,
   SUBMIT_PRODUCT_IMPORT_SUCCESS,
-  SUBMIT_PRODUCT_IMPORT_ERROR,
-  DOWNLOAD_IMPORT_TEMPLATE_FILE,
+  SUBMIT_PRODUCT_IMPORT_DATA_ERROR,
+  SUBMIT_PRODUCT_IMPORT_FILE_ERROR,
   UPLOAD_PRODUCT_TEMPLATE_FILE,
 } from './constants';
 import { fromJS } from 'immutable';
 
 const initialState = fromJS({
-  downloadedTemplateFile: false,
   uploadedTemplateFile: false,
   uploadingToServer: false,
   uploadToServerFailed: false,
   uploadedToServer: false,
-  errors: [],
+  fileError: '',
+  dataErrors: [],
   csvFile: {},
 });
 
 function productImportPageReducer(state = initialState, action) {
   switch (action.type) {
-    case DOWNLOAD_IMPORT_TEMPLATE_FILE:
-      return state
-        .set('downloadedTemplateFile', true);
     case UPLOAD_PRODUCT_TEMPLATE_FILE:
       return state
         .set('uploadedTemplateFile', true)
@@ -42,11 +39,18 @@ function productImportPageReducer(state = initialState, action) {
         .set('uploadingToServer', true);
     case SUBMIT_PRODUCT_IMPORT_SUCCESS:
       return state
-        .set('uploadingToServer', true);
-    case SUBMIT_PRODUCT_IMPORT_ERROR:
+        .set('uploadedToServer', true)
+        .set('uploadingToServer', false);
+    case SUBMIT_PRODUCT_IMPORT_DATA_ERROR:
       return state
         .set('uploadToServerFailed', true)
-        .set('errors', action.errors);
+        .set('dataErrors', action.errors)
+        .set('uploadingToServer', false);
+    case SUBMIT_PRODUCT_IMPORT_FILE_ERROR:
+      return state
+        .set('uploadToServerFailed', true)
+        .set('uploadingToServer', false)
+        .set('fileError', action.error);
     default:
       return state;
   }

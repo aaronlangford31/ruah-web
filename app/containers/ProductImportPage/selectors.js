@@ -2,9 +2,30 @@ import { createSelector } from 'reselect';
 
 const selectProductImportPage = () => (state) => state.get('productImportPage');
 
-const selectDownloadedTemplateFile = () => createSelector(
+
+const selectUploadingToServer = () => createSelector(
   selectProductImportPage(),
-  (state) => state.get('downloadedTemplateFile'),
+  (state) => state.get('uploadingToServer'),
+);
+
+const selectUploadedToServer = () => createSelector(
+  selectProductImportPage(),
+  (state) => state.get('uploadedToServer'),
+);
+
+const selectUploadToServerFailed = () => createSelector(
+  selectProductImportPage(),
+  (state) => state.get('uploadToServerFailed'),
+);
+
+const selectUploadDataErrors = () => createSelector(
+  selectProductImportPage(),
+  (state) => state.get('dataErrors').toJS(),
+);
+
+const selectUploadFileError = () => createSelector(
+  selectProductImportPage(),
+  (state) => state.get('fileError'),
 );
 
 const selectCsvData = () => createSelector(
@@ -13,6 +34,10 @@ const selectCsvData = () => createSelector(
 );
 
 export {
-  selectDownloadedTemplateFile,
+  selectUploadingToServer,
+  selectUploadedToServer,
+  selectUploadToServerFailed,
+  selectUploadDataErrors,
+  selectUploadFileError,
   selectCsvData,
 };

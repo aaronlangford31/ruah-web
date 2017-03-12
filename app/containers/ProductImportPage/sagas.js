@@ -7,7 +7,12 @@ import { takeLatest } from 'redux-saga';
 import { call, put, select } from 'redux-saga/effects';
 import papaparse from 'papaparse';
 import { UPLOAD_PRODUCT_TEMPLATE_FILE } from './constants';
-import { submitProductImport, submitProductImportSuccess, submitProductImportError } from './actions';
+import {
+  submitProductImport,
+  submitProductImportSuccess,
+  submitProductImportDataError,
+  submitProductImportFileError,
+} from './actions';
 import { selectCsvData } from './selectors';
 
 function readCsv(file) {
@@ -33,17 +38,26 @@ export function* submitImport() {
   try {
     // Call our request helper (see 'utils/request')
     yield put(submitProductImport());
-    yield call(request, requestURL, {
+    const result = yield call(request, requestURL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
       credentials: 'include',
+      exposeBadRequest: true,
     });
-    yield put(submitProductImportSuccess());
+    if (result.reason) {
+      if (result.data) {
+        yield put(submitProductImportDataError(result.data));
+      } else {
+        yield put(submitProductImportFileError(result.reason));
+      }
+    } else {
+      yield put(submitProductImportSuccess());
+    }
   } catch (err) {
-    yield put(submitProductImportError(err));
+    yield put(submitProductImportFileError('An error in the Ruah system prevented this import from succeeding. The error has been logged and will be investigated by our team.'));
   }
 }
 

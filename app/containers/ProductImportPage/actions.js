@@ -18,8 +18,8 @@
 import {
   SUBMIT_PRODUCT_IMPORT,
   SUBMIT_PRODUCT_IMPORT_SUCCESS,
-  SUBMIT_PRODUCT_IMPORT_ERROR,
-  DOWNLOAD_IMPORT_TEMPLATE_FILE,
+  SUBMIT_PRODUCT_IMPORT_DATA_ERROR,
+  SUBMIT_PRODUCT_IMPORT_FILE_ERROR,
   UPLOAD_PRODUCT_TEMPLATE_FILE,
 } from './constants';
 
@@ -35,16 +35,17 @@ export function submitProductImportSuccess() {
   };
 }
 
-export function submitProductImportError(errors) {
+export function submitProductImportDataError(errors) {
   return {
-    type: SUBMIT_PRODUCT_IMPORT_ERROR,
+    type: SUBMIT_PRODUCT_IMPORT_DATA_ERROR,
     errors,
   };
 }
 
-export function downloadImportTemplate() {
+export function submitProductImportFileError(error) {
   return {
-    type: DOWNLOAD_IMPORT_TEMPLATE_FILE,
+    type: SUBMIT_PRODUCT_IMPORT_FILE_ERROR,
+    error,
   };
 }
 
