@@ -44,16 +44,10 @@ const selectLoading = () => createSelector(
   (state) => state.get('loading'),
 );
 
-const selectSupplierId = () => createSelector(
-  selectLoginPage(),
-  (state) => state.get('supplierId'),
-);
-
 export {
   selectLocationState,
   selectUserType,
   selectLoginFields,
   selectError,
   selectLoading,
-  selectSupplierId,
 };

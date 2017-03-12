@@ -37,7 +37,6 @@ function appReducer(state = initialState, action) {
     case LOGIN_SUCCESS:
       return state
         .set('userType', action.userType)
-        .set('supplierId', action.supplierId)
         .set('loading', false);
     case LOGIN_ERROR:
       return state
@@ -53,7 +52,6 @@ function appReducer(state = initialState, action) {
     case LOGOUT_SUCCESS:
       return state
         .set('userType', null)
-        .set('supplierId', null)
         .set('loading', false);
     case LOGOUT_ERROR:
       return state

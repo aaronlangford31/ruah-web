@@ -8,8 +8,22 @@ import { TextField, CheckboxField } from '../Fields';
 
 const LoginForm = ({ handleSubmit, login, loading }) => (
   <BasicForm onSubmit={handleSubmit(login)}>
-    <Field name="email" type="email" component={TextField} label="Email" /><br />
-    <Field name="password" type="password" component={TextField} label="Password" /><br />
+    <Field
+      name="email"
+      type="email"
+      label="Email"
+      component={TextField}
+      floatingLabelStyle={{ color: 'black' }}
+      underlineStyle={{ borderColor: 'black' }}
+    /><br />
+    <Field
+      name="password"
+      type="password"
+      label="Password"
+      component={TextField}
+      floatingLabelStyle={{ color: 'black' }}
+      underlineStyle={{ borderColor: 'black' }}
+    /><br />
     <Field name="remember" type="checkbox" component={CheckboxField} label="Remember Me" /><br />
     <div style={{ marginTop: 12 }} className="button">
       {!loading ? <RaisedButton type="submit">Submit</RaisedButton> : <Spinner />}

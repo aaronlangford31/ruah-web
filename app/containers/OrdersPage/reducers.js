@@ -2,6 +2,9 @@ import {
   GET_ORDERS,
   GET_ORDERS_SUCCESS,
   GET_ORDERS_ERROR,
+  UPDATE_ORDER_TO_PROCESSING,
+  UPDATE_ORDER_TO_PROCESSING_SUCCESS,
+  UPDATE_ORDER_TO_PROCESSING_ERROR,
   REMOVE_ERROR,
 } from './constants';
 import { fromJS } from 'immutable';
@@ -28,6 +31,15 @@ function ordersPageReducer(state = initialState, action) {
     case REMOVE_ERROR:
       return state
         .set('error', false);
+    case UPDATE_ORDER_TO_PROCESSING:
+      return state
+        .set('loading', true);
+    case UPDATE_ORDER_TO_PROCESSING_SUCCESS:
+      return state
+        .set('loading', false);
+    case UPDATE_ORDER_TO_PROCESSING_ERROR:
+      return state
+        .set('loading', false);
     default:
       return state;
   }

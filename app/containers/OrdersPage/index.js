@@ -20,15 +20,28 @@ class OrdersPage extends Component {
     }
   }
 
+  getOrderPhase(phase) {
+    switch (phase) {
+      case 0:
+        return 'New';
+      case 1:
+        return 'Processing';
+      case 2:
+        return 'Shipped';
+      default:
+        return 'Error';
+    }
+  }
+
   renderOrders = () => {
     const { orders } = this.props;
     return _.map(orders, (order, i) => (
       <TableRow key={i}>
         <TableRowColumn>{moment(order.OrderCreatedDate).fromNow()}</TableRowColumn>
         <TableRowColumn>
-          {order.OrderPhaseLog[0].Details || '--'}
+          {order.OrderDetails || '--'}
         </TableRowColumn>
-        <TableRowColumn>{order.OrderPhaseLog[0].Phase || 'New'}</TableRowColumn>
+        <TableRowColumn>{this.getOrderPhase(order.OrderPhase)}</TableRowColumn>
         <TableRowColumn>
           <Link to={`/order/${order.OrderId}`}>
             View

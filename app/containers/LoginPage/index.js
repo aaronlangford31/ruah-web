@@ -13,7 +13,6 @@ import { selectError, selectUserType, selectLoading } from '../App/selectors';
 import LoginForm from '../../components/forms/LoginForm';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
-import H2 from '../../components/styled/H2';
 
 class LoginPage extends Component {
 
@@ -46,7 +45,6 @@ class LoginPage extends Component {
             { name: 'description', content: 'Login Page' },
           ]}
         />
-        <H2>Login</H2>
         <Body useBackground>
           <LoginForm login={login} error={error} loading={loading} />
         </Body>

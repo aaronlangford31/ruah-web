@@ -20,9 +20,7 @@ injectTapEventPlugin();
 
 const styles = {
   app: {
-    width: '1200px',
-    margin: 'auto',
-    padding: '0 16px',
+    width: '100%',
   },
 };
 
