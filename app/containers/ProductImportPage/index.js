@@ -148,7 +148,7 @@ function ImportFail(properties) {
       <div style={{ margin: 'auto', textAlign: 'center', width: '500px' }}>
         <SadFaceIcon style={{ height: '50px', width: '50px', color: '#F7E967' }} />
         <H2> Dang! </H2>
-        <p>{'Something ins\'t quite right with your data. See below for more details. Please open your spreadsheet and follow along as you review errors.'}</p>
+        <p>{'Something isn\'t quite right with your data. See below for more details. Please open your spreadsheet and follow along as you review errors.'}</p>
       </div>
       {
         properties.fileError ?
