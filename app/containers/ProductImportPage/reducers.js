@@ -44,7 +44,7 @@ function productImportPageReducer(state = initialState, action) {
     case SUBMIT_PRODUCT_IMPORT_DATA_ERROR:
       return state
         .set('uploadToServerFailed', true)
-        .set('dataErrors', action.errors)
+        .set('dataErrors', fromJS(action.errors))
         .set('uploadingToServer', false);
     case SUBMIT_PRODUCT_IMPORT_FILE_ERROR:
       return state
