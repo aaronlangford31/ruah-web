@@ -11,6 +11,10 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectOrders } from './selectors';
+import {
+  updateOrderToProcessing as actionUpdateOrderToProcessing,
+  updateOrderToShipping as actionUpdateOrderToShipping,
+} from '../OrdersPage/actions';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import Menu from '../../components/partials/Menu';
@@ -26,13 +30,19 @@ import {
   Stepper,
   StepLabel,
 } from 'material-ui/Stepper';
+import ShippingForm from '../../components/forms/ShippingForm';
 
 class OrderProfilePage extends Component {
 
   state = {
     finished: false,
-    stepIndex: 1,
+    stepIndex: this.getOrder().OrderPhase + 1,
   };
+
+  getOrder() {
+    const { orders, router } = this.props;
+    return _.chain(orders).filter({ OrderId: router.params.orderId }).first().value() || {};
+  }
 
   getLabel(stepIndex) {
     switch (stepIndex) {
@@ -67,6 +77,25 @@ class OrderProfilePage extends Component {
     });
   };
 
+  updatePhase = (order) => {
+    const { updateToProcessing, updateToShipping } = this.props;
+    const { stepIndex } = this.state;
+    switch (order.OrderPhase + 1) {
+      case 1 :
+        updateToProcessing(order.OrderId);
+        break;
+      case 2 :
+        updateToShipping(order.OrderId);
+        break;
+      default :
+        // console.log('Invalid Order Phase');
+    }
+    this.setState({
+      stepIndex: stepIndex + 1,
+      finished: stepIndex >= 2,
+    });
+  };
+
   renderOrder(order) {
     const { finished, stepIndex } = this.state;
     return (
@@ -88,17 +117,20 @@ class OrderProfilePage extends Component {
               </Step>
             </Stepper>
             <div>
+              {stepIndex === 2 && <div>
+                <ShippingForm />
+              </div>}
               <div style={{ marginTop: 12, marginBottom: 12 }}>
                 <FlatButton
                   label="undo"
-                  disabled={stepIndex <= 1}
+                  disabled
                   onTouchTap={this.handlePrev}
                   style={{ marginRight: 12 }}
                 />
                 <RaisedButton
                   label={this.getLabel(stepIndex)}
                   primary
-                  onTouchTap={this.handleNext}
+                  onTouchTap={() => this.updatePhase(order)}
                   disabled={finished}
                 />
               </div>
@@ -170,8 +202,7 @@ class OrderProfilePage extends Component {
   }
 
   render() {
-    const { orders, router } = this.props;
-    const order = _.chain(orders).filter({ OrderId: router.params.orderId }).first().value() || {};
+    const order = this.getOrder();
     return (
       <article>
         <Helmet
@@ -190,14 +221,23 @@ class OrderProfilePage extends Component {
 OrderProfilePage.propTypes = {
   orders: PropTypes.array,
   router: PropTypes.object,
+  updateToProcessing: PropTypes.func,
+  updateToShipping: PropTypes.func,
 };
 
 OrderProfilePage.contextTypes = {
   router: PropTypes.object,
 };
 
-export function mapDispatchToProps() {
-  return {};
+export function mapDispatchToProps(dispatch) {
+  return {
+    updateToProcessing: (orderId) => {
+      dispatch(actionUpdateOrderToProcessing(orderId));
+    },
+    updateToShipping: (orderId) => {
+      dispatch(actionUpdateOrderToShipping(orderId));
+    },
+  };
 }
 
 const mapStateToProps = createStructuredSelector({

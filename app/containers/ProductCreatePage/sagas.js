@@ -23,6 +23,9 @@ export function* createProductSubmit() {
 
   const sku = body.SKU;
 
+  body.Created = (new Date()).toISOString();
+  body.Updated = (new Date()).toISOString();
+
   const skuCheckURL = `http://api.teamruah.com/v1/product/SkuExists?sku=${sku}`;
 
   const validSku = yield call(request, skuCheckURL, {

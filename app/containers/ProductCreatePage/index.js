@@ -51,7 +51,7 @@ ProductCreatePage.propTypes = {
   removeSku: PropTypes.func,
   removeError: PropTypes.func,
   invalidSku: PropTypes.bool,
-  error: PropTypes.bool,
+  error: PropTypes.any,
 };
 
 ProductCreatePage.contextTypes = {

@@ -14,8 +14,8 @@ const backgroundImage = _.sample([
 const Paper = ({ children, useBackground }) =>
   <MaterialPaper
     style={{
-      marginTop: 20,
-      padding: 24,
+      marginTop: 0,
+      padding: '24px 24px 24px 0',
       minHeight: 600,
       backgroundImage: useBackground ? `url(${backgroundImage})` : 'none',
       backgroundSize: useBackground ? 'cover' : 'auto',
@@ -28,7 +28,7 @@ const Paper = ({ children, useBackground }) =>
   </MaterialPaper>;
 
 Paper.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.node,
   useBackground: PropTypes.bool,
 };
 

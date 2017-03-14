@@ -31,7 +31,7 @@ describe('request', () => {
     });
 
     it('should format the response correctly', (done) => {
-      request('/thisurliscorrect')
+      request('/thisurliscorrect', {})
         .catch(done)
         .then((json) => {
           expect(json.hello).toEqual('world');
@@ -55,7 +55,7 @@ describe('request', () => {
     });
 
     it('should catch errors', (done) => {
-      request('/thisdoesntexist')
+      request('/thisdoesntexist', {})
         .catch((err) => {
           expect(err.response.status).toEqual(404);
           expect(err.response.statusText).toEqual('Not Found');

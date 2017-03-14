@@ -15,7 +15,7 @@ import { selectProducts } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import FlatButton from 'material-ui/FlatButton';
-import AddIcon from 'material-ui/svg-icons/content/add';
+import FileUploadIcon from 'material-ui/svg-icons/file/file-upload';
 import Menu from '../../components/partials/Menu';
 import {
   Table,
@@ -38,7 +38,7 @@ class CatalogPage extends Component {
     const { products } = this.props;
     return _.map(products, (product, i) => (
       <TableRow key={i}>
-        <TableRowColumn><Link to={`/product/${product.Id}`}>{product.Name}</Link></TableRowColumn>
+        <TableRowColumn><Link to={`/product/${product.Id}`}>{product.ProductName}</Link></TableRowColumn>
         <TableRowColumn>
           <div
             style={product.MainImageUri ? {
@@ -54,10 +54,11 @@ class CatalogPage extends Component {
           />
         </TableRowColumn>
         <TableRowColumn>{product.SKU}</TableRowColumn>
+        <TableRowColumn>{product.RuahId}</TableRowColumn>
         <TableRowColumn>{product.Inventory}</TableRowColumn>
-        <TableRowColumn>{product.Price || '--'}</TableRowColumn>
-        <TableRowColumn>{product.ShippingFee || 'FREE'}</TableRowColumn>
-        <TableRowColumn><Link to={`/product/${product.Id}`}>Edit This Product</Link></TableRowColumn>
+        <TableRowColumn>${product.WholesalePrice}</TableRowColumn>
+        <TableRowColumn>${product.ShippingFee}</TableRowColumn>
+        <TableRowColumn>{product.VariationGroupId}</TableRowColumn>
       </TableRow>
     ));
   };
@@ -79,8 +80,8 @@ class CatalogPage extends Component {
             </div>
             <div style={{ flex: 9 }}>
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
-                <Link to={'product/create'}>
-                  <FlatButton label="Create" icon={<AddIcon />} labelPosition="before" />
+                <Link to={'product/import'}>
+                  <FlatButton label="Import" icon={<FileUploadIcon />} labelPosition="before" />
                 </Link>
               </div>
               <Table selectable={false}>
@@ -93,10 +94,11 @@ class CatalogPage extends Component {
                     <TableHeaderColumn>Product Name</TableHeaderColumn>
                     <TableHeaderColumn>Image</TableHeaderColumn>
                     <TableHeaderColumn>SKU</TableHeaderColumn>
+                    <TableHeaderColumn>Ruah Id</TableHeaderColumn>
                     <TableHeaderColumn>Inventory Available</TableHeaderColumn>
-                    <TableHeaderColumn>Retail Price</TableHeaderColumn>
+                    <TableHeaderColumn>Wholesale Price</TableHeaderColumn>
                     <TableHeaderColumn>Shipping Price</TableHeaderColumn>
-                    <TableHeaderColumn> </TableHeaderColumn>
+                    <TableHeaderColumn>Variation Group</TableHeaderColumn>
                   </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
@@ -104,6 +106,7 @@ class CatalogPage extends Component {
                 </TableBody>
               </Table>
             </div>
+
           </div>
         </Body>
       </article>

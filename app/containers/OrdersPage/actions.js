@@ -30,9 +30,10 @@ export function getOrdersError() {
   };
 }
 
-export function updateOrderToProcessing() {
+export function updateOrderToProcessing(orderId) {
   return {
     type: UPDATE_ORDER_TO_PROCESSING,
+    orderId,
   };
 }
 
@@ -48,9 +49,10 @@ export function updateOrderToProcessingError() {
   };
 }
 
-export function updateOrderToShipping() {
+export function updateOrderToShipping(orderId) {
   return {
     type: UPDATE_ORDER_TO_SHIPPING,
+    orderId,
   };
 }
 

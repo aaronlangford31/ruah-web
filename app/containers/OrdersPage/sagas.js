@@ -33,11 +33,10 @@ export function* getOrders() {
   }
 }
 
-export function* updateOrderToProcessing() {
-  const requestURL = 'http://api.teamruah.com/v1/order/updateToProcessing?orderId=<string>';
+export function* updateOrderToProcessing({ orderId }) {
+  const requestURL = `http://api.teamruah.com/v1/order/updateToProcessing?orderId=${orderId}`;
 
   try {
-    // Call our request helper (see 'utils/request')
     yield call(request, requestURL, {
       headers: {
         'Content-Type': 'application/json',
@@ -51,12 +50,19 @@ export function* updateOrderToProcessing() {
   }
 }
 
-export function* updateOrderToShipping() {
-  const requestURL = 'http://api.teamruah.com/v1/order/updateToShipped?orderId=<string>';
+export function* updateOrderToShipping({ orderId }) {
+  const requestURL = `http://api.teamruah.com/v1/order/updateToShipped?orderId=${orderId}`;
 
   try {
-    // Call our request helper (see 'utils/request')
     yield call(request, requestURL, {
+      method: 'POST',
+      body: JSON.stringify({
+        CarrierCode: '<string>',
+        CarrierName: '<string>',
+        ShippingMethod: '<string>',
+        ShipTrackCode: '<string>',
+        EstimatedShipmentDate: '<datetime>',
+      }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -70,15 +76,15 @@ export function* updateOrderToShipping() {
 }
 
 export function* getOrdersData() {
-  yield* takeLatest(GET_ORDERS, getOrders);
+  yield takeLatest(GET_ORDERS, getOrders);
 }
 
 export function* getUpdateOrderToProcessingData() {
-  yield* takeLatest(UPDATE_ORDER_TO_PROCESSING, updateOrderToProcessing);
+  yield takeLatest(UPDATE_ORDER_TO_PROCESSING, updateOrderToProcessing);
 }
 
 export function* getUpdateOrderToShippingData() {
-  yield* takeLatest(UPDATE_ORDER_TO_SHIPPING, updateOrderToShipping);
+  yield takeLatest(UPDATE_ORDER_TO_SHIPPING, updateOrderToShipping);
 }
 
 export default [
