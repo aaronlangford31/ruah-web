@@ -62,7 +62,7 @@ export function* submitLogin({ values }) {
 
     yield put(loginSuccess(response.userType));
   } catch (err) {
-    yield put(loginError('There is no flavor. There are no spices. Where are the chips? ...credentials could not be found.'));
+    yield put(loginError('There is no flavor. There are no spices. Where are the chips? ...these credentials were no good.'));
   }
 }
 

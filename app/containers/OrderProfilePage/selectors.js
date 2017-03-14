@@ -1,18 +1,44 @@
 import { createSelector } from 'reselect';
 
-const selectCatalogPage = () => (state) => state.get('ordersPage');
+const selectForms = () => (state) => state.get('form');
 
-const selectOrders = () => createSelector(
-  selectCatalogPage(),
-  (state) => state.get('orders').toJS(),
+const selectOrderProfilePage = () => (state) => state.get('orderProfilePage');
+
+const selectCurrentOrder = () => createSelector(
+  selectOrderProfilePage(),
+  (state) => state.get('currentOrder').toJS(),
+);
+
+const selectCurrentOrderId = () => createSelector(
+  selectOrderProfilePage(),
+  (state) => state.get('currentOrderId'),
+);
+
+const selectCurrentOrderLoaded = () => createSelector(
+  selectOrderProfilePage(),
+  (state) => state.get('currentOrderLoaded'),
+);
+
+const selectShippingFromModalOpen = () => createSelector(
+  selectOrderProfilePage(),
+  (state) => state.get('shippingFormModalOpen'),
+);
+
+const selectFulfillmentFormData = () => createSelector(
+  selectForms(),
+  (state) => state.getIn(['shippingForm', 'values']),
 );
 
 const selectLoading = () => createSelector(
-  selectCatalogPage(),
+  selectOrderProfilePage(),
   (state) => state.get('loading'),
 );
 
 export {
-  selectOrders,
+  selectCurrentOrder,
+  selectCurrentOrderId,
+  selectCurrentOrderLoaded,
+  selectFulfillmentFormData,
+  selectShippingFromModalOpen,
   selectLoading,
 };

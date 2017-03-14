@@ -4,12 +4,15 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Link } from 'react-router';
 import _ from 'underscore';
-import moment from 'moment';
 import * as OrderActions from './actions';
 import { selectOrders } from './selectors';
 import Body from '../../components/styled/Body';
+import Divider from 'material-ui/Divider';
 import H2 from '../../components/styled/H2';
 import Menu from '../../components/partials/Menu';
+import ShippedIcon from 'material-ui/svg-icons/maps/local-shipping';
+import NewIcon from 'material-ui/svg-icons/av/new-releases';
+import ProcessingIcon from 'material-ui/svg-icons/action/update';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
 class OrdersPage extends Component {
@@ -25,12 +28,27 @@ class OrdersPage extends Component {
 
   getOrderPhase(phase) {
     switch (phase) {
+      case 0:
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <NewIcon color="#04BFBF" />
+            <p style={{ margin: 0 }}>New</p>
+          </div>
+        );
       case 1:
-        return 'New';
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <ProcessingIcon color="#F7E967" />
+            <p style={{ margin: 0 }}>Processing</p>
+          </div>
+        );
       case 2:
-        return 'Processing';
-      case 3:
-        return 'Shipped';
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <ShippedIcon color="#A9CF54" />
+            <p style={{ margin: 0 }}>Shipped</p>
+          </div>
+        );
       default:
         return 'Error';
     }
@@ -40,11 +58,27 @@ class OrdersPage extends Component {
     const { orders } = this.props;
     return _.map(orders, (order, i) => (
       <TableRow key={i}>
-        <TableRowColumn>{moment(order.OrderCreatedDate).fromNow()}</TableRowColumn>
-        <TableRowColumn>
-          {order.OrderDetails || '--'}
+        <TableRowColumn style={{ width: '15%' }}>{order.OrderCreatedDate.fromNow()}</TableRowColumn>
+        <TableRowColumn style={{ width: '20%' }}>
+          <div>{order.BuyerName}</div>
+          <div>{order.ShipAddress}</div>
+          <div>{order.ShipAddress2}</div>
+          <div>{order.ShipCity}, {order.ShipState} {order.ShipZip}</div>
         </TableRowColumn>
-        <TableRowColumn>{this.getOrderPhase(order.OrderPhase)}</TableRowColumn>
+        <TableRowColumn style={{ width: '40%' }}>
+          {_.map(order.OrderItems, (item, j) => (
+            <div key={j}>
+              <div>
+                <strong>Product</strong> <span>{item.ProductName}</span>
+              </div>
+              <div>
+                <strong>Quantity</strong> <span>{item.Quantity}</span>
+              </div>
+              {(j < order.OrderItems.length - 1) && <Divider />}
+            </div>
+          ))}
+        </TableRowColumn>
+        <TableRowColumn style={{ width: '10%' }}>{this.getOrderPhase(order.OrderPhase)}</TableRowColumn>
         <TableRowColumn>
           <Link to={`/order/${order.OrderId}`}>
             View
@@ -63,13 +97,13 @@ class OrdersPage extends Component {
             { name: 'description', content: 'Orders' },
           ]}
         />
-        <H2>Orders</H2>
         <Body>
           <div style={{ display: 'flex' }}>
             <div style={{ flex: 3, marginRight: 24 }}>
               <Menu />
             </div>
             <div style={{ flex: 9 }}>
+              <H2>Orders</H2>
               <Table selectable={false}>
                 <TableHeader
                   displaySelectAll={false}
@@ -77,9 +111,10 @@ class OrdersPage extends Component {
                   enableSelectAll={false}
                 >
                   <TableRow>
-                    <TableHeaderColumn>Date of Order</TableHeaderColumn>
-                    <TableHeaderColumn>Order Details</TableHeaderColumn>
-                    <TableHeaderColumn>Order Status</TableHeaderColumn>
+                    <TableHeaderColumn style={{ width: '15%' }}>Date of Order</TableHeaderColumn>
+                    <TableHeaderColumn style={{ width: '20%' }}>Shipping To</TableHeaderColumn>
+                    <TableHeaderColumn style={{ width: '40%' }}>Order Details</TableHeaderColumn>
+                    <TableHeaderColumn style={{ width: '10%' }}>Order Status</TableHeaderColumn>
                     <TableHeaderColumn>Actions</TableHeaderColumn>
                   </TableRow>
                 </TableHeader>
@@ -107,5 +142,4 @@ const mapStateToProps = createStructuredSelector({
   orders: selectOrders(),
 });
 
-// Wrap the component to inject dispatch and state into it
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersPage);
