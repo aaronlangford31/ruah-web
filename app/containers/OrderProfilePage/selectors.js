@@ -4,19 +4,31 @@
 
 import { createSelector } from 'reselect';
 
-const selectCatalogPage = () => (state) => state.get('ordersPage');
+const selectOrderProfilePage = () => (state) => state.get('orderProfilePage');
 
-const selectOrders = () => createSelector(
-  selectCatalogPage(),
-  (state) => state.get('orders').toJS(),
+const selectCurrentOrder = () => createSelector(
+  selectOrderProfilePage(),
+  (state) => state.get('currentOrder').toJS(),
+);
+
+const selectCurrentOrderId = () => createSelector(
+  selectOrderProfilePage(),
+  (state) => state.get('currentOrderId'),
+);
+
+const selectCurrentOrderLoaded = () => createSelector(
+  selectOrderProfilePage(),
+  (state) => state.get('currentOrderLoaded'),
 );
 
 const selectLoading = () => createSelector(
-  selectCatalogPage(),
+  selectOrderProfilePage(),
   (state) => state.get('loading'),
 );
 
 export {
-  selectOrders,
+  selectCurrentOrder,
+  selectCurrentOrderId,
+  selectCurrentOrderLoaded,
   selectLoading,
 };

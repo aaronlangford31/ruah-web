@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Link } from 'react-router';
 import _ from 'underscore';
-import moment from 'moment';
 import { getOrders } from './actions';
 import { selectOrders } from './selectors';
 import Body from '../../components/styled/Body';
@@ -27,11 +26,26 @@ class OrdersPage extends Component {
   getOrderPhase(phase) {
     switch (phase) {
       case 0:
-        return (<div><p>New</p><NewIcon /></div>);
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <NewIcon color="#04BFBF" />
+            <p style={{ margin: 0 }}>New</p>
+          </div>
+        );
       case 1:
-        return (<div><p>Processing</p><ProcessingIcon /></div>);
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <ProcessingIcon color="#F7E967" />
+            <p style={{ margin: 0 }}>Processing</p>
+          </div>
+        );
       case 2:
-        return (<div><p>Shipped</p><ShippedIcon /></div>);
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <ShippedIcon color="#A9CF54" />
+            <p style={{ margin: 0 }}>Shipped</p>
+          </div>
+        );
       default:
         return 'Error';
     }
@@ -41,7 +55,7 @@ class OrdersPage extends Component {
     const { orders } = this.props;
     return _.map(orders, (order, i) => (
       <TableRow key={i}>
-        <TableRowColumn style={{ width: '15%' }}>{moment(order.OrderCreatedDate).fromNow()}</TableRowColumn>
+        <TableRowColumn style={{ width: '15%' }}>{order.OrderCreatedDate.fromNow()}</TableRowColumn>
         <TableRowColumn style={{ width: '20%' }}>
           <div>{order.BuyerName}</div>
           <div>{order.ShipAddress}</div>
@@ -80,13 +94,13 @@ class OrdersPage extends Component {
             { name: 'description', content: 'Orders' },
           ]}
         />
-        <H2>Orders</H2>
         <Body>
           <div style={{ display: 'flex' }}>
             <div style={{ flex: 3, marginRight: 24 }}>
               <Menu />
             </div>
             <div style={{ flex: 9 }}>
+              <H2>Orders</H2>
               <Table selectable={false}>
                 <TableHeader
                   displaySelectAll={false}
