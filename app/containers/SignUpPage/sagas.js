@@ -1,22 +1,22 @@
-/**
- * Gets the repositories of the user from Github
- */
-
 import { takeLatest } from 'redux-saga';
-import { call, put, select } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { CHECK_SIGN_UP_CODE, SUBMIT_SIGN_UP } from './constants';
-import { signUpCodeChecked, signUpCodeCheckingError, invalidUserIdDetected, submitSignUpComplete, submitSignUpError } from './actions';
+import {
+  signUpCodeChecked,
+  signUpCodeCheckingError,
+  invalidUserIdDetected,
+  submitSignUpComplete,
+  submitSignUpError,
+} from './actions';
 
 import request from 'utils/request';
-import { selectCode, selectSignUpFields, selectValidSignUpCode } from './selectors';
 
-export function* checkSignUpCode() {
-  const signUpCode = yield select(selectCode());
+export function* checkSignUpCode({ values }) {
+  const signUpCode = values.get('code');
 
   const requestURL = `http://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${signUpCode}`;
 
   try {
-    // Call our request helper (see 'utils/request')
     const validSignUpCodeStatus = yield call(request, requestURL);
     if (validSignUpCodeStatus) {
       yield put(signUpCodeChecked(signUpCode));
@@ -28,9 +28,8 @@ export function* checkSignUpCode() {
   }
 }
 
-export function* submitSignUp() {
-  const signUpFields = (yield select(selectSignUpFields())).toJS();
-  const userId = signUpFields.email ? signUpFields.email.toLowerCase() : '';
+export function* submitSignUp({ values }) {
+  const userId = values.get('email') ? values.get('email').toLowerCase() : '';
 
   const validUserIdURL = `http://api.teamruah.com/v1/user/userIdExists?userId=${userId}`;
 
@@ -38,15 +37,13 @@ export function* submitSignUp() {
 
   if (!validUserId) {
     const body = {
-      signUpCode: yield select(selectValidSignUpCode()),
+      signUpCode: values.get('code'),
       userId,
-      password: signUpFields.password,
+      password: values.get('password'),
     };
 
-    const userSignUpURL = 'http://api.teamruah.com/v1/user/signup';
-
     try {
-      // Call our request helper (see 'utils/request')
+      const userSignUpURL = 'http://api.teamruah.com/v1/user/signup';
       yield call(request, userSignUpURL, {
         method: 'POST',
         headers: {
@@ -63,9 +60,6 @@ export function* submitSignUp() {
   }
 }
 
-/**
- * Root saga manages watcher lifecycle
- */
 export function* signUpCodeData() {
   yield* takeLatest(CHECK_SIGN_UP_CODE, checkSignUpCode);
 }
@@ -74,7 +68,6 @@ export function* signUpSubmitData() {
   yield* takeLatest(SUBMIT_SIGN_UP, submitSignUp);
 }
 
-// Bootstrap sagas
 export default [
   signUpCodeData,
   signUpSubmitData,

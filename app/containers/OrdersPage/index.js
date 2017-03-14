@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import { Link } from 'react-router';
 import _ from 'underscore';
 import moment from 'moment';
-import { getOrders } from './actions';
+import * as OrderActions from './actions';
 import { selectOrders } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
@@ -14,19 +14,22 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 
 class OrdersPage extends Component {
 
+  static propTypes = {
+    orders: PropTypes.array,
+    getOrders: PropTypes.func,
+  };
+
   componentDidMount() {
-    if (this.props.orders.length === 0) {
-      this.props.getOrders();
-    }
+    this.props.getOrders();
   }
 
   getOrderPhase(phase) {
     switch (phase) {
-      case 0:
-        return 'New';
       case 1:
-        return 'Processing';
+        return 'New';
       case 2:
+        return 'Processing';
+      case 3:
         return 'Shipped';
       default:
         return 'Error';
@@ -92,15 +95,10 @@ class OrdersPage extends Component {
   }
 }
 
-OrdersPage.propTypes = {
-  orders: PropTypes.array,
-  getOrders: PropTypes.func,
-};
-
 export function mapDispatchToProps(dispatch) {
   return {
     getOrders: () => {
-      dispatch(getOrders());
+      dispatch(OrderActions.getOrders());
     },
   };
 }

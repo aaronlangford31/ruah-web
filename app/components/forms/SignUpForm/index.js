@@ -32,6 +32,11 @@ const SignUpForm = ({ handleSubmit, signUp, loading }) => (
       floatingLabelStyle={{ color: 'black' }}
       underlineStyle={{ borderColor: 'black' }}
     /><br />
+    <Field
+      name="code"
+      type="hidden"
+      component="input"
+    />
     <div>
       {!loading ? <RaisedButton type="submit">Submit</RaisedButton> : <Spinner />}
     </div>
@@ -45,6 +50,6 @@ SignUpForm.propTypes = {
 };
 
 export default reduxForm({
-  form: 'signUpForm',  // a unique identifier for this form
+  form: 'signUpForm',
   validate,
 })(SignUpForm);

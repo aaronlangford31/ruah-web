@@ -5,8 +5,8 @@ import BasicForm from '../../styled/BasicForm';
 import Spinner from '../../../components/styled/Spinner';
 import { TextField } from '../Fields';
 
-const CodeForm = ({ handleSubmit, checkCode, loading }) => (
-  <BasicForm onSubmit={handleSubmit(checkCode)}>
+const CodeForm = ({ handleSubmit, checkSignUpCode, loading }) => (
+  <BasicForm onSubmit={handleSubmit(checkSignUpCode)}>
     <p>Please enter your code to sign up.</p>
     <Field
       name="code"
@@ -24,10 +24,10 @@ const CodeForm = ({ handleSubmit, checkCode, loading }) => (
 
 CodeForm.propTypes = {
   handleSubmit: PropTypes.func,
-  checkCode: PropTypes.func,
+  checkSignUpCode: PropTypes.func,
   loading: PropTypes.bool,
 };
 
 export default reduxForm({
-  form: 'codeForm',  // a unique identifier for this form
+  form: 'codeForm',
 })(CodeForm);

@@ -1,23 +1,17 @@
-/**
- * Gets the repositories of the user from Github
- */
-
 import request from 'utils/request';
 import { takeLatest } from 'redux-saga';
-import { call, put, select } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import {
   CHECK_LOGIN,
   LOGOUT_SUBMIT,
-  LOGIN_SUBMIT,
+  LOGIN_REQUEST,
 } from './constants';
 import { logoutSuccess, logoutError, loginSuccess, loginError } from './actions';
-import { selectLoginFields } from './selectors';
 
 export function* checkLogin() {
   const requestURL = 'http://api.teamruah.com/v1/user/isauthenticated';
 
   try {
-    // Call our request helper (see 'utils/request')
     const response = yield call(fetch, requestURL, {
       credentials: 'include',
     });
@@ -34,7 +28,6 @@ export function* submitLogout() {
   const requestURL = 'http://api.teamruah.com/v1/user/signout';
 
   try {
-    // Call our request helper (see 'utils/request')
     const response = yield call(fetch, requestURL, {
       credentials: 'include',
     });
@@ -50,23 +43,19 @@ export function* submitLogout() {
   }
 }
 
-export function* submitLogin() {
-  const loginFields = (yield select(selectLoginFields())).toJS();
-  const email = loginFields.email;
-
+export function* submitLogin({ values }) {
   const requestURL = 'http://api.teamruah.com/v1/user/authenticate';
 
   try {
-    // Call our request helper (see 'utils/request')
     const response = yield call(request, requestURL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: email.toLowerCase(),
-        password: loginFields.password,
-        persistAuthTicket: loginFields.remember,
+        userId: values.get('email').toLowerCase(),
+        password: values.get('password'),
+        persistAuthTicket: values.get('remember'),
       }),
       credentials: 'include',
     });
@@ -77,28 +66,18 @@ export function* submitLogin() {
   }
 }
 
-/**
- * Root saga manages watcher lifecycle
- */
 export function* getCheckLoginData() {
   yield* takeLatest(CHECK_LOGIN, checkLogin);
 }
 
-/**
- * Root saga manages watcher lifecycle
- */
 export function* submitLogoutData() {
   yield* takeLatest(LOGOUT_SUBMIT, submitLogout);
 }
 
-/**
- * Root saga manages watcher lifecycle
- */
 export function* submitLoginData() {
-  yield* takeLatest(LOGIN_SUBMIT, submitLogin);
+  yield* takeLatest(LOGIN_REQUEST, submitLogin);
 }
 
-// Bootstrap sagas
 export default [
   getCheckLoginData,
   submitLogoutData,

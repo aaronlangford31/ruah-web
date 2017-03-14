@@ -1,8 +1,9 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
 import BasicForm from '../../styled/BasicForm';
 import { TextField, DatePickerField } from '../Fields';
 import Grid from '../../styled/Grid';
+import validate from './validate';
 
 const ShippingForm = () => (
   <BasicForm style={{ padding: 6 }}>
@@ -41,11 +42,7 @@ const ShippingForm = () => (
   </BasicForm>
 );
 
-ShippingForm.propTypes = {
-  handleSubmit: PropTypes.func,
-  checkCode: PropTypes.func,
-};
-
 export default reduxForm({
   form: 'shippingForm',
+  validate,
 })(ShippingForm);

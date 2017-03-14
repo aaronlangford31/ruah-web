@@ -1,9 +1,3 @@
-/*
- * OrderProfilePage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import _ from 'underscore';
@@ -11,6 +5,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectOrders } from './selectors';
+import { selectShippingFormFields } from '../OrdersPage/selectors';
 import {
   updateOrderToProcessing as actionUpdateOrderToProcessing,
   updateOrderToShipping as actionUpdateOrderToShipping,
@@ -34,9 +29,20 @@ import ShippingForm from '../../components/forms/ShippingForm';
 
 class OrderProfilePage extends Component {
 
+  static propTypes = {
+    orders: PropTypes.array,
+    shippingFormFields: PropTypes.object,
+    router: PropTypes.object,
+    updateToProcessing: PropTypes.func,
+    updateToShipping: PropTypes.func,
+  };
+
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
   state = {
-    finished: false,
-    stepIndex: this.getOrder().OrderPhase + 1,
+    stepIndex: this.getOrder().OrderPhase,
   };
 
   getOrder() {
@@ -64,7 +70,6 @@ class OrderProfilePage extends Component {
     if (stepIndex > 1) {
       this.setState({
         stepIndex: stepIndex - 1,
-        finished: false,
       });
     }
   };
@@ -73,31 +78,30 @@ class OrderProfilePage extends Component {
     const { stepIndex } = this.state;
     this.setState({
       stepIndex: stepIndex + 1,
-      finished: stepIndex >= 2,
     });
   };
 
   updatePhase = (order) => {
-    const { updateToProcessing, updateToShipping } = this.props;
+    const { updateToProcessing, updateToShipping, shippingFormFields } = this.props;
     const { stepIndex } = this.state;
-    switch (order.OrderPhase + 1) {
+    switch (order.OrderPhase) {
       case 1 :
         updateToProcessing(order.OrderId);
         break;
       case 2 :
-        updateToShipping(order.OrderId);
+        updateToShipping(order.OrderId, shippingFormFields);
         break;
       default :
         // console.log('Invalid Order Phase');
     }
     this.setState({
       stepIndex: stepIndex + 1,
-      finished: stepIndex >= 2,
     });
   };
 
   renderOrder(order) {
-    const { finished, stepIndex } = this.state;
+    const { stepIndex } = this.state;
+    const { shippingFormFields } = this.props;
     return (
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 3, marginRight: 24 }}>
@@ -131,7 +135,7 @@ class OrderProfilePage extends Component {
                   label={this.getLabel(stepIndex)}
                   primary
                   onTouchTap={() => this.updatePhase(order)}
-                  disabled={finished}
+                  disabled={stepIndex === 3 || (stepIndex === 2 && Object.keys(shippingFormFields.toJS()).length !== 5)}
                 />
               </div>
             </div>
@@ -218,30 +222,20 @@ class OrderProfilePage extends Component {
   }
 }
 
-OrderProfilePage.propTypes = {
-  orders: PropTypes.array,
-  router: PropTypes.object,
-  updateToProcessing: PropTypes.func,
-  updateToShipping: PropTypes.func,
-};
-
-OrderProfilePage.contextTypes = {
-  router: PropTypes.object,
-};
-
 export function mapDispatchToProps(dispatch) {
   return {
     updateToProcessing: (orderId) => {
       dispatch(actionUpdateOrderToProcessing(orderId));
     },
-    updateToShipping: (orderId) => {
-      dispatch(actionUpdateOrderToShipping(orderId));
+    updateToShipping: (orderId, values) => {
+      dispatch(actionUpdateOrderToShipping(orderId, values));
     },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   orders: selectOrders(),
+  shippingFormFields: selectShippingFormFields(),
 });
 
 // Wrap the component to inject dispatch and state into it

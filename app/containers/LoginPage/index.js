@@ -1,14 +1,8 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { submitLogin, removeError } from '../App/actions';
+import * as AppActions from '../App/actions';
 import { selectError, selectUserType, selectLoading } from '../App/selectors';
 import LoginForm from '../../components/forms/LoginForm';
 import ErrorBox from '../App/ErrorBox';
@@ -58,12 +52,12 @@ class LoginPage extends Component {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    login: () => {
-      dispatch(submitLogin());
+    login: (values) => {
+      dispatch(AppActions.login(values));
     },
 
     close: () => {
-      dispatch(removeError());
+      dispatch(AppActions.removeError());
     },
   };
 }

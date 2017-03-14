@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga';
-import { call, put, select } from 'redux-saga/effects';
-import { SUBMIT_CREATE_PRODUCT } from './constants';
+import { call, put } from 'redux-saga/effects';
+import { CREATE_PRODUCT_REQUEST } from './constants';
 import _ from 'underscore';
 import {
   submitCreateProductSuccess,
@@ -9,15 +9,12 @@ import {
 } from './actions';
 
 import request from 'utils/request';
-import { selectProductFields } from './selectors';
 
-export function* createProductSubmit() {
-  const signUpFields = yield select(selectProductFields());
-
+export function* createProductSubmit({ values }) {
   let body = [];
 
-  if (signUpFields) {
-    body = signUpFields.toJS();
+  if (values) {
+    body = values.toJS();
     body.Bullets = _.pluck(body.Bullets, 'value');
   }
 
@@ -54,7 +51,7 @@ export function* createProductSubmit() {
 }
 
 export function* createProductSubmitData() {
-  yield* takeLatest(SUBMIT_CREATE_PRODUCT, createProductSubmit);
+  yield* takeLatest(CREATE_PRODUCT_REQUEST, createProductSubmit);
 }
 
 export default [

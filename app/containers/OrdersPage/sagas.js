@@ -1,7 +1,7 @@
 import { takeLatest } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 import {
-  GET_ORDERS,
+  GET_ORDERS_REQUEST,
   UPDATE_ORDER_TO_PROCESSING,
   UPDATE_ORDER_TO_SHIPPING,
 } from './constants';
@@ -19,7 +19,6 @@ export function* getOrders() {
   const requestURL = 'http://api.teamruah.com/v1/order/GetUnfulfilledOrders';
 
   try {
-    // Call our request helper (see 'utils/request')
     const orders = yield call(request, requestURL, {
       headers: {
         'Content-Type': 'application/json',
@@ -50,33 +49,29 @@ export function* updateOrderToProcessing({ orderId }) {
   }
 }
 
-export function* updateOrderToShipping({ orderId }) {
+export function* updateOrderToShipping({ orderId, values }) {
   const requestURL = `http://api.teamruah.com/v1/order/updateToShipped?orderId=${orderId}`;
 
-  try {
-    yield call(request, requestURL, {
-      method: 'POST',
-      body: JSON.stringify({
-        CarrierCode: '<string>',
-        CarrierName: '<string>',
-        ShippingMethod: '<string>',
-        ShipTrackCode: '<string>',
-        EstimatedShipmentDate: '<datetime>',
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    });
+  if (values.size !== 0) {
+    try {
+      yield call(request, requestURL, {
+        method: 'POST',
+        body: JSON.stringify(values.toJS()),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
 
-    yield put(updateOrderToShippingSuccess());
-  } catch (err) {
-    yield put(updateOrderToShippingError(`Error: ${err.message}`));
+      yield put(updateOrderToShippingSuccess(orderId));
+    } catch (err) {
+      yield put(updateOrderToShippingError(`Error: ${err.message}`));
+    }
   }
 }
 
 export function* getOrdersData() {
-  yield takeLatest(GET_ORDERS, getOrders);
+  yield takeLatest(GET_ORDERS_REQUEST, getOrders);
 }
 
 export function* getUpdateOrderToProcessingData() {
@@ -92,3 +87,4 @@ export default [
   getUpdateOrderToProcessingData,
   getUpdateOrderToShippingData,
 ];
+

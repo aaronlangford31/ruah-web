@@ -1,9 +1,3 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
@@ -27,6 +21,11 @@ import {
 } from 'material-ui/Table';
 
 class CatalogPage extends Component {
+
+  static propTypes = {
+    products: PropTypes.array,
+    getProducts: PropTypes.func,
+  };
 
   componentDidMount() {
     if (this.props.products.length === 0) {
@@ -110,11 +109,6 @@ class CatalogPage extends Component {
     );
   }
 }
-
-CatalogPage.propTypes = {
-  products: PropTypes.array,
-  getProducts: PropTypes.func,
-};
 
 export function mapDispatchToProps(dispatch) {
   return {

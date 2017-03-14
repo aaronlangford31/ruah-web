@@ -1,17 +1,5 @@
-/*
- * SignUpPageReducer
- *
- * The reducer takes care of our data. Using actions, we can change our
- * application state.
- * To add a new action, add it to the switch statement in the reducer function
- *
- * Example:
- * case YOUR_ACTION_CONSTANT:
- *   return state.set('yourStateVariable', true);
- */
-
 import {
-  SUBMIT_CREATE_PRODUCT,
+  CREATE_PRODUCT_REQUEST,
   SUBMIT_CREATE_PRODUCT_SUCCESS,
   SUBMIT_CREATE_PRODUCT_ERROR,
   INVALID_SKU,
@@ -28,7 +16,7 @@ const initialState = fromJS({
 
 function productCreatePageReducer(state = initialState, action) {
   switch (action.type) {
-    case SUBMIT_CREATE_PRODUCT:
+    case CREATE_PRODUCT_REQUEST:
       return state
         .set('invalidSku', false)
         .set('loading', true)

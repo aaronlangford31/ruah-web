@@ -1,7 +1,3 @@
-/**
- * The global state selectors
- */
-
 import { createSelector } from 'reselect';
 
 const selectCatalogPage = () => (state) => state.get('catalogPage');

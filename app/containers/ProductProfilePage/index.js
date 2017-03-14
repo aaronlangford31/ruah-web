@@ -1,9 +1,3 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import _ from 'underscore';
@@ -19,6 +13,16 @@ import ProductIcon from 'material-ui/svg-icons/action/work';
 import DescriptionIcon from 'material-ui/svg-icons/action/description';
 
 class ProductProfilePage extends Component {
+
+  static propTypes = {
+    products: PropTypes.array,
+    router: PropTypes.object,
+  };
+
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
   /* eslint-disable react/no-danger */
   renderProduct() {
     const { router, products } = this.props;
@@ -76,15 +80,6 @@ class ProductProfilePage extends Component {
     );
   }
 }
-
-ProductProfilePage.propTypes = {
-  products: PropTypes.array,
-  router: PropTypes.object,
-};
-
-ProductProfilePage.contextTypes = {
-  router: PropTypes.object,
-};
 
 export function mapDispatchToProps() {
   return {};
