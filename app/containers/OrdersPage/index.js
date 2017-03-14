@@ -11,7 +11,7 @@ import Divider from 'material-ui/Divider';
 import H2 from '../../components/styled/H2';
 import Menu from '../../components/partials/Menu';
 import ShippedIcon from 'material-ui/svg-icons/maps/local-shipping';
-import NewIcon from 'material-ui/svg-icons/av/fiber-new';
+import NewIcon from 'material-ui/svg-icons/av/new-releases';
 import ProcessingIcon from 'material-ui/svg-icons/action/update';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
@@ -63,15 +63,15 @@ class OrdersPage extends Component {
           <div>{order.ShipCity}, {order.ShipState} {order.ShipZip}</div>
         </TableRowColumn>
         <TableRowColumn style={{ width: '40%' }}>
-          {_.map(order.OrderItems, (item) => (
-            <div>
+          {_.map(order.OrderItems, (item, j) => (
+            <div key={j}>
               <div>
                 <strong>Product</strong> <span>{item.ProductName}</span>
               </div>
               <div>
                 <strong>Quantity</strong> <span>{item.Quantity}</span>
               </div>
-              <Divider />
+              {(j < order.OrderItems.length - 1) && <Divider />}
             </div>
           ))}
         </TableRowColumn>

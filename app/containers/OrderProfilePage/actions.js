@@ -5,6 +5,8 @@ import {
   UPDATE_ORDER_TO_PROCESSING,
   UPDATE_ORDER_TO_PROCESSING_SUCCESS,
   UPDATE_ORDER_TO_PROCESSING_ERROR,
+  OPEN_FULFILMENT_DIALOG,
+  CLOSE_FULFILMENT_DIALOG,
   UPDATE_ORDER_TO_SHIPPING,
   UPDATE_ORDER_TO_SHIPPING_SUCCESS,
   UPDATE_ORDER_TO_SHIPPING_ERROR,
@@ -45,6 +47,18 @@ export function updateOrderToProcessingSuccess() {
 export function updateOrderToProcessingError() {
   return {
     type: UPDATE_ORDER_TO_PROCESSING_ERROR,
+  };
+}
+
+export function openFulfilmentDialog() {
+  return {
+    type: OPEN_FULFILMENT_DIALOG,
+  };
+}
+
+export function closeFulfilmentDialog() {
+  return {
+    type: CLOSE_FULFILMENT_DIALOG,
   };
 }
 

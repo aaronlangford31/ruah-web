@@ -1,8 +1,6 @@
-/**
- * The global state selectors
- */
-
 import { createSelector } from 'reselect';
+
+const selectForms = () => (state) => state.get('form');
 
 const selectOrderProfilePage = () => (state) => state.get('orderProfilePage');
 
@@ -21,6 +19,16 @@ const selectCurrentOrderLoaded = () => createSelector(
   (state) => state.get('currentOrderLoaded'),
 );
 
+const selectShippingFromModalOpen = () => createSelector(
+  selectOrderProfilePage(),
+  (state) => state.get('shippingFormModalOpen'),
+);
+
+const selectFulfillmentFormData = () => createSelector(
+  selectForms(),
+  (state) => state.getIn(['shippingForm', 'values']),
+);
+
 const selectLoading = () => createSelector(
   selectOrderProfilePage(),
   (state) => state.get('loading'),
@@ -30,5 +38,7 @@ export {
   selectCurrentOrder,
   selectCurrentOrderId,
   selectCurrentOrderLoaded,
+  selectFulfillmentFormData,
+  selectShippingFromModalOpen,
   selectLoading,
 };

@@ -9,9 +9,14 @@ import {
 import {
   loadOrderProfileDataSuccess,
   loadOrderProfileDataError,
+  updateOrderToProcessingSuccess,
+  updateOrderToProcessingError,
 } from './actions';
 import { selectOrders } from '../OrdersPage/selectors';
-import { selectCurrentOrderId } from './selectors';
+import {
+  selectCurrentOrderId,
+  selectFulfillmentFormData,
+} from './selectors';
 import request from 'utils/request';
 
 export function* getOrderById() {
@@ -50,26 +55,21 @@ export function* postUpdateOrderToProcessing() {
       credentials: 'include',
     });
 
-    yield put();
+    yield put(updateOrderToProcessingSuccess());
   } catch (err) {
-    yield put();
+    yield put(updateOrderToProcessingError());
   }
 }
 
 export function* postUpdateOrderToShipping() {
   const currentOrderId = yield select(selectCurrentOrderId());
+  const fulfillmentInfo = yield select(selectFulfillmentFormData());
   const requestURL = `http://api.teamruah.com/v1/order/updateToShipped?orderId=${currentOrderId}`;
 
   try {
     yield call(request, requestURL, {
       method: 'POST',
-      body: JSON.stringify({
-        CarrierCode: '<string>',
-        CarrierName: '<string>',
-        ShippingMethod: '<string>',
-        ShipTrackCode: '<string>',
-        EstimatedShipmentDate: '<datetime>',
-      }),
+      body: JSON.stringify(fulfillmentInfo),
       headers: {
         'Content-Type': 'application/json',
       },

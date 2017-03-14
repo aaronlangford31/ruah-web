@@ -12,12 +12,17 @@ import {
   selectCurrentOrder,
   selectCurrentOrderId,
   selectCurrentOrderLoaded,
+  selectShippingFromModalOpen,
 } from './selectors';
 import {
   loadOrderProfileData,
+  updateOrderToProcessing,
+  openFulfilmentDialog,
+  closeFulfilmentDialog,
 } from './actions';
 import Body from '../../components/styled/Body';
 import Menu from '../../components/partials/Menu';
+import Dialog from 'material-ui/Dialog';
 import MailIcon from 'material-ui/svg-icons/communication/contact-mail';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import ProductIcon from 'material-ui/svg-icons/action/work';
@@ -29,23 +34,24 @@ import {
   StepLabel,
 } from 'material-ui/Stepper';
 import ShippedIcon from 'material-ui/svg-icons/maps/local-shipping';
-import NewIcon from 'material-ui/svg-icons/av/fiber-new';
+import NewIcon from 'material-ui/svg-icons/av/new-releases';
 import ProcessingIcon from 'material-ui/svg-icons/action/update';
+import ShippingForm from '../../components/forms/ShippingForm';
 
 function NextStepButton(properties) {
   switch (properties.phase) {
     case 0:
       return (
         <RaisedButton
-          label="Acknowledged"
-          onTouchTap={() => properties.acknowledgeOrder()}
+          label="Acknowledge Now"
+          onTouchTap={() => properties.onAcknowledge()}
         />
       );
     case 1:
       return (
         <RaisedButton
-          label="Submit Fulfillment Info"
-          onTouchTap={() => properties.fulfillOrder()}
+          label="Submit Fulfillment Info Now"
+          onTouchTap={() => properties.onFulfill()}
         />
       );
     case 2:
@@ -122,8 +128,15 @@ function OrderComponent(properties) {
               <NextStepButton
                 phase={properties.order.OrderPhase}
                 onAcknowledge={properties.updateOrderToProcessing}
-                onFulfill={properties.updateOrderToShipped}
+                onFulfill={properties.openFulfilmentDialog}
               />
+              <Dialog
+                title={`Fulfillment Info for order ID ${properties.order.OrderId}`}
+                open={properties.shippingFormModalOpen}
+                onRequestClose={properties.closeFulfilmentDialog}
+              >
+                <ShippingForm handleSubmit={properties.updateOrderToShipping} handleCancel={properties.closeFulfilmentDialog} />
+              </Dialog>
             </div>
           </div>
         </div>
@@ -186,7 +199,6 @@ class OrderProfilePage extends Component {
     super(props);
     props.loadOrderData(props.router.params.orderId);
   }
-
   render() {
     return (
       <article>
@@ -202,6 +214,9 @@ class OrderProfilePage extends Component {
             order={this.props.order}
             updateOrderToProcessing={this.props.updateOrderToProcessing}
             updateOrderToShipping={this.props.updateOrderToShipping}
+            openFulfilmentDialog={this.props.openFulfilmentDialog}
+            closeFulfilmentDialog={this.props.closeFulfilmentDialog}
+            shippingFormModalOpen={this.props.shippingFormModalOpen}
           />
         </Body>
       </article>
@@ -214,6 +229,9 @@ OrderProfilePage.propTypes = {
   order: PropTypes.object,
   orderId: PropTypes.string,
   orderLoaded: PropTypes.bool,
+  shippingFormModalOpen: PropTypes.bool,
+  openFulfilmentDialog: PropTypes.func,
+  closeFulfilmentDialog: PropTypes.func,
   router: PropTypes.object,
   loadOrderData: PropTypes.func,
   updateOrderToProcessing: PropTypes.func,
@@ -229,6 +247,15 @@ export function mapDispatchToProps(dispatch) {
     loadOrderData: (orderId) => {
       dispatch(loadOrderProfileData(orderId));
     },
+    updateOrderToProcessing: () => {
+      dispatch(updateOrderToProcessing());
+    },
+    openFulfilmentDialog: () => {
+      dispatch(openFulfilmentDialog());
+    },
+    closeFulfilmentDialog: () => {
+      dispatch(closeFulfilmentDialog());
+    },
   };
 }
 
@@ -236,6 +263,7 @@ const mapStateToProps = createStructuredSelector({
   order: selectCurrentOrder(),
   orderId: selectCurrentOrderId(),
   orderLoaded: selectCurrentOrderLoaded(),
+  shippingFormModalOpen: selectShippingFromModalOpen(),
 });
 
 // Wrap the component to inject dispatch and state into it
