@@ -1,3 +1,5 @@
+import _ from 'underscore';
+import moment from 'moment';
 import {
   GET_ORDERS,
   GET_ORDERS_SUCCESS,
@@ -17,10 +19,27 @@ const initialState = fromJS({
 
 function ordersPageReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_ORDERS_SUCCESS:
+    case GET_ORDERS_SUCCESS: {
+      const transformedOrders = _.map(action.orders, (order) => ({
+        OrderId: order.OrderId,
+        OrderCreatedDate: moment(order.OrderCreatedDate),
+        BuyerEmail: order.BuyerEmail,
+        BuyerName: order.BuyerName,
+        BuyerPhone: order.BuyerPhone,
+        Fufilled: order.Fufilled,
+        OrderItems: order.OrderItems,
+        OrderPhase: order.OrderPhase,
+        ShipAddress: order.ShipAddress,
+        ShipAddress2: order.ShipAddress2,
+        ShipCity: order.ShipCity,
+        ShipState: order.ShipState,
+        ShipZip: order.ShipZip,
+      }));
+      transformedOrders.sort((a, b) => (a.OrderCreatedDate - b.OrderCreatedDate));
       return state
-        .set('orders', fromJS(action.orders))
+        .set('orders', fromJS(transformedOrders))
         .set('loading', false);
+    }
     case GET_ORDERS_ERROR:
       return state
         .set('error', action.error)
