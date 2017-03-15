@@ -1,43 +1,47 @@
-import { createSelector } from 'reselect';
+import { createSelector, createStructuredSelector } from 'reselect';
 
-const selectProductImportPage = () => (state) => state.get('productImportPage');
+const selectProductImportPageDomain = () => (state) => state.get('productImportPage');
 
 
 const selectUploadingToServer = () => createSelector(
-  selectProductImportPage(),
+  selectProductImportPageDomain(),
   (state) => state.get('uploadingToServer'),
 );
 
 const selectUploadedToServer = () => createSelector(
-  selectProductImportPage(),
+  selectProductImportPageDomain(),
   (state) => state.get('uploadedToServer'),
 );
 
 const selectUploadToServerFailed = () => createSelector(
-  selectProductImportPage(),
+  selectProductImportPageDomain(),
   (state) => state.get('uploadToServerFailed'),
 );
 
 const selectUploadDataErrors = () => createSelector(
-  selectProductImportPage(),
+  selectProductImportPageDomain(),
   (state) => state.get('dataErrors').toJS(),
 );
 
 const selectUploadFileError = () => createSelector(
-  selectProductImportPage(),
+  selectProductImportPageDomain(),
   (state) => state.get('fileError'),
 );
 
 const selectCsvData = () => createSelector(
-  selectProductImportPage(),
+  selectProductImportPageDomain(),
   (state) => state.get('csvFile'),
 );
 
+const selectProductImportPage = () => createStructuredSelector({
+  uploadingToServer: selectUploadingToServer(),
+  uploadSuccess: selectUploadedToServer(),
+  uploadFail: selectUploadToServerFailed(),
+  dataErrors: selectUploadDataErrors(),
+  fileError: selectUploadFileError(),
+});
+
+export default selectProductImportPage;
 export {
-  selectUploadingToServer,
-  selectUploadedToServer,
-  selectUploadToServerFailed,
-  selectUploadDataErrors,
-  selectUploadFileError,
   selectCsvData,
 };
