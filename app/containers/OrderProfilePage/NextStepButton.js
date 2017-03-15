@@ -7,14 +7,14 @@ const NextStepButton = ({ phase, onAcknowledge, onFulfill }) => {
       return (
         <RaisedButton
           label="Acknowledge Now"
-          onTouchTap={() => onAcknowledge()}
+          onTouchTap={onAcknowledge}
         />
       );
     case 1:
       return (
         <RaisedButton
           label="Submit Fulfillment Info Now"
-          onTouchTap={() => onFulfill()}
+          onTouchTap={onFulfill}
         />
       );
     case 2:
