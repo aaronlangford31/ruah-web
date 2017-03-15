@@ -69,13 +69,14 @@ export function updateOrderToShipping(orderId) {
   };
 }
 
-export function updateOrderToShippingSuccess() {
+export function onUpdateOrderToShippingSuccess(orderId) {
   return {
     type: UPDATE_ORDER_TO_SHIPPING_SUCCESS,
+    orderId,
   };
 }
 
-export function updateOrderToShippingError() {
+export function onUpdateOrderToShippingError() {
   return {
     type: UPDATE_ORDER_TO_SHIPPING_ERROR,
   };

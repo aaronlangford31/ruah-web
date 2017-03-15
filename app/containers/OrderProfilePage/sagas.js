@@ -1,5 +1,6 @@
 import { takeLatest } from 'redux-saga';
-import { call, put, select } from 'redux-saga/effects';
+import { call, put, select, take, cancel } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import _ from 'underscore';
 import {
   LOAD_ORDER_PROFILE_DATA,
@@ -11,6 +12,8 @@ import {
   loadOrderProfileDataError,
   updateOrderToProcessingSuccess,
   updateOrderToProcessingError,
+  onUpdateOrderToShippingSuccess,
+  onUpdateOrderToShippingError,
 } from './actions';
 import { selectOrders } from '../OrdersPage/selectors';
 import {
@@ -75,21 +78,28 @@ export function* postUpdateOrderToShipping() {
       },
       credentials: 'include',
     });
+    yield put(onUpdateOrderToShippingSuccess(currentOrderId));
   } catch (err) {
-    yield put();
+    yield put(onUpdateOrderToShippingError());
   }
 }
 
 export function* loadOrderProfileData() {
-  yield takeLatest(LOAD_ORDER_PROFILE_DATA, getOrderById);
+  const watcher = yield takeLatest(LOAD_ORDER_PROFILE_DATA, getOrderById);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export function* updateOrderToProcessing() {
-  yield takeLatest(UPDATE_ORDER_TO_PROCESSING, postUpdateOrderToProcessing);
+  const watcher = yield takeLatest(UPDATE_ORDER_TO_PROCESSING, postUpdateOrderToProcessing);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export function* updateOrderToShipped() {
-  yield takeLatest(UPDATE_ORDER_TO_SHIPPING, postUpdateOrderToShipping);
+  const watcher = yield takeLatest(UPDATE_ORDER_TO_SHIPPING, postUpdateOrderToShipping);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export default [

@@ -4,6 +4,7 @@ import {
   LOAD_ORDER_PROFILE_DATA,
   LOAD_ORDER_PROFILE_DATA_SUCCESS,
   UPDATE_ORDER_TO_PROCESSING_SUCCESS,
+  UPDATE_ORDER_TO_SHIPPING_SUCCESS,
   OPEN_FULFILMENT_DIALOG,
   CLOSE_FULFILMENT_DIALOG,
 } from './constants';
@@ -35,6 +36,13 @@ function orderProfilePageReducer(state = initialState, action) {
       order.OrderPhase += 1;
       return state
         .set('currentOrder', fromJS(order));
+    }
+    case UPDATE_ORDER_TO_SHIPPING_SUCCESS: {
+      const order = state.get('currentOrder').toJS();
+      order.OrderPhase += 1;
+      return state
+        .set('currentOrder', fromJS(order))
+        .set('shippingFormModalOpen', false);
     }
     case OPEN_FULFILMENT_DIALOG:
       return state

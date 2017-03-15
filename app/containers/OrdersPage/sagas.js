@@ -1,5 +1,6 @@
 import { takeLatest } from 'redux-saga';
-import { call, put } from 'redux-saga/effects';
+import { call, put, take, cancel } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   GET_ORDERS_REQUEST,
   UPDATE_ORDER_TO_PROCESSING,
@@ -71,15 +72,21 @@ export function* updateOrderToShipping({ orderId, values }) {
 }
 
 export function* getOrdersData() {
-  yield takeLatest(GET_ORDERS_REQUEST, getOrders);
+  const watcher = yield takeLatest(GET_ORDERS_REQUEST, getOrders);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export function* getUpdateOrderToProcessingData() {
-  yield takeLatest(UPDATE_ORDER_TO_PROCESSING, updateOrderToProcessing);
+  const watcher = yield takeLatest(UPDATE_ORDER_TO_PROCESSING, updateOrderToProcessing);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export function* getUpdateOrderToShippingData() {
-  yield takeLatest(UPDATE_ORDER_TO_SHIPPING, updateOrderToShipping);
+  const watcher = yield takeLatest(UPDATE_ORDER_TO_SHIPPING, updateOrderToShipping);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export default [
