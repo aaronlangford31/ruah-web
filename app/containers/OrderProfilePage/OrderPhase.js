@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import ShippedIcon from 'material-ui/svg-icons/maps/local-shipping';
 import NewIcon from 'material-ui/svg-icons/av/new-releases';
 import ProcessingIcon from 'material-ui/svg-icons/action/update';
+import colors from '../../styles/colors';
 import getStyles from './styles';
 
 function OrderPhase({ phase }) {
@@ -10,21 +11,21 @@ function OrderPhase({ phase }) {
     case 0:
       return (
         <div style={styles.new}>
-          <NewIcon color="#04BFBF" />
+          <NewIcon color={colors.darkBlue} />
           <p style={{ margin: 0 }}>New</p>
         </div>
       );
     case 1:
       return (
         <div style={styles.processing}>
-          <ProcessingIcon color="#F7E967" />
+          <ProcessingIcon color={colors.yellow} />
           <p style={{ margin: 0 }}>Processing</p>
         </div>
       );
     case 2:
       return (
         <div style={styles.shipped}>
-          <ShippedIcon color="#A9CF54" />
+          <ShippedIcon color={colors.lightGreen} />
           <p style={{ margin: 0 }}>Shipped</p>
         </div>
       );
