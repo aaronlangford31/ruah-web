@@ -25,7 +25,6 @@ const hasLowerCase = (string) => {
 const isAlphabetical = (string) => /^[A-Z]+$/i.test(string);
 
 const validate = (values) => {
-  // IMPORTANT: values is an Immutable.Map here!
   const errors = {};
   if (!values.get('email')) {
     errors.email = 'Required';

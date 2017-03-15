@@ -1,5 +1,5 @@
 import {
-  GET_ORDERS,
+  GET_ORDERS_REQUEST,
   GET_ORDERS_SUCCESS,
   GET_ORDERS_ERROR,
   UPDATE_ORDER_TO_PROCESSING,
@@ -13,7 +13,7 @@ import {
 
 export function getOrders() {
   return {
-    type: GET_ORDERS,
+    type: GET_ORDERS_REQUEST,
   };
 }
 
@@ -49,16 +49,18 @@ export function updateOrderToProcessingError() {
   };
 }
 
-export function updateOrderToShipping(orderId) {
+export function updateOrderToShipping(orderId, values) {
   return {
     type: UPDATE_ORDER_TO_SHIPPING,
     orderId,
+    values,
   };
 }
 
-export function updateOrderToShippingSuccess() {
+export function updateOrderToShippingSuccess(orderId) {
   return {
     type: UPDATE_ORDER_TO_SHIPPING_SUCCESS,
+    orderId,
   };
 }
 

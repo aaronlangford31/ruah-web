@@ -11,7 +11,7 @@
  */
 
 import {
-  LOGIN_SUBMIT,
+  LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   CHECK_LOGIN,
@@ -30,7 +30,7 @@ const initialState = fromJS({
 
 function appReducer(state = initialState, action) {
   switch (action.type) {
-    case LOGIN_SUBMIT:
+    case LOGIN_REQUEST:
       return state
         .set('loading', true)
         .set('error', false);

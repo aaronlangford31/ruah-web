@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Link } from 'react-router';
 import _ from 'underscore';
-import { getOrders } from './actions';
+import * as OrderActions from './actions';
 import { selectOrders } from './selectors';
 import Body from '../../components/styled/Body';
 import Divider from 'material-ui/Divider';
@@ -17,10 +17,13 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 
 class OrdersPage extends Component {
 
+  static propTypes = {
+    orders: PropTypes.array,
+    getOrders: PropTypes.func,
+  };
+
   componentDidMount() {
-    if (this.props.orders.length === 0) {
-      this.props.getOrders();
-    }
+    this.props.getOrders();
   }
 
   getOrderPhase(phase) {
@@ -127,15 +130,10 @@ class OrdersPage extends Component {
   }
 }
 
-OrdersPage.propTypes = {
-  orders: PropTypes.array,
-  getOrders: PropTypes.func,
-};
-
 export function mapDispatchToProps(dispatch) {
   return {
     getOrders: () => {
-      dispatch(getOrders());
+      dispatch(OrderActions.getOrders());
     },
   };
 }
@@ -144,5 +142,4 @@ const mapStateToProps = createStructuredSelector({
   orders: selectOrders(),
 });
 
-// Wrap the component to inject dispatch and state into it
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersPage);

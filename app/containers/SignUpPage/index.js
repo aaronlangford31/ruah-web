@@ -1,22 +1,16 @@
-/*
- * SignUpPage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-
 import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import SignUpForm from '../../components/forms/SignUpForm/index';
 import CodeForm from '../../components/forms/CodeForm/index';
-import { checkSignUpCode, submitSignUp, removeError } from './actions';
+import * as SignUpActions from './actions';
 import { selectValidSignUpCode, selectError, selectLoading } from './selectors';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 
-export const SignUpPage = ({ checkCode, signUp, validSignUpCode, error, close, loading }) => (
+export const SignUpPage = ({ checkSignUpCode, submitSignUp, validSignUpCode, error, close, loading }) => (
   <article>
     <Helmet
       title="Sign Up"
@@ -27,10 +21,11 @@ export const SignUpPage = ({ checkCode, signUp, validSignUpCode, error, close, l
     <H2>Sign Up</H2>
     <Body useBackground>
       {!validSignUpCode ? <CodeForm
-        checkCode={checkCode}
+        checkSignUpCode={checkSignUpCode}
         loading={loading}
       /> : <SignUpForm
-        signUp={signUp}
+        initialValues={{ code: validSignUpCode }}
+        signUp={submitSignUp}
         loading={loading}
       />}
     </Body>
@@ -39,8 +34,8 @@ export const SignUpPage = ({ checkCode, signUp, validSignUpCode, error, close, l
 );
 
 SignUpPage.propTypes = {
-  checkCode: PropTypes.func,
-  signUp: PropTypes.func,
+  checkSignUpCode: PropTypes.func,
+  submitSignUp: PropTypes.func,
   validSignUpCode: PropTypes.string,
   error: PropTypes.string,
   close: PropTypes.func,
@@ -49,16 +44,16 @@ SignUpPage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    checkCode: () => {
-      dispatch(checkSignUpCode());
+    checkSignUpCode: (values) => {
+      dispatch(SignUpActions.checkSignUpCode(values));
     },
 
-    signUp: () => {
-      dispatch(submitSignUp());
+    submitSignUp: (values) => {
+      dispatch(SignUpActions.submitSignUp(values));
     },
 
     close: () => {
-      dispatch(removeError());
+      dispatch(SignUpActions.removeError());
     },
   };
 }
@@ -69,5 +64,4 @@ const mapStateToProps = createStructuredSelector({
   loading: selectLoading(),
 });
 
-// Wrap the component to inject dispatch and state into it
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);

@@ -1,7 +1,3 @@
-/**
- * Gets the repositories of the user from Github
- */
-
 import { takeLatest } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 import { GET_PRODUCTS } from './constants';
@@ -12,7 +8,6 @@ export function* getProducts() {
   const requestURL = 'http://api.teamruah.com/v1/product/getproductcatalog';
 
   try {
-    // Call our request helper (see 'utils/request')
     const products = yield call(request, requestURL, {
       headers: {
         'Content-Type': 'application/json',
@@ -26,14 +21,10 @@ export function* getProducts() {
   }
 }
 
-/**
- * Root saga manages watcher lifecycle
- */
 export function* getProductsData() {
   yield* takeLatest(GET_PRODUCTS, getProducts);
 }
 
-// Bootstrap sagas
 export default [
   getProductsData,
 ];

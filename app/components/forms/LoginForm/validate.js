@@ -1,5 +1,4 @@
 const validate = (values) => {
-  // IMPORTANT: values is an Immutable.Map here!
   const errors = {};
 
   if (!values.get('email')) {

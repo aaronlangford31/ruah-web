@@ -1,14 +1,8 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-
 import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { submitCreateProduct, removeInvalidSku, removeError as removeErrorAction } from './actions';
+import * as ProductCreateActions from './actions';
 import { selectInvalidSku, selectError } from './selectors';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
@@ -60,14 +54,14 @@ ProductCreatePage.contextTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    createProduct: () => {
-      dispatch(submitCreateProduct());
+    createProduct: (values) => {
+      dispatch(ProductCreateActions.createProduct(values));
     },
     removeSku: () => {
-      dispatch(removeInvalidSku());
+      dispatch(ProductCreateActions.removeInvalidSku());
     },
     removeError: () => {
-      dispatch(removeErrorAction());
+      dispatch(ProductCreateActions.removeError());
     },
   };
 }
@@ -77,5 +71,4 @@ const mapStateToProps = createStructuredSelector({
   error: selectError(),
 });
 
-// Wrap the component to inject dispatch and state into it
 export default connect(mapStateToProps, mapDispatchToProps)(ProductCreatePage);

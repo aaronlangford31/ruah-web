@@ -1,10 +1,4 @@
-/*
- * OrderProfilePage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-
-import React, { PropTypes, Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -223,7 +217,6 @@ class OrderProfilePage extends Component {
     );
   }
 }
-
 
 OrderProfilePage.propTypes = {
   order: PropTypes.object,

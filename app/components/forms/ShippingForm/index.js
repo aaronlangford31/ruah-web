@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
 import FlatButton from 'material-ui/FlatButton';
 import BasicForm from '../../styled/BasicForm';
 import { TextField, DatePickerField } from '../Fields';
 import Grid from '../../styled/Grid';
+// import validate from './validate';
 
 const ShippingForm = (props) => (
   <BasicForm style={{ padding: 6 }}>
@@ -73,8 +74,8 @@ const validate = (vals) => {
 };
 
 ShippingForm.propTypes = {
-  handleSubmit: PropTypes.func,
-  handleCancel: PropTypes.func,
+  // handleSubmit: PropTypes.func,
+  // handleCancel: PropTypes.func,
 };
 
 export default reduxForm({

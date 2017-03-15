@@ -1,13 +1,15 @@
 import _ from 'underscore';
 import moment from 'moment';
 import {
-  GET_ORDERS,
+  GET_ORDERS_REQUEST,
   GET_ORDERS_SUCCESS,
   GET_ORDERS_ERROR,
   UPDATE_ORDER_TO_PROCESSING,
   UPDATE_ORDER_TO_PROCESSING_SUCCESS,
   UPDATE_ORDER_TO_PROCESSING_ERROR,
   REMOVE_ERROR,
+  UPDATE_ORDER_TO_SHIPPING_SUCCESS,
+  UPDATE_ORDER_TO_SHIPPING_ERROR,
 } from './constants';
 import { fromJS } from 'immutable';
 
@@ -44,7 +46,7 @@ function ordersPageReducer(state = initialState, action) {
       return state
         .set('error', action.error)
         .set('loading', false);
-    case GET_ORDERS:
+    case GET_ORDERS_REQUEST:
       return state
         .set('loading', true);
     case REMOVE_ERROR:
@@ -54,9 +56,25 @@ function ordersPageReducer(state = initialState, action) {
       return state
         .set('loading', true);
     case UPDATE_ORDER_TO_PROCESSING_SUCCESS:
+      console.log(state.get('orders').findIndex((order) => (order.get('OrderId') === action.orderId)));
       return state
+        .set('orders', state.get('orders').update(
+          state.get('orders').findIndex((order) => (order.get('OrderId') === action.orderId)),
+          (order) => order.set('OrderPhase', parseInt(order.get('OrderPhase'), 10) + 1)
+        ))
         .set('loading', false);
     case UPDATE_ORDER_TO_PROCESSING_ERROR:
+      return state
+        .set('loading', false);
+    case UPDATE_ORDER_TO_SHIPPING_SUCCESS:
+      console.log(state.get('orders').findIndex((order) => (order.get('OrderId') === action.orderId)));
+      return state
+        .set('orders', state.get('orders').update(
+          state.get('orders').findIndex((order) => (order.get('OrderId') === action.orderId)),
+          (order) => order.set('OrderPhase', parseInt(order.get('OrderPhase'), 10) + 1)
+        ))
+        .set('loading', false);
+    case UPDATE_ORDER_TO_SHIPPING_ERROR:
       return state
         .set('loading', false);
     default:
