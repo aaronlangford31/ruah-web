@@ -60,10 +60,6 @@ ProductImportPage.propTypes = {
   fileError: PropTypes.string,
 };
 
-ProductImportPage.contextTypes = {
-  router: PropTypes.object,
-};
-
 export function mapDispatchToProps(dispatch) {
   return {
     uploadTemplateFile: (csvData) => {
