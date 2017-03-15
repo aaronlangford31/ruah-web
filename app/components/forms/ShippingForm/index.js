@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
 import FlatButton from 'material-ui/FlatButton';
 import BasicForm from '../../styled/BasicForm';
 import { TextField, DatePickerField } from '../Fields';
 import Grid from '../../styled/Grid';
-// import validate from './validate';
+import validate from './validate';
 
-const ShippingForm = (props) => (
+const ShippingForm = ({ handleCancel, handleSubmit }) => (
   <BasicForm style={{ padding: 6 }}>
     <p style={{ marginLeft: 12, marginBottom: 0 }}>Enter Shipping Details.</p>
     <Grid size={3}>
@@ -43,39 +43,19 @@ const ShippingForm = (props) => (
     <div style={{ display: 'flex' }}>
       <FlatButton
         label="Cancel"
-        onTouchTap={props.handleCancel}
-      />,
+        onTouchTap={handleCancel}
+      />
       <FlatButton
         label="Submit"
-        onTouchTap={props.handleSubmit}
+        onTouchTap={handleSubmit}
       />
     </div>
   </BasicForm>
 );
 
-const validate = (vals) => {
-  const errors = {};
-  if (!vals.CarrierCode) {
-    errors.CarrierCode = 'Carrier Code required';
-  }
-  if (!vals.CarrierName) {
-    errors.CarrierName = 'Carrier Name required';
-  }
-  if (!vals.ShippingMethod) {
-    errors.ShippingMethod = 'Shippping Method required';
-  }
-  if (!vals.ShipTrackCode) {
-    errors.ShipTrackCode = 'Ship Track Code required';
-  }
-  if (!vals.EstimatedShipmentDate) {
-    errors.EstimatedShipmentDate = 'Estimated Shipment Date required';
-  }
-  return errors;
-};
-
 ShippingForm.propTypes = {
-  // handleSubmit: PropTypes.func,
-  // handleCancel: PropTypes.func,
+  handleSubmit: PropTypes.func,
+  handleCancel: PropTypes.func,
 };
 
 export default reduxForm({
