@@ -124,7 +124,7 @@ Order.propTypes = {
   order: PropTypes.object,
   updateOrderToProcessing: PropTypes.func,
   openFulfilmentDialog: PropTypes.func,
-  shippingFormModalOpen: PropTypes.func,
+  shippingFormModalOpen: PropTypes.bool,
   closeFulfilmentDialog: PropTypes.func,
   updateOrderToShipping: PropTypes.func,
 };
