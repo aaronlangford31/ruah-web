@@ -41,11 +41,18 @@ function productImportPageReducer(state = initialState, action) {
       return state
         .set('uploadedToServer', true)
         .set('uploadingToServer', false);
-    case SUBMIT_PRODUCT_IMPORT_DATA_ERROR:
+    case SUBMIT_PRODUCT_IMPORT_DATA_ERROR: {
+      const errors = action.errors.sort((a, b) => {
+        if (a.row !== b.row) {
+          return a.row - b.row;
+        }
+        return a.col - b.col;
+      });
       return state
         .set('uploadToServerFailed', true)
-        .set('dataErrors', fromJS(action.errors))
+        .set('dataErrors', fromJS(errors))
         .set('uploadingToServer', false);
+    }
     case SUBMIT_PRODUCT_IMPORT_FILE_ERROR:
       return state
         .set('uploadToServerFailed', true)
