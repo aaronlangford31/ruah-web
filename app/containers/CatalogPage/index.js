@@ -3,9 +3,9 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
-import _ from 'underscore';
 import { getProducts } from './actions';
-import { selectProducts } from './selectors';
+import { selectProducts, selectProductGroups } from './selectors';
+import getStyles from './styles';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import FlatButton from 'material-ui/FlatButton';
@@ -24,7 +24,12 @@ class CatalogPage extends Component {
 
   static propTypes = {
     products: PropTypes.array,
+    productGroups: PropTypes.object,
     getProducts: PropTypes.func,
+  };
+
+  static contextTypes = {
+    theme: PropTypes.object,
   };
 
   componentDidMount() {
@@ -33,34 +38,66 @@ class CatalogPage extends Component {
     }
   }
 
-  renderProducts = () => {
-    const { products } = this.props;
-    return _.map(products, (product, i) => (
+  renderHeader = () => (
+    <TableHeader
+      displaySelectAll={false}
+      adjustForCheckbox={false}
+      enableSelectAll={false}
+    >
+      <TableRow>
+        <TableHeaderColumn>Product Name</TableHeaderColumn>
+        <TableHeaderColumn>Image</TableHeaderColumn>
+        <TableHeaderColumn>SKU</TableHeaderColumn>
+        <TableHeaderColumn>Ruah Id</TableHeaderColumn>
+        <TableHeaderColumn>Inventory Available</TableHeaderColumn>
+        <TableHeaderColumn>Wholesale Price</TableHeaderColumn>
+        <TableHeaderColumn>Shipping Price</TableHeaderColumn>
+        <TableHeaderColumn>Variation Group</TableHeaderColumn>
+      </TableRow>
+    </TableHeader>
+  );
+
+  renderProductGroups = () => {
+    const { productGroups } = this.props;
+    return productGroups.entrySeq().map(([groupName, products]) => ([
+      this.renderProductGroupHeader(groupName),
+      this.renderProducts(products),
+    ]));
+  };
+
+  renderProductGroupHeader = (groupName) => {
+    const styles = getStyles(this.props, this.context.theme);
+    return (
+      <TableRow>
+        <TableRowColumn colSpan={8} style={styles.productGroupHeader}>
+          {groupName}
+        </TableRowColumn>
+      </TableRow>
+    );
+  };
+
+  renderProducts = (products) => (products.map((product, i) => {
+    const styles = getStyles(this.props, this.context.theme);
+    return (
       <TableRow key={i}>
-        <TableRowColumn><Link to={`/product/${product.Id}`}>{product.ProductName}</Link></TableRowColumn>
+        <TableRowColumn><Link to={`/product/${product.get('Id')}`}>{product.get('ProductName')}</Link></TableRowColumn>
         <TableRowColumn>
           <div
-            style={product.MainImageUri ? {
-              backgroundImage: `url(${product.MainImageUri})`,
-              backgroundSize: 'cover',
-              backgroundRepeat: 'no-repeat',
-              height: 50,
-              width: 50,
-            } : {
-              background: 'repeating-linear-gradient(45deg,transparent,transparent 10px,#ccc 10px,#ccc 20px)',
-              height: '100%',
-            }}
+            style={product.get('MainImageUri') ? {
+              ...styles.productImage,
+              backgroundImage: `url(${product.get('MainImageUri')})`,
+            } : styles.productImageEmpty}
           />
         </TableRowColumn>
-        <TableRowColumn>{product.SKU}</TableRowColumn>
-        <TableRowColumn>{product.RuahId}</TableRowColumn>
-        <TableRowColumn>{product.Inventory}</TableRowColumn>
-        <TableRowColumn>${product.WholesalePrice}</TableRowColumn>
-        <TableRowColumn>${product.ShippingFee}</TableRowColumn>
-        <TableRowColumn>{product.VariationGroupId}</TableRowColumn>
+        <TableRowColumn>{product.get('SKU')}</TableRowColumn>
+        <TableRowColumn>{product.get('RuahId')}</TableRowColumn>
+        <TableRowColumn>{product.get('Inventory')}</TableRowColumn>
+        <TableRowColumn>${product.get('WholesalePrice')}</TableRowColumn>
+        <TableRowColumn>${product.get('ShippingFee')}</TableRowColumn>
+        <TableRowColumn>{product.get('VariationGroupId')}</TableRowColumn>
       </TableRow>
-    ));
-  };
+    );
+  }));
 
   render() {
     return (
@@ -84,28 +121,12 @@ class CatalogPage extends Component {
                 </Link>
               </div>
               <Table selectable={false}>
-                <TableHeader
-                  displaySelectAll={false}
-                  adjustForCheckbox={false}
-                  enableSelectAll={false}
-                >
-                  <TableRow>
-                    <TableHeaderColumn>Product Name</TableHeaderColumn>
-                    <TableHeaderColumn>Image</TableHeaderColumn>
-                    <TableHeaderColumn>SKU</TableHeaderColumn>
-                    <TableHeaderColumn>Ruah Id</TableHeaderColumn>
-                    <TableHeaderColumn>Inventory Available</TableHeaderColumn>
-                    <TableHeaderColumn>Wholesale Price</TableHeaderColumn>
-                    <TableHeaderColumn>Shipping Price</TableHeaderColumn>
-                    <TableHeaderColumn>Variation Group</TableHeaderColumn>
-                  </TableRow>
-                </TableHeader>
+                {this.renderHeader()}
                 <TableBody displayRowCheckbox={false}>
-                  {this.renderProducts()}
+                  {this.renderProductGroups()}
                 </TableBody>
               </Table>
             </div>
-
           </div>
         </Body>
       </article>
@@ -123,7 +144,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   products: selectProducts(),
+  productGroups: selectProductGroups(),
 });
 
-// Wrap the component to inject dispatch and state into it
 export default connect(mapStateToProps, mapDispatchToProps)(CatalogPage);

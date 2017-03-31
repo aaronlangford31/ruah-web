@@ -1,5 +1,6 @@
 import { takeLatest } from 'redux-saga';
-import { call, put } from 'redux-saga/effects';
+import { call, put, take, cancel } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import { GET_PRODUCTS } from './constants';
 import { getProductsSuccess, getProductsError } from './actions';
 import request from 'utils/request';
@@ -22,7 +23,9 @@ export function* getProducts() {
 }
 
 export function* getProductsData() {
-  yield* takeLatest(GET_PRODUCTS, getProducts);
+  const watcher = yield takeLatest(GET_PRODUCTS, getProducts);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export default [

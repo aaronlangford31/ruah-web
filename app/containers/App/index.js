@@ -4,28 +4,23 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectUserType } from './selectors';
 import { checkLogin as actionCheckLogin, submitLogout as actionSubmitLogout } from './actions';
-import colors from '../../styles/colors';
+import getStyles from './styles';
+import theme from '../../theme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
-
-const styles = {
-  app: {
-    width: '100%',
-  },
-};
 
 import Header from 'components/partials/Header';
 import Footer from 'components/partials/Footer';
 
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: colors.darkBlue,
+    primary1Color: theme.getIn(['colors', 'darkBlue']),
 
     // primary2Color: cyan700,
     // primary3Color: grey400,
-    accent1Color: colors.lightGreen,
+    accent1Color: theme.getIn(['colors', 'lightGreen']),
 
     // accent2Color: grey100,
     // accent3Color: grey500,
@@ -56,6 +51,14 @@ class App extends Component {
     router: PropTypes.object,
   };
 
+  static childContextTypes = {
+    theme: PropTypes.object,
+  };
+
+  getChildContext() {
+    return { theme };
+  }
+
   componentWillMount() {
     const { checkLogin } = this.props;
     checkLogin();
@@ -69,6 +72,7 @@ class App extends Component {
 
   render() {
     const { children, userType, submitLogout } = this.props;
+    const styles = getStyles();
 
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
