@@ -1,7 +1,10 @@
+import { fromJS } from 'immutable';
 import {
   GET_PRODUCTS,
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS_ERROR,
+  OPEN_GROUP,
+  CLOSE_GROUP,
   REMOVE_ERROR,
 } from './constants';
 
@@ -14,13 +17,27 @@ export function getProducts() {
 export function getProductsSuccess(products) {
   return {
     type: GET_PRODUCTS_SUCCESS,
-    products,
+    payload: fromJS({ products }),
   };
 }
 
-export function getProductsError() {
+export function getProductsError(error) {
   return {
     type: GET_PRODUCTS_ERROR,
+    payload: fromJS({ error }),
+  };
+}
+
+export function openGroup(groupId) {
+  return {
+    type: OPEN_GROUP,
+    payload: fromJS({ groupId }),
+  };
+}
+export function closeGroup(groupId) {
+  return {
+    type: CLOSE_GROUP,
+    payload: fromJS({ groupId }),
   };
 }
 

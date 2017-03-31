@@ -56,7 +56,6 @@ function ordersPageReducer(state = initialState, action) {
       return state
         .set('loading', true);
     case UPDATE_ORDER_TO_PROCESSING_SUCCESS:
-      console.log(state.get('orders').findIndex((order) => (order.get('OrderId') === action.orderId)));
       return state
         .set('orders', state.get('orders').update(
           state.get('orders').findIndex((order) => (order.get('OrderId') === action.orderId)),
@@ -67,7 +66,6 @@ function ordersPageReducer(state = initialState, action) {
       return state
         .set('loading', false);
     case UPDATE_ORDER_TO_SHIPPING_SUCCESS:
-      console.log(state.get('orders').findIndex((order) => (order.get('OrderId') === action.orderId)));
       return state
         .set('orders', state.get('orders').update(
           state.get('orders').findIndex((order) => (order.get('OrderId') === action.orderId)),

@@ -3,6 +3,7 @@ export default function getStyles(props, theme) {
     productGroupHeader: {
       backgroundColor: theme.getIn(['colors', 'lightGray']),
       fontWeight: 'bold',
+      cursor: 'pointer',
     },
     productImage: {
       backgroundSize: 'cover',

@@ -1,15 +1,18 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
-import { getProducts } from './actions';
-import { selectProducts, selectProductGroups } from './selectors';
+import * as Actions from './actions';
+import { selectOpenGroups, selectProductGroups } from './selectors';
 import getStyles from './styles';
+import ProductRow from './ProductRow';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import FlatButton from 'material-ui/FlatButton';
 import FileUploadIcon from 'material-ui/svg-icons/file/file-upload';
+import RightIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import DownIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import Menu from '../../components/partials/Menu';
 import {
   Table,
@@ -20,10 +23,10 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 
-class CatalogPage extends Component {
+class CatalogPage extends PureComponent {
 
   static propTypes = {
-    products: PropTypes.array,
+    openGroups: PropTypes.object,
     productGroups: PropTypes.object,
     getProducts: PropTypes.func,
   };
@@ -33,7 +36,7 @@ class CatalogPage extends Component {
   };
 
   componentDidMount() {
-    if (this.props.products.length === 0) {
+    if (this.props.productGroups.size === 0) {
       this.props.getProducts();
     }
   }
@@ -59,44 +62,32 @@ class CatalogPage extends Component {
 
   renderProductGroups = () => {
     const { productGroups } = this.props;
+    const styles = getStyles(this.props, this.context.theme);
     return productGroups.entrySeq().map(([groupName, products]) => ([
-      this.renderProductGroupHeader(groupName),
-      this.renderProducts(products),
+      this.renderProductGroupHeader(groupName, styles),
+      this.renderProducts(products, styles),
     ]));
   };
 
-  renderProductGroupHeader = (groupName) => {
-    const styles = getStyles(this.props, this.context.theme);
+  renderProductGroupHeader = (groupId, styles) => {
+    const onClick = this.props.openGroups.includes(groupId) ? 'closeGroup' : 'openGroup';
     return (
-      <TableRow>
+      <TableRow onMouseDown={() => this.props[onClick](groupId)}>
         <TableRowColumn colSpan={8} style={styles.productGroupHeader}>
-          {groupName}
+          {onClick === 'openGroup' ? <RightIcon /> : <DownIcon />}
+          {groupId || 'Group Name Not Set'}
         </TableRowColumn>
       </TableRow>
     );
   };
 
-  renderProducts = (products) => (products.map((product, i) => {
-    const styles = getStyles(this.props, this.context.theme);
-    return (
-      <TableRow key={i}>
-        <TableRowColumn><Link to={`/product/${product.get('Id')}`}>{product.get('ProductName')}</Link></TableRowColumn>
-        <TableRowColumn>
-          <div
-            style={product.get('MainImageUri') ? {
-              ...styles.productImage,
-              backgroundImage: `url(${product.get('MainImageUri')})`,
-            } : styles.productImageEmpty}
-          />
-        </TableRowColumn>
-        <TableRowColumn>{product.get('SKU')}</TableRowColumn>
-        <TableRowColumn>{product.get('RuahId')}</TableRowColumn>
-        <TableRowColumn>{product.get('Inventory')}</TableRowColumn>
-        <TableRowColumn>${product.get('WholesalePrice')}</TableRowColumn>
-        <TableRowColumn>${product.get('ShippingFee')}</TableRowColumn>
-        <TableRowColumn>{product.get('VariationGroupId')}</TableRowColumn>
-      </TableRow>
-    );
+  renderProducts = (products, styles) => (products.map((product) => {
+    if (this.props.openGroups.includes(product.get('VariationGroupId'))) {
+      return (
+        <ProductRow product={product} styles={styles} />
+      );
+    }
+    return null;
   }));
 
   render() {
@@ -137,13 +128,19 @@ class CatalogPage extends Component {
 export function mapDispatchToProps(dispatch) {
   return {
     getProducts: () => {
-      dispatch(getProducts());
+      dispatch(Actions.getProducts());
+    },
+    openGroup: (groupId) => {
+      dispatch(Actions.openGroup(groupId));
+    },
+    closeGroup: (groupId) => {
+      dispatch(Actions.closeGroup(groupId));
     },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  products: selectProducts(),
+  openGroups: selectOpenGroups(),
   productGroups: selectProductGroups(),
 });
 

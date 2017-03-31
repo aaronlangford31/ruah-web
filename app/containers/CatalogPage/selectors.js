@@ -3,9 +3,9 @@ import { List, Map } from 'immutable';
 
 const selectCatalogPage = () => (state) => state.get('catalogPage');
 
-const selectProducts = () => createSelector(
+const selectOpenGroups = () => createSelector(
   selectCatalogPage(),
-  (state) => state.get('products').toJS(),
+  (state) => state.get('openGroups'),
 );
 
 const selectProductGroups = () => createSelector(
@@ -31,7 +31,7 @@ const selectLoading = () => createSelector(
 );
 
 export {
-  selectProducts,
+  selectOpenGroups,
   selectProductGroups,
   selectLoading,
 };
