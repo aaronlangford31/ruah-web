@@ -32,7 +32,7 @@ export function* submitSignUp({ values }) {
 
   const validUserIdURL = `http://api.teamruah.com/v1/user/userIdExists?userId=${userId}`;
 
-  const validUserId = yield call(request, validUserIdURL);
+  const validUserId = yield call(request, validUserIdURL, {});
 
   if (!validUserId) {
     const body = {
