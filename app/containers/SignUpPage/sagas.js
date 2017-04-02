@@ -13,11 +13,10 @@ import request from 'utils/request';
 
 export function* checkSignUpCode({ values }) {
   const signUpCode = values.get('code');
-
   const requestURL = `http://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${signUpCode}`;
 
   try {
-    const validSignUpCodeStatus = yield call(request, requestURL);
+    const validSignUpCodeStatus = yield call(request, requestURL, {});
     if (validSignUpCodeStatus) {
       yield put(signUpCodeChecked(signUpCode));
     } else {
