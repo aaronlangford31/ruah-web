@@ -29,10 +29,10 @@ const ProductImportPage = (props) => (
     />
     <Body>
       <div style={{ display: 'flex' }}>
-        <div style={{ flex: 3, marginRight: 24 }}>
+        <div style={{ flex: 2, marginRight: 24 }}>
           <Menu />
         </div>
-        <div style={{ flex: 9 }}>
+        <div style={{ flex: 10 }}>
           {!props.uploadingToServer && !props.uploadSuccess && !props.uploadFail && <ImportActions
             onUpload={props.uploadTemplateFile}
           />}
