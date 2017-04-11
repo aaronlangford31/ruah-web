@@ -1,4 +1,5 @@
 import {
+  FILTER_PRODUCTS,
   GET_PRODUCTS,
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS_ERROR,
@@ -10,6 +11,7 @@ import { fromJS } from 'immutable';
 
 const initialState = fromJS({
   loading: false,
+  filter: '',
   error: '',
   products: [],
   openGroups: [],
@@ -28,6 +30,9 @@ function catalogPageReducer(state = initialState, action) {
     case GET_PRODUCTS:
       return state
         .set('loading', true);
+    case FILTER_PRODUCTS:
+      return state
+        .set('filter', action.payload.get('filter'));
     case OPEN_GROUP:
       return state
         .set('openGroups', state.get('openGroups').push(action.payload.get('groupId')));

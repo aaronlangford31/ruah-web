@@ -11,7 +11,7 @@ const backgroundImage = _.sample([
   surfImage,
 ]);
 
-const Paper = ({ children, useBackground }) =>
+const Paper = ({ children, useBackground, style }) =>
   <MaterialPaper
     style={{
       marginTop: 0,
@@ -22,6 +22,7 @@ const Paper = ({ children, useBackground }) =>
       display: useBackground ? 'flex' : 'block',
       alignItems: useBackground ? 'center' : 'stretch',
       justifyContent: useBackground ? 'center' : 'flex-start',
+      ...style,
     }}
   >
     {children}
@@ -30,11 +31,13 @@ const Paper = ({ children, useBackground }) =>
 Paper.propTypes = {
   children: PropTypes.node,
   useBackground: PropTypes.bool,
+  style: PropTypes.object,
 };
 
 Paper.defaultProps = {
   useBackground: false,
   center: false,
+  style: {},
 };
 
 export default Paper;

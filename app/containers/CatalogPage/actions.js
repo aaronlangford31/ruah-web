@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable';
 import {
+  FILTER_PRODUCTS,
   GET_PRODUCTS,
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS_ERROR,
@@ -7,6 +8,13 @@ import {
   CLOSE_GROUP,
   REMOVE_ERROR,
 } from './constants';
+
+export function filterProducts(filter) {
+  return {
+    type: FILTER_PRODUCTS,
+    payload: fromJS({ filter }),
+  };
+}
 
 export function getProducts() {
   return {

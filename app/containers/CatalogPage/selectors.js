@@ -3,16 +3,30 @@ import { List, Map } from 'immutable';
 
 const selectCatalogPage = () => (state) => state.get('catalogPage');
 
+const selectFilter = () => createSelector(
+  selectCatalogPage(),
+  (state) => state.get('filter'),
+);
+
+const selectProducts = () => createSelector(
+  selectCatalogPage(),
+  (state) => state.get('products'),
+);
+
 const selectOpenGroups = () => createSelector(
   selectCatalogPage(),
   (state) => state.get('openGroups'),
 );
 
 const selectProductGroups = () => createSelector(
-  selectCatalogPage(),
-  (state) => {
+  [selectProducts(), selectFilter()],
+  (products, filter) => {
     let productsGroups = new Map();
-    state.get('products').forEach((product) => {
+    products.filter((product) => (
+      product.get('RuahId').indexOf(filter) !== -1
+      || product.get('SKU').indexOf(filter) !== -1
+      || product.get('ProductName').indexOf(filter) !== -1
+    )).forEach((product) => {
       const groupId = product.get('VariationGroupId');
       if (!productsGroups.has(groupId)) {
         productsGroups = productsGroups.set(groupId, new List());

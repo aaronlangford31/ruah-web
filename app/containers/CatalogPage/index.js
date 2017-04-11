@@ -10,6 +10,7 @@ import ProductRow from './ProductRow';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 import FileUploadIcon from 'material-ui/svg-icons/file/file-upload';
 import RightIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import DownIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
@@ -29,6 +30,7 @@ class CatalogPage extends PureComponent {
     openGroups: PropTypes.object,
     productGroups: PropTypes.object,
     getProducts: PropTypes.func,
+    filterProducts: PropTypes.func,
   };
 
   static contextTypes = {
@@ -40,6 +42,10 @@ class CatalogPage extends PureComponent {
       this.props.getProducts();
     }
   }
+
+  filterProducts = ({ target: { value } }) => {
+    this.props.filterProducts(value);
+  };
 
   renderHeader = () => (
     <TableHeader
@@ -100,24 +106,25 @@ class CatalogPage extends PureComponent {
           ]}
         />
         <H2>Catalog</H2>
-        <Body>
-          <div style={{ display: 'flex' }}>
-            <div style={{ flex: 3, marginRight: 24 }}>
-              <Menu />
-            </div>
-            <div style={{ flex: 9 }}>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
-                <Link to={'product/import'}>
-                  <FlatButton label="Import" icon={<FileUploadIcon />} labelPosition="before" />
-                </Link>
+        <Body style={{ display: 'flex' }}>
+          <div style={{ flex: 3, marginRight: 24 }}>
+            <Menu />
+          </div>
+          <div style={{ flex: 9 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <div>
+                <TextField onChange={this.filterProducts} floatingLabelText="Filter" />
               </div>
-              <Table selectable={false}>
-                {this.renderHeader()}
-                <TableBody displayRowCheckbox={false}>
-                  {this.renderProductGroups()}
-                </TableBody>
-              </Table>
+              <Link to={'product/import'}>
+                <FlatButton label="Import" icon={<FileUploadIcon />} labelPosition="before" />
+              </Link>
             </div>
+            <Table selectable={false}>
+              {this.renderHeader()}
+              <TableBody displayRowCheckbox={false}>
+                {this.renderProductGroups()}
+              </TableBody>
+            </Table>
           </div>
         </Body>
       </article>
@@ -127,6 +134,9 @@ class CatalogPage extends PureComponent {
 
 export function mapDispatchToProps(dispatch) {
   return {
+    filterProducts: (filter) => {
+      dispatch(Actions.filterProducts(filter));
+    },
     getProducts: () => {
       dispatch(Actions.getProducts());
     },
