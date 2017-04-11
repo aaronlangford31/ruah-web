@@ -24,10 +24,10 @@ function Order({
 }) {
   return (
     <div style={{ display: 'flex' }}>
-      <div style={{ flex: 3, marginRight: 24 }}>
+      <div style={{ flex: 2, marginRight: 24 }}>
         <Menu />
       </div>
-      <div style={{ flex: 9 }}>
+      <div style={{ flex: 10 }}>
         <h4 style={{ marginBottom: 0 }}>Order ID: {order.OrderId}</h4>
         <div style={{ display: 'flex' }}>
           <p style={{ fontSize: '12px', flex: 90 }}>

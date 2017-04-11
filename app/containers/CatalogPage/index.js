@@ -107,10 +107,10 @@ class CatalogPage extends PureComponent {
         />
         <H2>Catalog</H2>
         <Body style={{ display: 'flex' }}>
-          <div style={{ flex: 3, marginRight: 24 }}>
+          <div style={{ flex: 2, marginRight: 24 }}>
             <Menu />
           </div>
-          <div style={{ flex: 9 }}>
+          <div style={{ flex: 10 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
               <div>
                 <TextField onChange={this.filterProducts} floatingLabelText="Filter" />

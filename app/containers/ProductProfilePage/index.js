@@ -114,10 +114,10 @@ class ProductProfilePage extends Component {
         <H2>Product</H2>
         <Body>
           <div style={{ display: 'flex' }}>
-            <div style={{ flex: 3, marginRight: 24 }}>
+            <div style={{ flex: 2, marginRight: 24 }}>
               <Menu />
             </div>
-            <div style={{ flex: 9 }}>
+            <div style={{ flex: 10 }}>
               {this.renderProduct()}
             </div>
           </div>
