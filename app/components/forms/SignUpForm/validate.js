@@ -1,10 +1,10 @@
-import { hasLowerCase, hasUpperCase, isAlphabetical } from '../../../helpers';
+import { hasLowerCase, hasUpperCase, isAlphabetical, isValidEmail } from '../../../helpers';
 
 const validate = (values) => {
   const errors = {};
   if (!values.get('email')) {
     errors.email = 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.get('email'))) {
+  } else if (isValidEmail(values.get('email'))) {
     errors.email = 'Invalid email address';
   }
 

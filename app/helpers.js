@@ -25,3 +25,7 @@ export function hasLowerCase(string) {
 export function isAlphabetical(string) {
   return /^[A-Z]+$/i.test(string);
 }
+
+export function isValidEmail(string) {
+  return !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(string);
+}
