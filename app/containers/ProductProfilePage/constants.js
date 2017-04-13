@@ -1,0 +1,3 @@
+export const UPDATE_INVENTORY = 'ruah/CatalogPage/UPDATE_INVENTORY';
+export const UPDATE_INVENTORY_SUCCESS = 'ruah/CatalogPage/UPDATE_INVENTORY_SUCCESS';
+export const UPDATE_INVENTORY_ERROR = 'ruah/CatalogPage/UPDATE_INVENTORY_ERROR';

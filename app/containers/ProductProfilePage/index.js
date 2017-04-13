@@ -2,28 +2,33 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import _ from 'underscore';
 import { connect } from 'react-redux';
+import Divider from 'material-ui/Divider';
+import { GridList, GridTile } from 'material-ui/GridList';
 import { createStructuredSelector } from 'reselect';
 import { selectProducts } from './selectors';
+import * as Actions from './actions';
 import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import Menu from '../../components/partials/Menu';
-import Divider from 'material-ui/Divider';
-import { GridList, GridTile } from 'material-ui/GridList';
+import UpdateInventoryForm from '../../components/forms/UpdateInventoryForm';
 
 class ProductProfilePage extends Component {
 
   static propTypes = {
     products: PropTypes.array,
     router: PropTypes.object,
+    updateInventory: PropTypes.func,
   };
 
   static contextTypes = {
     router: PropTypes.object,
+    theme: PropTypes.object,
   };
 
   /* eslint-disable react/no-danger */
   renderProduct() {
-    const { router, products } = this.props;
+    const { router, products, updateInventory } = this.props;
+    const { theme } = this.context;
     const product = _.chain(products).filter({ Id: router.params.productId }).first().value() || {};
     return (
       <div style={{ display: 'flex' }}>
@@ -33,7 +38,7 @@ class ProductProfilePage extends Component {
               <img src={product.MainImageUri} alt={product.ProductName} />
             </GridTile>
             {_.map(product.AltImageUris, (uri, i) => (
-              <GridTile title={`Alternate ${(i + 1)}`} titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)">
+              <GridTile key={i} title={`Alternate ${(i + 1)}`} titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)">
                 <img src={uri} alt={product.ProducName} />
               </GridTile>
             ))}
@@ -52,7 +57,12 @@ class ProductProfilePage extends Component {
           </div>
           <div style={{ display: 'flex' }}>
             <p style={{ flex: 30 }}>Inventory:</p>
-            <p style={{ flex: 70 }}>{product.Inventory}</p>
+            <div style={{ flex: 70, ...theme.getIn(['spacing', 'paragaph']) }}>
+              <UpdateInventoryForm
+                initialValues={{ Inventory: product.Inventory, RuahId: product.RuahId }}
+                updateInventory={updateInventory}
+              />
+            </div>
           </div>
           <h3>Basic Info</h3>
           <Divider />
@@ -86,7 +96,7 @@ class ProductProfilePage extends Component {
             <div style={{ flex: 30 }}>Bullets:</div>
             <ul style={{ flex: 70 }}>
               {_.map(product.Bullets, (content, title) => (
-                <li>
+                <li key={title}>
                   <div>{title}</div>
                   <div>{content}</div>
                 </li>
@@ -127,8 +137,12 @@ class ProductProfilePage extends Component {
   }
 }
 
-export function mapDispatchToProps() {
-  return {};
+export function mapDispatchToProps(dispatch) {
+  return {
+    updateInventory: (payload) => {
+      dispatch(Actions.updateInventory(payload));
+    },
+  };
 }
 
 const mapStateToProps = createStructuredSelector({

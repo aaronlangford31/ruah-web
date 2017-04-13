@@ -23,9 +23,9 @@ const selectProductGroups = () => createSelector(
   (products, filter) => {
     let productsGroups = new Map();
     products.filter((product) => (
-      product.get('RuahId').indexOf(filter) !== -1
-      || product.get('SKU').indexOf(filter) !== -1
-      || product.get('ProductName').indexOf(filter) !== -1
+      product.get('RuahId').toLowerCase().indexOf(filter.toLowerCase()) !== -1
+      || product.get('SKU').toLowerCase().indexOf(filter.toLowerCase()) !== -1
+      || product.get('ProductName').toLowerCase().indexOf(filter.toLowerCase()) !== -1
     )).forEach((product) => {
       const groupId = product.get('VariationGroupId');
       if (!productsGroups.has(groupId)) {

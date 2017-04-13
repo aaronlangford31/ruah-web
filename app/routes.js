@@ -138,13 +138,15 @@ export default function createRoutes(store) {
       name: 'product-profile',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
+          System.import('containers/ProductProfilePage/sagas'),
           System.import('containers/ProductProfilePage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([component]) => {
+        importModules.then(([sagas, component]) => {
           renderRoute(component);
+          injectSagas(sagas.default);
         });
 
         importModules.catch(errorLoading);

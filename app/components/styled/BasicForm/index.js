@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const BasicForm = styled.form`
+  ${(props) => !props.plain && `
   display: flex;
   flex-direction: column;
   padding: 40px;
@@ -9,7 +10,7 @@ const BasicForm = styled.form`
   
   > .button {
     margin-top: 10px;
-  }
+  }`} 
 `;
 
 export default BasicForm;
