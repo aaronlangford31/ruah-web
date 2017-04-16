@@ -35,6 +35,10 @@ export function* submitImport() {
   const requestURL = 'http://api.teamruah.com/v1/product/csvBatchCreate';
 
   const data = yield readCsv(csvData);
+  if (data.length > 5000) {
+    yield put(submitProductImportFileError(`This file exceeds the limit for a single product upload. There were ${data.length} rows read from this file. If that number is not consistent with what appears in your spreadsheet application, make sure that your CSV file has no trailing blank rows.`));
+    return;
+  }
   try {
     // Call our request helper (see 'utils/request')
     yield put(submitProductImport());
