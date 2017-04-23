@@ -6,7 +6,11 @@ const ProductRow = (props) => {
   const { product, styles } = props;
   return (
     <TableRow key={product.get('Id')}>
-      <TableRowColumn><Link to={`/product/${product.get('Id')}`}>{product.get('ProductName')}</Link></TableRowColumn>
+      <TableRowColumn style={styles.productNameColumn}>
+        <Link to={`/product/${product.get('Id')}`}>
+          {product.get('ProductName')}
+        </Link>
+      </TableRowColumn>
       <TableRowColumn>
         <div
           style={product.get('MainImageUri') ? {

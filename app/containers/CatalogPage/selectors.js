@@ -13,11 +13,6 @@ const selectProducts = () => createSelector(
   (state) => state.get('products'),
 );
 
-const selectOpenGroups = () => createSelector(
-  selectCatalogPage(),
-  (state) => state.get('openGroups'),
-);
-
 const selectProductGroups = () => createSelector(
   [selectProducts(), selectFilter()],
   (products, filter) => {
@@ -45,7 +40,6 @@ const selectLoading = () => createSelector(
 );
 
 export {
-  selectOpenGroups,
   selectProductGroups,
   selectLoading,
 };

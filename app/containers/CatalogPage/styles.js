@@ -1,10 +1,12 @@
-export default function getStyles(props, theme) {
+export default function getStyles() {
   return {
-    productGroupHeader: {
-      backgroundColor: theme.getIn(['colors', 'lightGray']),
-      fontWeight: 'bold',
-      cursor: 'pointer',
+    header: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'flex-end',
+      marginBottom: 12,
     },
+    productNameColumn: { width: 530 },
     productImage: {
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
