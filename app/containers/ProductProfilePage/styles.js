@@ -12,18 +12,20 @@ export default function getStyles() {
       borderLeft: 'none',
       borderRight: 'none',
     },
-    imageColumn: { width: 75 },
-    productNameColumn: { width: 300 },
+    horizontalDiv: {
+      display: 'flex',
+    },
+    imageColumn: { width: 150 },
     tinyId: {
-      fontSize: '10px',
+      fontSize: '14px',
       color: 'grey',
     },
     number: { textAlign: 'right' },
     productImage: {
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
-      height: 50,
-      width: 50,
+      height: 125,
+      width: 125,
     },
     productImageEmpty: {
       background: 'repeating-linear-gradient(45deg,transparent,transparent 10px,#ccc 10px,#ccc 20px)',

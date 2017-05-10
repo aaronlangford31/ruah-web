@@ -52,13 +52,11 @@ class CatalogPage extends PureComponent {
         enableSelectAll={false}
       >
         <TableRow>
-          <TableHeaderColumn style={styles.productNameColumn}>Product Name</TableHeaderColumn>
-          <TableHeaderColumn>Image</TableHeaderColumn>
-          <TableHeaderColumn>ID</TableHeaderColumn>
-          <TableHeaderColumn>Ruah Id</TableHeaderColumn>
-          <TableHeaderColumn>Inventory Available</TableHeaderColumn>
-          <TableHeaderColumn>Wholesale Price</TableHeaderColumn>
-          <TableHeaderColumn>Shipping Price</TableHeaderColumn>
+          <TableHeaderColumn style={styles.imageColumn}>Image</TableHeaderColumn>
+          <TableHeaderColumn style={styles.productNameColumn}>Product Identifiers</TableHeaderColumn>
+          <TableHeaderColumn style={styles.number}>Inventory Available</TableHeaderColumn>
+          <TableHeaderColumn style={styles.number}>Wholesale Price</TableHeaderColumn>
+          <TableHeaderColumn style={styles.number}>Shipping Price</TableHeaderColumn>
           <TableHeaderColumn>Variation Group</TableHeaderColumn>
         </TableRow>
       </TableHeader>
@@ -87,15 +85,15 @@ class CatalogPage extends PureComponent {
             { name: 'description', content: 'Catalog Page' },
           ]}
         />
-        <H2>Catalog</H2>
         <Body style={{ display: 'flex' }}>
           <div style={{ flex: 2, marginRight: 24 }}>
             <Menu />
           </div>
           <div style={{ flex: 10 }}>
+            <H2>Catalog</H2>
             <div style={styles.header}>
               <div>
-                <TextField onChange={this.filterProducts} floatingLabelText="Keyword" />
+                <TextField onChange={this.filterProducts} floatingLabelText="Filter" />
               </div>
               <Link to={'product/import'}>
                 <FlatButton label="Import" icon={<FileUploadIcon />} labelPosition="before" />

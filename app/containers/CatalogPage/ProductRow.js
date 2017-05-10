@@ -6,12 +6,7 @@ const ProductRow = (props) => {
   const { product, styles } = props;
   return (
     <TableRow key={product.get('Id')}>
-      <TableRowColumn style={styles.productNameColumn}>
-        <Link to={`/product/${product.get('Id')}`}>
-          {product.get('ProductName')}
-        </Link>
-      </TableRowColumn>
-      <TableRowColumn>
+      <TableRowColumn style={styles.imageColumn}>
         <div
           style={product.get('MainImageUri') ? {
             ...styles.productImage,
@@ -19,11 +14,20 @@ const ProductRow = (props) => {
           } : styles.productImageEmpty}
         />
       </TableRowColumn>
-      <TableRowColumn>{product.get('SKU')}</TableRowColumn>
-      <TableRowColumn>{product.get('RuahId')}</TableRowColumn>
-      <TableRowColumn>{product.get('Inventory')}</TableRowColumn>
-      <TableRowColumn>${product.get('WholesalePrice')}</TableRowColumn>
-      <TableRowColumn>${product.get('ShippingFee')}</TableRowColumn>
+      <TableRowColumn style={styles.productNameColumn}>
+        <Link to={`/product/${product.get('Id')}`}>
+          {product.get('ProductName')}
+        </Link>
+        <div style={styles.tinyId}>
+          SKU: {product.get('SKU')}
+        </div>
+        <div style={styles.tinyId}>
+          RUAH-ID: {product.get('RuahId')}
+        </div>
+      </TableRowColumn>
+      <TableRowColumn style={styles.number}>{product.get('Inventory')}</TableRowColumn>
+      <TableRowColumn style={styles.number}>${product.get('WholesalePrice').toFixed(2)}</TableRowColumn>
+      <TableRowColumn style={styles.number}>${product.get('ShippingFee').toFixed(2)}</TableRowColumn>
       <TableRowColumn>{product.get('VariationGroupId')}</TableRowColumn>
     </TableRow>
   );
