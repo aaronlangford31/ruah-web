@@ -1,18 +1,30 @@
 import { createSelector } from 'reselect';
 
-const selectCatalogPage = () => (state) => state.get('catalogPage');
+const selectProductProfilePage = () => (state) => state.get('productProfilePage');
 
-const selectProducts = () => createSelector(
-  selectCatalogPage(),
-  (state) => state.get('products').toJS(),
+const selectCurrentProduct = () => createSelector(
+  selectProductProfilePage(),
+  (state) => state.get('currentProduct'),
+);
+
+const selectCurrentProductId = () => createSelector(
+  selectProductProfilePage(),
+  (state) => state.get('currentProductId'),
 );
 
 const selectLoading = () => createSelector(
-  selectCatalogPage(),
+  selectProductProfilePage(),
   (state) => state.get('loading'),
 );
 
+const selectNotFound = () => createSelector(
+  selectProductProfilePage(),
+  (state) => state.get('notFound'),
+);
+
 export {
-  selectProducts,
+  selectCurrentProduct,
+  selectCurrentProductId,
   selectLoading,
+  selectNotFound,
 };

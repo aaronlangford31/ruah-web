@@ -41,5 +41,6 @@ const selectLoading = () => createSelector(
 
 export {
   selectProductGroups,
+  selectProducts,
   selectLoading,
 };
