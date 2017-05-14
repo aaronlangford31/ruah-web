@@ -4,7 +4,7 @@ const selectProductProfilePage = () => (state) => state.get('productProfilePage'
 
 const selectCurrentProduct = () => createSelector(
   selectProductProfilePage(),
-  (state) => state.get('currentProduct'),
+  (state) => state.get('currentProduct').toJS(),
 );
 
 const selectCurrentProductId = () => createSelector(

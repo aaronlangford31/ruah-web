@@ -47,7 +47,7 @@ class ProductProfilePage extends Component {
   }
   /* eslint-disable react/no-danger */
   renderProduct() {
-    const { handlerUpdateInventory } = this.props;
+    const { handleUpdateInventoryForm } = this.props;
     const { theme } = this.context;
     const styles = getStyles();
     return (
@@ -90,7 +90,7 @@ class ProductProfilePage extends Component {
                 <div style={{ flex: 70, ...theme.getIn(['spacing', 'paragaph']) }}>
                   <UpdateInventoryForm
                     initialValues={{ Inventory: this.props.product.Inventory, RuahId: this.props.product.RuahId }}
-                    updateInventory={handlerUpdateInventory}
+                    updateInventory={handleUpdateInventoryForm}
                   />
                 </div>
               </div>
@@ -189,7 +189,7 @@ ProductProfilePage.propTypes = {
   notFound: PropTypes.bool,
   product: PropTypes.object,
   router: PropTypes.object,
-  handlerUpdateInventory: PropTypes.func,
+  handleUpdateInventoryForm: PropTypes.func,
   getProductById: PropTypes.func,
 };
 
@@ -200,7 +200,7 @@ ProductProfilePage.contextTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    updateInventory: (payload) => {
+    handleUpdateInventoryForm: (payload) => {
       dispatch(updateInventory(payload));
     },
     getProductById: (id) => {

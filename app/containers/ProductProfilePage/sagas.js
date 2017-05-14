@@ -41,7 +41,7 @@ export function* getProductById() {
       }
     }
   } else {
-    const product = _.findWhere(localProducts, { RuahId: currentProductId });
+    const product = _.findWhere(localProducts.toJS(), { RuahId: currentProductId });
     if (product !== undefined) {
       yield put(getProductByIdSuccess(product));
     } else {

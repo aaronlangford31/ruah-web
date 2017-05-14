@@ -7,7 +7,7 @@ import {
 
 const initialState = fromJS({
   loading: true,
-  currentProduct: {},
+  currentProduct: fromJS({}),
   currentProductId: '',
   notFound: false,
 });
@@ -18,7 +18,7 @@ function productProfilePageReducer(state = initialState, action) {
       return state
         .set('loading', true)
         .set('notFound', false)
-        .set('currentProduct', {})
+        .set('currentProduct', fromJS({}))
         .set('currentProductId', action.RuahId);
     }
     case GET_PRODUCT_BY_ID_SUCCESS: {

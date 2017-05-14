@@ -15,7 +15,7 @@ const ProductRow = (props) => {
         />
       </TableRowColumn>
       <TableRowColumn style={styles.productNameColumn}>
-        <Link to={`/product/${product.get('Id')}`}>
+        <Link to={`/product/${product.get('RuahId')}`}>
           {product.get('ProductName')}
         </Link>
         <div style={styles.tinyId}>
