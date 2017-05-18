@@ -1,15 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Paper as MaterialPaper } from 'material-ui';
-import _ from 'underscore';
-import lavaImage from './lava.jpg';
-import mountainImage from './mountain.jpg';
-import surfImage from './surf.jpg';
-
-const backgroundImage = _.sample([
-  lavaImage,
-  mountainImage,
-  surfImage,
-]);
+import Ocean from './Ocean.jpg';
 
 const Paper = ({ children, useBackground, style }) =>
   <MaterialPaper
@@ -17,7 +8,7 @@ const Paper = ({ children, useBackground, style }) =>
       marginTop: 0,
       padding: '24px 24px 24px 0',
       minHeight: 600,
-      backgroundImage: useBackground ? `url(${backgroundImage})` : 'none',
+      background: useBackground ? `linear-gradient(rgba(202, 252, 216, 0.1), rgba(202, 252, 216, 0.25)), url(${Ocean})` : 'none',
       backgroundSize: useBackground ? 'cover' : 'auto',
       display: useBackground ? 'flex' : 'block',
       alignItems: useBackground ? 'center' : 'stretch',

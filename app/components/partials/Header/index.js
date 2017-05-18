@@ -6,7 +6,7 @@ import Logo from './logo.png';
 
 const Header = ({ userType, submitLogout }) => (
   <nav>
-    <Toolbar style={{ backgroundColor: '#04BFBF' }}>
+    <Toolbar style={{ backgroundColor: '#FFFFFF' }}>
       <ToolbarGroup>
         <div style={{ height: '100%' }}>
           <Link to={'/'}>
@@ -15,12 +15,6 @@ const Header = ({ userType, submitLogout }) => (
         </div>
       </ToolbarGroup>
       <ToolbarGroup>
-        {!userType && <Link to={'/sign-up'} style={{ marginRight: '12px' }}>
-          <RaisedButton label="Sign Up" />
-        </Link>}
-        {!userType && <Link to={'/'}>
-          <RaisedButton label="Login" />
-        </Link>}
         {userType && <Link to={'#'}>
           <RaisedButton label="Logout" onClick={submitLogout} />
         </Link>}

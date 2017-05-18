@@ -8,7 +8,6 @@ import * as SignUpActions from './actions';
 import { selectValidSignUpCode, selectError, selectLoading } from './selectors';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
-import H2 from '../../components/styled/H2';
 
 export const SignUpPage = ({ checkSignUpCode, submitSignUp, validSignUpCode, error, close, loading }) => (
   <article>
@@ -18,7 +17,6 @@ export const SignUpPage = ({ checkSignUpCode, submitSignUp, validSignUpCode, err
         { name: 'description', content: 'Sign Up Page' },
       ]}
     />
-    <H2>Sign Up</H2>
     <Body useBackground>
       {!validSignUpCode ? <CodeForm
         checkSignUpCode={checkSignUpCode}

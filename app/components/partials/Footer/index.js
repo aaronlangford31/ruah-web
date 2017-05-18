@@ -2,7 +2,13 @@ import React from 'react';
 
 const styles = {
   footer: {
-    marginTop: '24px',
+    padding: '10px',
+    position: 'fixed',
+    left: '0px',
+    bottom: '0px',
+    height: '45px',
+    width: '100%',
+    background: 'linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75))',
   },
 };
 
