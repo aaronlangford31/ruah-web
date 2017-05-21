@@ -3,22 +3,23 @@ import { call, put, select, take, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import _ from 'underscore';
 import {
-  UPDATE_INVENTORY,
   GET_PRODUCT_BY_ID,
   URI_GET_PRODUCT_BY_ID,
+  SAVE_EDIT_CURRENT_PRODUCT,
+  URI_PUT_PRODUCT,
 } from './constants';
 import {
-  updateInventorySuccess,
-  updateInventoryError,
   getProductByIdSuccess,
   getProductByIdNotFound,
   getProductByIdError,
+  saveCurrentProductEditsSuccess,
+  saveCurrentProductEditsFail,
 } from './actions';
-import { selectCurrentProductId } from './selectors';
+import { selectCurrentProductId, selectCurrentProduct } from './selectors';
 import { selectProducts } from '../CatalogPage/selectors';
 import request from 'utils/request';
 
-export function* getProductById() {
+function* getProductById() {
   const currentProductId = yield select(selectCurrentProductId());
   const localProducts = yield select(selectProducts());
   if (localProducts.size === 0) {
@@ -32,6 +33,7 @@ export function* getProductById() {
           credentials: 'include',
         },
       );
+      product.Bullets = _.map(product.Bullets, (content, title) => ({ content, title }));
       yield put(getProductByIdSuccess(product));
     } catch (err) {
       if (err.status === 404) {
@@ -50,19 +52,30 @@ export function* getProductById() {
   }
 }
 
-export function* updateInventory({ ruahId, inventory }) {
-  const requestURL = `http://api.teamruah.com/v1/product/updateInventory?ruahId=${ruahId}&inventory=${inventory}`;
+function* putProductEdit() {
+  const product = yield select(selectCurrentProduct());
+  const proudctId = yield select(selectCurrentProductId());
+  product.Bullets = _.reduce(product.Bullets,
+    (dict, bullet) => {
+      const mutated = dict;
+      mutated[bullet.title] = bullet.content;
+      return mutated;
+    },
+    {});
   try {
-    yield call(request, requestURL, {
-      headers: {
-        'Content-Type': 'application/json',
+    yield call(
+      request,
+      `${URI_PUT_PRODUCT}?id=${proudctId}`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(product),
+        credentials: 'include',
       },
-      credentials: 'include',
-    });
-
-    yield put(updateInventorySuccess());
+    );
+    yield put(saveCurrentProductEditsSuccess());
   } catch (err) {
-    yield put(updateInventoryError(`Error: ${err.message}`));
+    yield put(saveCurrentProductEditsFail());
   }
 }
 
@@ -72,13 +85,13 @@ export function* findProductById() {
   yield cancel(watcher);
 }
 
-export function* updateInventoryData() {
-  const watcher = yield takeLatest(UPDATE_INVENTORY, updateInventory);
+export function* saveProduct() {
+  const watcher = yield takeLatest(SAVE_EDIT_CURRENT_PRODUCT, putProductEdit);
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
 
 export default [
   findProductById,
-  updateInventoryData,
+  saveProduct,
 ];

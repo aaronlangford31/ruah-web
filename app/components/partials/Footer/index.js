@@ -8,7 +8,7 @@ const styles = {
     bottom: '0px',
     height: '45px',
     width: '100%',
-    background: 'linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75))',
+    background: 'linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 1))',
   },
 };
 

@@ -17,6 +17,11 @@ const selectLoading = () => createSelector(
   (state) => state.get('loading'),
 );
 
+const selectIsEditing = () => createSelector(
+  selectProductProfilePage(),
+  (state) => state.get('isEditing')
+);
+
 const selectNotFound = () => createSelector(
   selectProductProfilePage(),
   (state) => state.get('notFound'),
@@ -26,5 +31,6 @@ export {
   selectCurrentProduct,
   selectCurrentProductId,
   selectLoading,
+  selectIsEditing,
   selectNotFound,
 };

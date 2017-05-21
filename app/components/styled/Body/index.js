@@ -6,7 +6,7 @@ const Paper = ({ children, useBackground, style }) =>
   <MaterialPaper
     style={{
       marginTop: 0,
-      padding: '24px 24px 24px 0',
+      padding: '24px 24px 48px 0',
       minHeight: 600,
       background: useBackground ? `linear-gradient(rgba(202, 252, 216, 0.1), rgba(202, 252, 216, 0.25)), url(${Ocean})` : 'none',
       backgroundSize: useBackground ? 'cover' : 'auto',

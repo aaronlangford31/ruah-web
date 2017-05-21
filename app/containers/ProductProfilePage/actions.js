@@ -1,12 +1,15 @@
-import { fromJS } from 'immutable';
 import {
   GET_PRODUCT_BY_ID,
   GET_PRODUCT_BY_ID_SUCCESS,
   GET_PRODUCT_BY_ID_NOT_FOUND,
   GET_PRODUCT_BY_ID_ERROR,
-  UPDATE_INVENTORY,
-  UPDATE_INVENTORY_SUCCESS,
-  UPDATE_INVENTORY_ERROR,
+  START_EDIT_CURRENT_PRODUCT,
+  EDIT_CURRENT_PRODUCT,
+  CANCEL_EDIT_CURRENT_PRODUCT,
+  SAVE_EDIT_CURRENT_PRODUCT,
+  SAVE_EDIT_CURRENT_PRODUCT_SUCCESS,
+  SAVE_EDIT_CURRENT_PRODUCT_FAIL,
+  EDIT_VALIDATION_FAILURE,
 } from './constants';
 
 export function getProductById(RuahId) {
@@ -35,22 +38,47 @@ export function getProductByIdError() {
   };
 }
 
-export function updateInventory(payload) {
+export function startEditCurrentProduct() {
   return {
-    type: UPDATE_INVENTORY,
-    payload: fromJS(payload),
+    type: START_EDIT_CURRENT_PRODUCT,
   };
 }
 
-export function updateInventorySuccess() {
+export function cancelEditCurrentProduct() {
   return {
-    type: UPDATE_INVENTORY_SUCCESS,
+    type: CANCEL_EDIT_CURRENT_PRODUCT,
   };
 }
 
-export function updateInventoryError(error) {
+export function editCurrentProduct(newVal, field) {
   return {
-    type: UPDATE_INVENTORY_ERROR,
-    payload: fromJS({ error }),
+    type: EDIT_CURRENT_PRODUCT,
+    newVal,
+    field,
+  };
+}
+
+export function editValidationFailure(errors) {
+  return {
+    type: EDIT_VALIDATION_FAILURE,
+    errors,
+  };
+}
+
+export function saveCurrentProductEdits() {
+  return {
+    type: SAVE_EDIT_CURRENT_PRODUCT,
+  };
+}
+
+export function saveCurrentProductEditsSuccess() {
+  return {
+    type: SAVE_EDIT_CURRENT_PRODUCT_SUCCESS,
+  };
+}
+
+export function saveCurrentProductEditsFail() {
+  return {
+    type: SAVE_EDIT_CURRENT_PRODUCT_FAIL,
   };
 }

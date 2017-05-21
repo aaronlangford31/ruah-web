@@ -9,17 +9,25 @@ import {
   selectCurrentProduct,
   selectLoading,
   selectNotFound,
+  selectIsEditing,
 } from './selectors';
 import {
-  updateInventory,
   getProductById,
+  startEditCurrentProduct,
+  cancelEditCurrentProduct,
+  editCurrentProduct,
+  saveCurrentProductEdits,
 } from './actions';
 import getStyles from './styles';
 import Body from '../../components/styled/Body';
 import Menu from '../../components/partials/Menu';
-import UpdateInventoryForm from '../../components/forms/UpdateInventoryForm';
 import SadFaceIcon from 'material-ui/svg-icons/social/sentiment-very-dissatisfied';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
+import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit';
+import SaveIcon from 'material-ui/svg-icons/content/save';
+import CancelIcon from 'material-ui/svg-icons/navigation/cancel';
 
 class ProductProfilePage extends Component {
   constructor(props) {
@@ -34,6 +42,222 @@ class ProductProfilePage extends Component {
       </div>
     );
   }
+
+  renderMarketplaceInfoReadOnly() {
+    const styles = getStyles();
+    return (
+      <div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Wholesale Price:</p>
+          <p style={styles.productFieldRowVal}>${this.props.product.WholesalePrice.toFixed(2)}</p>
+        </div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Shipping Fee:</p>
+          <p style={styles.productFieldRowVal}>${this.props.product.ShippingFee.toFixed(2)}</p>
+        </div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Inventory Available:</p>
+          <div style={styles.productFieldRowVal}>{this.props.product.Inventory}</div>
+        </div>
+      </div>
+    );
+  }
+
+  renderMarketplaceInfoEdit() {
+    const styles = getStyles();
+    const onFieldChange = (ev, newVal) => { this.props.handleEditProduct(newVal, ev.target.id); };
+    return (
+      <div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Wholesale Price:</p>
+          <div style={styles.productFieldRowVal}>
+            <TextField
+              id={'WholesalePrice'}
+              type={'number'}
+              min={0.01}
+              step={0.01}
+              value={this.props.product.WholesalePrice.toFixed(2)}
+              onChange={onFieldChange}
+            />
+          </div>
+        </div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Shipping Fee:</p>
+          <div style={styles.productFieldRowVal}>
+            <TextField
+              id={'ShippingFee'}
+              type={'number'}
+              min={0.00}
+              step={0.01}
+              value={this.props.product.ShippingFee.toFixed(2)}
+              onChange={onFieldChange}
+            />
+          </div>
+        </div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Inventory Available:</p>
+          <div style={styles.productFieldRowVal}>
+            <TextField
+              id={'Inventory'}
+              type={'number'}
+              min={0}
+              step={1}
+              value={this.props.product.Inventory}
+              onChange={onFieldChange}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* eslint-disable react/no-danger */
+  renderGlobalAttributesReadOnly() {
+    const styles = getStyles();
+    return (
+      <div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Product Name:</p>
+          <p style={styles.productFieldRowVal}>{this.props.product.ProductName}</p>
+        </div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Brand Name:</p>
+          <p style={styles.productFieldRowVal}>{this.props.product.Brand}</p>
+        </div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Manufacturer Name:</p>
+          <p style={styles.productFieldRowVal}>{this.props.product.ManufacturerName}</p>
+        </div>
+        <div style={styles.productFieldRow}>
+          <div style={styles.productFieldRowHeader}>Description:</div>
+          <span style={styles.productFieldRowVal} dangerouslySetInnerHTML={{ __html: this.props.product.Description }} />
+        </div>
+        <div style={styles.productFieldRow}>
+          <div style={styles.productFieldRowHeader}>Bullets:</div>
+          <ul style={styles.productFieldRowVal}>
+            {_.map(this.props.product.Bullets, (bullet, ix) => (
+              <li key={ix}>
+                <div>{bullet.title}</div>
+                <div>{bullet.content}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div style={styles.productFieldRow}>
+          <div style={styles.productFieldRowHeader}>Keywords:</div>
+          <div style={styles.productFieldRowVal}>{this.props.product.Keywords}</div>
+        </div>
+      </div>
+    );
+  }
+
+  renderGlobalAttributesEdit() {
+    const styles = getStyles();
+    const onFieldChange = (ev, newVal) => { this.props.handleEditProduct(newVal, ev.target.id); };
+    const onBulletTitleChange = (ev, newVal) => {
+      const bullets = this.props.product.Bullets;
+      bullets[ev.target.name].title = newVal;
+      this.props.handleEditProduct(bullets, 'Bullets');
+    };
+    const onBulletContentChange = (ev, newVal) => {
+      const bullets = this.props.product.Bullets;
+      bullets[ev.target.name].content = newVal;
+      this.props.handleEditProduct(bullets, 'Bullets');
+    };
+    return (
+      <div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Product Name:</p>
+          <div style={styles.productFieldRowVal}>
+            <TextField
+              id={'ProductName'}
+              type={'text'}
+              fullWidth
+              value={this.props.product.ProductName}
+              onChange={onFieldChange}
+            />
+          </div>
+        </div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Brand Name:</p>
+          <div style={styles.productFieldRowVal}>
+            <TextField
+              id={'Brand'}
+              type={'text'}
+              fullWidth
+              value={this.props.product.Brand}
+              onChange={onFieldChange}
+            />
+          </div>
+        </div>
+        <div style={styles.productFieldRow}>
+          <p style={styles.productFieldRowHeader}>Manufacturer Name:</p>
+          <div style={styles.productFieldRowVal}>
+            <TextField
+              id={'ManufacturerName'}
+              type={'text'}
+              fullWidth
+              value={this.props.product.ManufacturerName}
+              onChange={onFieldChange}
+            />
+          </div>
+        </div>
+        <div style={styles.productFieldRow}>
+          <div style={styles.productFieldRowHeader}>Description:</div>
+          <div style={styles.productFieldRowVal}>
+            <TextField
+              id={'Description'}
+              type={'text'}
+              fullWidth
+              multiLine
+              value={this.props.product.Description}
+              onChange={onFieldChange}
+            />
+          </div>
+        </div>
+        <div style={styles.productFieldRow}>
+          <div style={styles.productFieldRowHeader}>Bullets:</div>
+          <ul style={styles.productFieldRowVal}>
+            {_.map(this.props.product.Bullets, (bullet, ix) => (
+              <li key={ix}>
+                <TextField
+                  id={bullet.title}
+                  name={`${ix}`}
+                  type={'text'}
+                  fullWidth
+                  value={bullet.title}
+                  onChange={onBulletTitleChange}
+                />
+                <TextField
+                  id={bullet.content}
+                  name={`${ix}`}
+                  type={'text'}
+                  fullWidth
+                  multiLine
+                  value={bullet.content}
+                  onChange={onBulletContentChange}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div style={styles.productFieldRow}>
+          <div style={styles.productFieldRowHeader}>Keywords:</div>
+          <div style={styles.productFieldRowVal}>
+            <TextField
+              id={'Keywords'}
+              type={'text'}
+              fullWidth
+              multiLine
+              value={this.props.product.Keywords}
+              onChange={onFieldChange}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderNotFound() {
     return (
       <div>
@@ -45,10 +269,8 @@ class ProductProfilePage extends Component {
       </div>
     );
   }
-  /* eslint-disable react/no-danger */
+
   renderProduct() {
-    const { handleUpdateInventoryForm } = this.props;
-    const { theme } = this.context;
     const styles = getStyles();
     return (
       <div>
@@ -62,7 +284,7 @@ class ProductProfilePage extends Component {
                 } : styles.productImageEmpty}
               />
             </div>
-            <div>
+            <div style={{ width: '100%' }}>
               <h2>
                 {this.props.product.ProductName}
               </h2>
@@ -73,68 +295,28 @@ class ProductProfilePage extends Component {
                 RUAH-ID: {this.props.product.RuahId}
               </div>
             </div>
-            <div>{this.props.product.VariationGroupId}</div>
+            {this.props.isEditing ?
+              <div style={styles.horizontalDiv}>
+                <IconButton onTouchTap={this.props.handleSaveProduct}>
+                  <SaveIcon />
+                </IconButton>
+                <IconButton onTouchTap={this.props.handleCancelEditProduct}>
+                  <CancelIcon />
+                </IconButton>
+              </div>
+              : <div style={styles.horizontalDiv}>
+                <IconButton onTouchTap={this.props.handleStartEditProduct}>
+                  <ModeEditIcon />
+                </IconButton>
+              </div>
+            }
           </div>
           <Tabs>
             <Tab label="Marketplace Info">
-              <div style={{ display: 'flex' }}>
-                <p style={{ flex: 30 }}>Wholesale Price:</p>
-                <p style={{ flex: 70 }}>${this.props.product.WholesalePrice.toFixed(2)}</p>
-              </div>
-              <div style={{ display: 'flex' }}>
-                <p style={{ flex: 30 }}>Shipping Fee:</p>
-                <p style={{ flex: 70 }}>${this.props.product.ShippingFee.toFixed(2)}</p>
-              </div>
-              <div style={{ display: 'flex' }}>
-                <p style={{ flex: 30 }}>Inventory Available:</p>
-                <div style={{ flex: 70, ...theme.getIn(['spacing', 'paragaph']) }}>
-                  <UpdateInventoryForm
-                    initialValues={{ Inventory: this.props.product.Inventory, RuahId: this.props.product.RuahId }}
-                    updateInventory={handleUpdateInventoryForm}
-                  />
-                </div>
-              </div>
+              {this.props.isEditing ? this.renderMarketplaceInfoEdit() : this.renderMarketplaceInfoReadOnly()}
             </Tab>
             <Tab label="Global Attributes">
-              <div style={{ display: 'flex' }}>
-                <p style={{ flex: 30 }}>Product Name:</p>
-                <p style={{ flex: 70 }}>{this.props.product.ProductName}</p>
-              </div>
-              <div style={{ display: 'flex' }}>
-                <p style={{ flex: 30 }}>SKU:</p>
-                <p style={{ flex: 70 }}>{this.props.product.SKU}</p>
-              </div>
-              <div style={{ display: 'flex' }}>
-                <p style={{ flex: 30 }}>Ruah Id:</p>
-                <p style={{ flex: 70 }}>{this.props.product.RuahId}</p>
-              </div>
-              <div style={{ display: 'flex' }}>
-                <p style={{ flex: 30 }}>Brand Name:</p>
-                <p style={{ flex: 70 }}>{this.props.product.Brand}</p>
-              </div>
-              <div style={{ display: 'flex' }}>
-                <p style={{ flex: 30 }}>Manufacturer Name:</p>
-                <p style={{ flex: 70 }}>{this.props.product.ManufacturerName}</p>
-              </div>
-              <div style={{ display: 'flex' }}>
-                <div style={{ flex: 30 }}>Description:</div>
-                <span style={{ flex: 70 }} dangerouslySetInnerHTML={{ __html: this.props.product.Description }} />
-              </div>
-              <div style={{ display: 'flex' }}>
-                <div style={{ flex: 30 }}>Bullets:</div>
-                <ul style={{ flex: 70 }}>
-                  {_.map(this.props.product.Bullets, (content, title) => (
-                    <li key={title}>
-                      <div>{title}</div>
-                      <div>{content}</div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div style={{ display: 'flex' }}>
-                <div style={{ flex: 30 }}>Keywords:</div>
-                <div style={{ flex: 70 }}>{this.props.product.Keywords}</div>
-              </div>
+              {this.props.isEditing ? this.renderGlobalAttributesEdit() : this.renderGlobalAttributesReadOnly()}
             </Tab>
             <Tab label="Media">
               <div style={{ display: 'flex' }}>
@@ -187,9 +369,13 @@ class ProductProfilePage extends Component {
 ProductProfilePage.propTypes = {
   loading: PropTypes.bool,
   notFound: PropTypes.bool,
+  isEditing: PropTypes.bool,
   product: PropTypes.object,
   router: PropTypes.object,
-  handleUpdateInventoryForm: PropTypes.func,
+  handleStartEditProduct: PropTypes.func,
+  handleEditProduct: PropTypes.func,
+  handleSaveProduct: PropTypes.func,
+  handleCancelEditProduct: PropTypes.func,
   getProductById: PropTypes.func,
 };
 
@@ -200,8 +386,17 @@ ProductProfilePage.contextTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    handleUpdateInventoryForm: (payload) => {
-      dispatch(updateInventory(payload));
+    handleStartEditProduct: () => {
+      dispatch(startEditCurrentProduct());
+    },
+    handleCancelEditProduct: () => {
+      dispatch(cancelEditCurrentProduct());
+    },
+    handleSaveProduct: () => {
+      dispatch(saveCurrentProductEdits());
+    },
+    handleEditProduct: (newVal, field) => {
+      dispatch(editCurrentProduct(newVal, field));
     },
     getProductById: (id) => {
       dispatch(getProductById(id));
@@ -213,6 +408,7 @@ const mapStateToProps = createStructuredSelector({
   product: selectCurrentProduct(),
   loading: selectLoading(),
   notFound: selectNotFound(),
+  isEditing: selectIsEditing(),
 });
 
 // Wrap the component to inject dispatch and state into it
