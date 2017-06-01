@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as SignUpActions from './actions';
-import { selectValidSignUpCode, selectError, selectLoading } from './selectors';
+import { selectError } from './selectors';
 import IntroductionForm from '../../components/forms/IntroductionForm';
 import Body from '../../components/styled/Body';
 import { transparentCard, ruahH1, ruahH2 } from './styles';
@@ -39,7 +39,7 @@ export const IntroductionPage = ({ submitIntroduction }) => (
 
 IntroductionPage.propTypes = {
   submitIntroduction: PropTypes.func,
-  submitted: PropTypes.bool,
+  /*submitted: PropTypes.bool,*/
 };
 
 export function mapDispatchToProps(dispatch) {
