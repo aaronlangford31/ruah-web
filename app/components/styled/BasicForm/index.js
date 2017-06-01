@@ -6,11 +6,11 @@ const BasicForm = styled.form`
   flex-direction: column;
   padding: 40px;
   border-radius: 3px;
-  background: rgba(255, 255, 255, 0.75);
-  
+  background: rgba(255, 255, 255, 0.85);
+
   > .button {
     margin-top: 10px;
-  }`} 
+  }`}
 `;
 
 export default BasicForm;
