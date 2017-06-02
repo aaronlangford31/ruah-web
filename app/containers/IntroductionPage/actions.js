@@ -1,65 +1,23 @@
 import {
-  INVALID_USER_ID_DETECTED,
-  SUBMIT_SIGN_UP,
-  SUBMIT_SIGN_UP_SUCCESS,
-  SUBMIT_SIGN_UP_ERROR,
-  CHECK_SIGN_UP_CODE,
-  CHECK_SIGN_UP_CODE_SUCCESS,
-  CHECK_SIGN_UP_CODE_ERROR,
-  REMOVE_ERROR,
+  SUBMIT_INTRODUCTION_FORM,
+  SUBMIT_INTRODUCTION_FORM_SUCCESS,
+  SUBMIT_INTRODUCTION_FORM_FAIL,
 } from './constants';
 
-export function invalidUserIdDetected() {
+export function submitIntroductionForm() {
   return {
-    type: INVALID_USER_ID_DETECTED,
-    error: 'Invalid user id. User Id Taken.',
+    type: SUBMIT_INTRODUCTION_FORM,
   };
 }
 
-export function submitSignUp(values) {
+export function submitIntroductionFormSuccess() {
   return {
-    type: SUBMIT_SIGN_UP,
-    values,
+    type: SUBMIT_INTRODUCTION_FORM_SUCCESS,
   };
 }
 
-export function submitSignUpComplete(result) {
+export function submitIntroductionFormFail() {
   return {
-    type: SUBMIT_SIGN_UP_SUCCESS,
-    result,
-  };
-}
-
-export function submitSignUpError(error) {
-  return {
-    type: SUBMIT_SIGN_UP_ERROR,
-    error,
-  };
-}
-
-export function checkSignUpCode(values) {
-  return {
-    type: CHECK_SIGN_UP_CODE,
-    values,
-  };
-}
-
-export function signUpCodeChecked(code) {
-  return {
-    type: CHECK_SIGN_UP_CODE_SUCCESS,
-    code,
-  };
-}
-
-export function signUpCodeCheckingError(error) {
-  return {
-    type: CHECK_SIGN_UP_CODE_ERROR,
-    error,
-  };
-}
-
-export function removeError() {
-  return {
-    type: REMOVE_ERROR,
+    type: SUBMIT_INTRODUCTION_FORM_FAIL,
   };
 }

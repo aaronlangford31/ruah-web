@@ -1,13 +1,56 @@
 import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
+import validate from './validate';
 import RaisedButton from 'material-ui/RaisedButton';
-import Spinner from '../../../components/styled/Spinner';
 import { TextField, CheckboxField } from '../Fields';
 
-const IntroductionForm = ({ handleSubmit, login, loading }) => (
+const IntroductionForm = ({ handleSubmit, invalid, pristine }) => (
   <div style={{ display: 'flex' }}>
-    { loading && <Spinner /> }
-    <form onSubmit={handleSubmit(login)}>
+    <form onSubmit={handleSubmit}>
+      <h3 style={{ marginBottom: 0 }}>What do your friends call you?</h3>
+      <Field
+        name="name"
+        type="text"
+        label="Name"
+        component={TextField}
+      />
+      <h3 style={{ marginBottom: 0 }}>What is the name of your business?</h3>
+      <Field
+        name="business"
+        type="text"
+        label="Business Name"
+        component={TextField}
+      />
+      <h3 style={{ marginBottom: 0 }}>Where are you located?</h3>
+      <div>
+        <Field
+          name="city"
+          type="text"
+          label="City"
+          style={{ paddingRight: '10px' }}
+          component={TextField}
+        />
+        <Field
+          name="sovereignty"
+          type="text"
+          label="State/Province"
+          style={{ width: '110px', paddingLeft: '10px' }}
+          component={TextField}
+        />
+      </div>
+      <Field
+        name="country"
+        type="text"
+        label="Country"
+        component={TextField}
+      />
+      <h3 style={{ marginBottom: 0 }}>What is the best e-mail to reach you at?</h3>
+      <Field
+        name="email"
+        type="email"
+        label="E-mail"
+        component={TextField}
+      />
       <h3>Where do you currently sell things?</h3>
       <Field
         name="websiteChannel"
@@ -42,6 +85,7 @@ const IntroductionForm = ({ handleSubmit, login, loading }) => (
       <Field
         name="otherChannelDetail"
         type="text"
+        multiLine
         component={TextField}
       />
       <br />
@@ -73,6 +117,7 @@ const IntroductionForm = ({ handleSubmit, login, loading }) => (
       <Field
         name="otherSourceDetail"
         type="text"
+        multiLine
         component={TextField}
       />
       <h3>How did you hear about Ruah?</h3>
@@ -109,10 +154,12 @@ const IntroductionForm = ({ handleSubmit, login, loading }) => (
       <Field
         name="interest"
         type="text"
+        label="A thought or two will do"
+        multiLine
         component={TextField}
       />
       <div style={{ marginTop: 12, display: 'flex' }} className="button">
-        <RaisedButton type="submit">Send</RaisedButton>
+        <RaisedButton type="submit" disabled={pristine || invalid}>Send</RaisedButton>
       </div>
     </form>
   </div>
@@ -121,10 +168,11 @@ const IntroductionForm = ({ handleSubmit, login, loading }) => (
 
 IntroductionForm.propTypes = {
   handleSubmit: PropTypes.func,
-  login: PropTypes.func,
-  loading: PropTypes.bool,
+  invalid: PropTypes.bool,
+  pristine: PropTypes.bool,
 };
 
 export default reduxForm({
-  form: 'loginForm',  // a unique identifier for this form
+  form: 'introductionForm',  // a unique identifier for this form
+  validate,
 })(IntroductionForm);

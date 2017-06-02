@@ -2,13 +2,14 @@ import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import * as SignUpActions from './actions';
-import { selectError } from './selectors';
+import { submitIntroductionForm } from './actions';
+import { selectLoading, selectFormSubmitted } from './selectors';
 import IntroductionForm from '../../components/forms/IntroductionForm';
 import Body from '../../components/styled/Body';
+import Spinner from '../../components/styled/Spinner';
 import { transparentCard, ruahH1, ruahH2 } from './styles';
 
-export const IntroductionPage = ({ submitIntroduction }) => (
+export const IntroductionPage = ({ submitIntroduction, loading, submitted }) => (
   <article>
     <Helmet
       title="Introduction"
@@ -17,6 +18,7 @@ export const IntroductionPage = ({ submitIntroduction }) => (
       ]}
     />
     <Body useBackground>
+      { !loading && !submitted &&
       <div style={transparentCard}>
         <h1 style={ruahH1}>{'Let\'s do a proper introduction.'}</h1>
         <div style={{ display: 'flex' }}>
@@ -33,25 +35,44 @@ export const IntroductionPage = ({ submitIntroduction }) => (
           </div>
         </div>
       </div>
+      }
+      { loading &&
+      <div style={transparentCard}>
+        <Spinner />
+      </div>
+      }
+      { submitted &&
+      <div style={transparentCard}>
+        <div style={{ margin: 'auto', textAlign: 'center' }}>
+          <h1 style={ruahH1}>It was a pleasure to meet you!</h1>
+          <p>A human should be in touch shortly.</p>
+          <div>
+            <span style={{ color: '#FF0000' }}>&hearts;</span> Team Ruah
+          </div>
+        </div>
+      </div>
+      }
     </Body>
   </article>
 );
 
 IntroductionPage.propTypes = {
   submitIntroduction: PropTypes.func,
-  /*submitted: PropTypes.bool,*/
+  loading: PropTypes.bool,
+  submitted: PropTypes.bool,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    submitIntroduction: (values) => {
-      dispatch(SignUpActions.submitSignUp(values));
+    submitIntroduction: () => {
+      dispatch(submitIntroductionForm());
     },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  submitted: selectError(),
+  loading: selectLoading(),
+  submitted: selectFormSubmitted(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IntroductionPage);

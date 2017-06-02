@@ -2,37 +2,25 @@ import { createSelector } from 'reselect';
 
 const selectForms = () => (state) => state.get('form');
 
-const selectSignUpFields = () => createSelector(
+const selectIntroductionFormPage = () => (state) => state.get('introductionPage');
+
+const selectIntroductionFormData = () => createSelector(
   selectForms(),
-  (state) => state.getIn(['signUpForm', 'values']),
-);
-
-const selectCode = () => createSelector(
-  selectForms(),
-  (state) => state.getIn(['codeForm', 'values', 'code']),
-);
-
-const selectSignUpPage = () => (state) => state.get('signUpPage');
-
-const selectValidSignUpCode = () => createSelector(
-  selectSignUpPage(),
-  (state) => state.get('validSignUpCode'),
-);
-
-const selectError = () => createSelector(
-  selectSignUpPage(),
-  (state) => state.get('error') || '',
+  (state) => state.getIn(['introductionForm', 'values']),
 );
 
 const selectLoading = () => createSelector(
-  selectSignUpPage(),
-  (state) => state.get('loading'),
+  selectIntroductionFormPage(),
+  (state) => state.get('loading')
+);
+
+const selectFormSubmitted = () => createSelector(
+  selectIntroductionFormPage(),
+  (state) => state.get('formSubmitted')
 );
 
 export {
-  selectCode,
-  selectValidSignUpCode,
-  selectSignUpFields,
-  selectError,
+  selectIntroductionFormData,
   selectLoading,
+  selectFormSubmitted,
 };

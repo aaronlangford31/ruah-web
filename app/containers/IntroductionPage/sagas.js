@@ -1,73 +1,37 @@
 import { takeLatest } from 'redux-saga';
-import { call, put } from 'redux-saga/effects';
-import { CHECK_SIGN_UP_CODE, SUBMIT_SIGN_UP } from './constants';
+import { call, put, select } from 'redux-saga/effects';
 import {
-  signUpCodeChecked,
-  signUpCodeCheckingError,
-  invalidUserIdDetected,
-  submitSignUpComplete,
-  submitSignUpError,
+  SUBMIT_INTRODUCTION_FORM,
+  FORM_POST_URI,
+} from './constants';
+import {
+  submitIntroductionFormSuccess,
+  submitIntroductionFormFail,
 } from './actions';
-
+import { selectIntroductionFormData } from './selectors';
 import request from 'utils/request';
 
-export function* checkSignUpCode({ values }) {
-  const signUpCode = values.get('code');
-  const requestURL = `http://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${signUpCode}`;
-
+export function* postIntroductionForm() {
+  const introFormInfo = yield select(selectIntroductionFormData());
   try {
-    const validSignUpCodeStatus = yield call(request, requestURL, {});
-    if (validSignUpCodeStatus) {
-      yield put(signUpCodeChecked(signUpCode));
-    } else {
-      yield put(signUpCodeCheckingError('Invalid Sign Up Code'));
-    }
+    yield call(request, FORM_POST_URI, {
+      method: 'POST',
+      body: introFormInfo,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+    yield put(submitIntroductionFormSuccess());
   } catch (err) {
-    yield put(signUpCodeCheckingError(`Error: ${err.message}`));
+    yield put(submitIntroductionFormFail());
   }
 }
 
-export function* submitSignUp({ values }) {
-  const userId = values.get('email') ? values.get('email').toLowerCase() : '';
-
-  const validUserIdURL = `http://api.teamruah.com/v1/user/userIdExists?userId=${userId}`;
-
-  const validUserId = yield call(request, validUserIdURL, {});
-
-  if (!validUserId) {
-    const body = {
-      signUpCode: values.get('code'),
-      userId,
-      password: values.get('password'),
-    };
-
-    try {
-      const userSignUpURL = 'http://api.teamruah.com/v1/user/signup';
-      yield call(request, userSignUpURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      });
-      yield put(submitSignUpComplete());
-    } catch (err) {
-      yield put(submitSignUpError(`Error: ${err.message}`));
-    }
-  } else {
-    yield put(invalidUserIdDetected());
-  }
-}
-
-export function* signUpCodeData() {
-  yield* takeLatest(CHECK_SIGN_UP_CODE, checkSignUpCode);
-}
-
-export function* signUpSubmitData() {
-  yield* takeLatest(SUBMIT_SIGN_UP, submitSignUp);
+export function* submitIntroductionForm() {
+  yield* takeLatest(SUBMIT_INTRODUCTION_FORM, postIntroductionForm);
 }
 
 export default [
-  signUpCodeData,
-  signUpSubmitData,
+  submitIntroductionForm,
 ];

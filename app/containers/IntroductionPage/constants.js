@@ -1,8 +1,5 @@
-export const CHECK_SIGN_UP_CODE = 'ruah/SignUpPage/CHECK_SIGN_UP_CODE';
-export const CHECK_SIGN_UP_CODE_SUCCESS = 'ruah/SignUpPage/CHECK_SIGN_UP_CODE_SUCCESS';
-export const CHECK_SIGN_UP_CODE_ERROR = 'ruah/SignUpPage/CHECK_SIGN_UP_CODE_ERROR';
-export const SUBMIT_SIGN_UP_ERROR = 'ruah/SignUpPage/SUBMIT_SIGN_UP_ERROR';
-export const SUBMIT_SIGN_UP_SUCCESS = 'ruah/SignUpPage/SUBMIT_SIGN_UP_SUCCESS';
-export const SUBMIT_SIGN_UP = 'ruah/SignUpPage/SUBMIT_SIGN_UP';
-export const INVALID_USER_ID_DETECTED = 'ruah/SignUpPage/INVALID_USER_ID_DETECTED';
-export const REMOVE_ERROR = 'ruah/SignUpPage/REMOVE_ERROR';
+export const SUBMIT_INTRODUCTION_FORM = 'ruah/IntroductionPage/SUBMIT_INTRODUCTION_FORM';
+export const SUBMIT_INTRODUCTION_FORM_SUCCESS = 'ruah/IntroductionPage/SUBMIT_INTRODUCTION_FORM_SUCCESS';
+export const SUBMIT_INTRODUCTION_FORM_FAIL = 'ruah/IntroductionPage/SUBMIT_INTRODUCTION_FORM_FAIL';
+
+export const FORM_POST_URI = 'http://api.teamruah.com/v1/form/introduction';
