@@ -16,11 +16,10 @@ export function* postIntroductionForm() {
   try {
     yield call(request, FORM_POST_URI, {
       method: 'POST',
-      body: introFormInfo,
+      body: JSON.stringify(introFormInfo),
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
     });
     yield put(submitIntroductionFormSuccess());
   } catch (err) {
