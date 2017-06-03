@@ -10,6 +10,7 @@ export const menuItemContainer = {
   height: '100%',
   width: '194px',
   borderRight: 'solid #EEEEEE 1px',
+  marginRight: '12px',
 };
 
 export const selectedMenuItem = {

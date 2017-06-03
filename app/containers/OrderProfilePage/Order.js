@@ -24,7 +24,7 @@ function Order({
 }) {
   return (
     <div style={{ display: 'flex' }}>
-      <div style={{ flex: 2, marginRight: 24 }}>
+      <div>
         <Menu />
       </div>
       <div style={{ flex: 10 }}>

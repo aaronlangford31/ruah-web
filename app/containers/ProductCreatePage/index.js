@@ -22,7 +22,7 @@ function ProductCreatePage({ loading, createProduct, invalidSku, removeSku, erro
       <H2>Create Product</H2>
       <Body>
         <div style={{ display: 'flex' }}>
-          <div style={{ flex: 3, marginRight: 24 }}>
+          <div>
             <Menu />
           </div>
           <div style={{ flex: 9 }}>

@@ -14,6 +14,7 @@ import productCreatePageReducer from 'containers/ProductCreatePage/reducers';
 import productImportPageReducer from 'containers/ProductImportPage/reducers';
 import ordersPageReducer from 'containers/OrdersPage/reducers';
 import orderProfilePageReducer from 'containers/OrderProfilePage/reducers';
+import myStorePageReducer from 'containers/MyStorePage/reducers';
 import appReducer from 'containers/App/reducers';
 
 /*
@@ -59,6 +60,7 @@ export default function createReducer(asyncReducers) {
     productImportPage: productImportPageReducer,
     ordersPage: ordersPageReducer,
     orderProfilePage: orderProfilePageReducer,
+    myStorePage: myStorePageReducer,
     ...asyncReducers,
   });
 }
