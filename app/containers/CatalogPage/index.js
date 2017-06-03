@@ -8,7 +8,6 @@ import { selectProductGroups } from './selectors';
 import getStyles from './styles';
 import ProductRow from './ProductRow';
 import Body from '../../components/styled/Body';
-import H2 from '../../components/styled/H2';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import FileUploadIcon from 'material-ui/svg-icons/file/file-upload';
@@ -90,7 +89,6 @@ class CatalogPage extends PureComponent {
             <Menu />
           </div>
           <div style={{ flex: 10 }}>
-            <H2>Catalog</H2>
             <div style={styles.header}>
               <div>
                 <TextField onChange={this.filterProducts} floatingLabelText="Filter" />

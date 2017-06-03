@@ -8,7 +8,6 @@ import * as OrderActions from './actions';
 import { selectOrders } from './selectors';
 import Body from '../../components/styled/Body';
 import Divider from 'material-ui/Divider';
-import H2 from '../../components/styled/H2';
 import Menu from '../../components/partials/Menu';
 import ShippedIcon from 'material-ui/svg-icons/maps/local-shipping';
 import NewIcon from 'material-ui/svg-icons/av/new-releases';
@@ -103,7 +102,6 @@ class OrdersPage extends Component {
               <Menu />
             </div>
             <div style={{ flex: 10 }}>
-              <H2>Orders</H2>
               <Table selectable={false}>
                 <TableHeader
                   displaySelectAll={false}

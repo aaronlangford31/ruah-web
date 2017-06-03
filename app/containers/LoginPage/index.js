@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as AppActions from '../App/actions';
-import { selectError, selectUserType, selectLoading } from '../App/selectors';
+import { selectError, selectLoggedIn, selectLoading } from '../App/selectors';
 import LoginForm from '../../components/forms/LoginForm';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
@@ -14,7 +14,7 @@ class LoginPage extends Component {
     login: PropTypes.func,
     error: PropTypes.string,
     close: PropTypes.func,
-    authenticated: PropTypes.string,
+    authenticated: PropTypes.bool,
     loading: PropTypes.bool,
   };
 
@@ -62,7 +62,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   error: selectError(),
-  authenticated: selectUserType(),
+  authenticated: selectLoggedIn(),
   loading: selectLoading(),
 });
 

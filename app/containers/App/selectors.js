@@ -27,6 +27,11 @@ const selectUserType = () => createSelector(
   (state) => state.get('userType'),
 );
 
+const selectLoggedIn = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('loggedIn'),
+);
+
 const selectForms = () => (state) => state.get('form');
 
 const selectLoginFields = () => createSelector(
@@ -47,6 +52,7 @@ const selectLoading = () => createSelector(
 export {
   selectLocationState,
   selectUserType,
+  selectLoggedIn,
   selectLoginFields,
   selectError,
   selectLoading,
