@@ -19,11 +19,35 @@ import {
 import Body from '../../components/styled/Body';
 import Menu from '../../components/partials/Menu';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
+import Divider from 'material-ui/Divider';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 
 class MyStorePage extends Component {
   constructor(props) {
     super(props);
     this.props.getStore();
+    this.onEditClicked = this.onEditClicked.bind(this);
+    this.onCancelEditClicked = this.onCancelEditClicked.bind(this);
+    this.onSaveEditClicked = this.onSaveEditClicked.bind(this);
+    this.onFieldChange = this.onFieldChange.bind(this);
+  }
+
+  onEditClicked() {
+    this.props.handleStartEditStore();
+  }
+
+  onCancelEditClicked() {
+    this.props.handleCancelEditStore();
+  }
+
+  onSaveEditClicked() {
+    this.props.handleSaveStore();
+  }
+
+  onFieldChange(event, newVal) {
+    const fieldName = event.target.id;
+    this.props.handleEditStore(fieldName, newVal);
   }
 
   renderLoading() {
@@ -34,38 +58,203 @@ class MyStorePage extends Component {
     );
   }
 
-  renderStore() {
+  renderNotSetUp() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <div>
-          <img src={this.props.store.ProfilePicUri} alt={'Profile Pic'} />
-          <div>
-            <h1>{this.props.store.Name}</h1>
-            <p>{this.props.store.StoreId}</p>
-            <div>
-              {_.map(this.props.store.MarketplaceRoles, (item, j) => (
-                <div key={j}>
-                  {item}
-                </div>
-              ))}
+      <div>
+        Oops! your store is not set up yet.
+        renderStoreEdit()
+      </div>
+    );
+  }
+
+  renderStoreEdit() {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '1000px' }}>
+        <div style={{ display: 'flex' }}>
+          <span style={{ flex: 10 }} />
+          <FlatButton
+            backgroundColor={'#EEEEEE'}
+            style={{ padding: '0 5px' }}
+            onTouchTap={this.onCancelEditClicked}
+          >
+            Cancel Edits
+          </FlatButton>
+          &nbsp;
+          &nbsp;
+          <FlatButton
+            backgroundColor={'#A9CF94'}
+            onTouchTap={this.onSaveEditClicked}
+          >
+            <span style={{ color: '#FFFFFF' }}>Save Edits</span>
+          </FlatButton>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <img style={{ width: '200px', height: '200px' }} src={this.props.store.ProfilePicUri} alt={'Profile Pic'} />
+          <div style={{ padding: '0 20px' }}>
+            <TextField
+              id={'Name'}
+              onChange={this.onFieldChange}
+              floatingLabelText={'Your store\'s name'}
+              label={'The name of your store'}
+              value={this.props.store.Name}
+              inputStyle={{ fontWeight: '200', margin: '0', color: '#04BFBF', fontSize: '2em', height: '100px', width: '350px' }}
+              underlineStyle={{ width: '350px' }}
+            />
+            <div style={{ color: '#BDBDBD', fontSize: '14px' }}>{this.props.store.StoreId}</div>
+            <TextField
+              id={'Slogan'}
+              onChange={this.onFieldChange}
+              value={this.props.store.Slogan}
+              floatingLabelText={'Your store\'s slogan'}
+              multiLine
+              inputStyle={{ fontWeight: '200', margin: '0', color: '#616161', fontSize: '14px', width: '350px' }}
+              underlineStyle={{ width: '350px' }}
+            />
+            <Divider />
+            <div style={{ display: 'flex', marginTop: '15px' }}>
+              <span style={{ width: '400px', fontSize: '14px', fontWeight: '600' }}>Marketplace Roles</span>
+              <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Taxonomy</span>
             </div>
-            <div>
-              {_.map(this.props.store.TaxonomicClassifications, (item, j) => (
-                <div key={j}>
-                  {item}
-                </div>
-              ))}
+            <div style={{ display: 'flex' }}>
+              <div style={{ display: 'flex', width: '400px' }}>
+                {_.map(this.props.store.MarketplaceRoles, (item, j) => (
+                  <div
+                    key={j}
+                    style={{ backgroundColor: '#F7E967', borderRadius: '5px', padding: '1px 5px', marginRight: '5px', color: '#9E9E9E' }}
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: 'flex', width: '250px' }}>
+                {_.map(this.props.store.TaxonomicClassifications, (item, j) => (
+                  <div key={j} style={{ backgroundColor: '#F7E967', borderRadius: '5px', padding: '1px 5px', marginRight: '5px', color: '#9E9E9E' }}>
+                    {item}
+                  </div>
+                ))}
+              </div>
             </div>
-            <div>
-              {this.props.store.City}, {this.props.store.Sovereignty}, {this.props.store.Country}
+            <div style={{ display: 'flex', marginTop: '10px' }}>
+              <span style={{ width: '400px', fontSize: '14px', fontWeight: '600' }}>Location</span>
+              <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>On Ruah since</span>
+              <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Founded</span>
             </div>
-            <div>
-              Joined Ruah {this.props.store.Joined.fromNow()} | Founded {this.props.store.Founded}
+            <div style={{ display: 'flex' }}>
+              <div style={{ width: '400px', display: 'flex' }}>
+                <TextField
+                  id={'City'}
+                  onChange={this.onFieldChange}
+                  value={this.props.store.City}
+                  style={{ width: '150px' }}
+                  floatingLabelText={'City'}
+                  inputStyle={{ width: '150px' }}
+                  underlineStyle={{ width: '150px' }}
+                />
+                &nbsp;
+                <TextField
+                  id={'Sovereignty'}
+                  onChange={this.onFieldChange}
+                  value={this.props.store.Sovereignty}
+                  style={{ width: '100px' }}
+                  floatingLabelText={'State/Province'}
+                  inputStyle={{ width: '100px' }}
+                  underlineStyle={{ width: '100px' }}
+                />
+                &nbsp;
+                <TextField
+                  id={'Country'}
+                  onChange={this.onFieldChange}
+                  value={this.props.store.Country}
+                  style={{ width: '100px' }}
+                  floatingLabelText={'Country'}
+                  inputStyle={{ width: '100px' }}
+                  underlineStyle={{ width: '100px' }}
+                />
+              </div>
+              <span style={{ width: '250px' }}>{this.props.store.Joined.fromNow()}</span>
+              <TextField
+                id={'Founded'}
+                onChange={this.onFieldChange}
+                value={this.props.store.Founded}
+                type={'number'}
+                style={{ width: '100px' }}
+                floatingLabelText={'Year Founded'}
+                inputStyle={{ width: '100px' }}
+                underlineStyle={{ width: '100px' }}
+              />
             </div>
           </div>
         </div>
-        <div>
-          <p>{this.props.store.Story}</p>
+        <div style={{ marginTop: '20px' }}>
+          <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Story</span>
+          <TextField
+            id={'Story'}
+            onChange={this.onFieldChange}
+            value={this.props.store.Story}
+            floatingLabelText={'What does your store do? How did you get started? Who are you looking to do business with?'}
+            fullWidth
+            multiLine
+          />
+        </div>
+      </div>
+    );
+  }
+
+  renderStore() {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '1000px' }}>
+        <div style={{ display: 'flex' }}>
+          <span style={{ flex: 10 }} />
+          <FlatButton
+            backgroundColor={'#A9CF94'}
+            color={'#FFFFFF'}
+            onTouchTap={this.onEditClicked}
+          >
+            <span style={{ color: '#FFFFFF' }}>Edit Page</span>
+          </FlatButton>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <img style={{ width: '200px', height: '200px' }} src={this.props.store.ProfilePicUri} alt={'Profile Pic'} />
+          <div style={{ padding: '0 20px' }}>
+            <h1 style={{ fontWeight: '200', margin: '0', color: '#04BFBF' }}>{this.props.store.Name}</h1>
+            <div style={{ color: '#BDBDBD', fontSize: '14px' }}>{this.props.store.StoreId}</div>
+            <div style={{ color: '#616161', fontSize: '14px' }}>{`"${this.props.store.Slogan}"`}</div>
+            <Divider />
+            <div style={{ display: 'flex', marginTop: '15px' }}>
+              <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Marketplace Roles</span>
+              <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Taxonomy</span>
+            </div>
+            <div style={{ display: 'flex' }}>
+              <div style={{ display: 'flex', width: '250px' }}>
+                {_.map(this.props.store.MarketplaceRoles, (item, j) => (
+                  <div key={j} style={{ backgroundColor: '#F7E967', borderRadius: '5px', padding: '1px 5px', marginRight: '5px', color: '#9E9E9E' }}>
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: 'flex', width: '250px' }}>
+                {_.map(this.props.store.TaxonomicClassifications, (item, j) => (
+                  <div key={j} style={{ backgroundColor: '#F7E967', borderRadius: '5px', padding: '1px 5px', marginRight: '5px', color: '#9E9E9E' }}>
+                    {item}&nbsp;
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ display: 'flex', marginTop: '10px' }}>
+              <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Location</span>
+              <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>On Ruah since</span>
+              <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Founded</span>
+            </div>
+            <div style={{ display: 'flex' }}>
+              <span style={{ width: '250px' }}>{this.props.store.City}, {this.props.store.Sovereignty}, {this.props.store.Country}</span>
+              <span style={{ width: '250px' }}>{this.props.store.Joined.fromNow()}</span>
+              <span style={{ width: '250px' }}>{this.props.store.Founded}</span>
+            </div>
+          </div>
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Story</span>
+          <p style={{ whiteSpace: 'pre-wrap' }}>{this.props.store.Story}</p>
         </div>
       </div>
     );
@@ -86,8 +275,9 @@ class MyStorePage extends Component {
               <Menu />
             </div>
             <div style={{ flex: 10 }}>
-              {this.props.loading && this.renderLoading() }
-              {!this.props.loading && this.renderStore()}
+              {this.props.loading && this.renderLoading()}
+              {!this.props.loading && !this.props.isEditing && this.renderStore()}
+              {!this.props.loading && this.props.isEditing && this.renderStoreEdit()}
             </div>
           </div>
         </Body>
@@ -98,10 +288,8 @@ class MyStorePage extends Component {
 
 MyStorePage.propTypes = {
   loading: PropTypes.bool,
-  storeNotSetup: PropTypes.bool,
   isEditing: PropTypes.bool,
   store: PropTypes.object,
-  router: PropTypes.object,
   handleStartEditStore: PropTypes.func,
   handleCancelEditStore: PropTypes.func,
   handleSaveStore: PropTypes.func,

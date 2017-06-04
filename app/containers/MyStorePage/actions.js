@@ -6,6 +6,7 @@ import {
   START_EDIT_STORE,
   CANCEL_EDIT_STORE,
   SAVE_EDIT_STORE,
+  SAVE_EDIT_STORE_FAIL,
   EDIT_STORE,
 } from './constants';
 
@@ -27,10 +28,17 @@ export function saveStoreEdits() {
   };
 }
 
-export function editStore(store) {
+export function saveStoreEditsFail() {
+  return {
+    type: SAVE_EDIT_STORE_FAIL,
+  };
+}
+
+export function editStore(field, newVal) {
   return {
     type: EDIT_STORE,
-    store,
+    field,
+    newVal,
   };
 }
 

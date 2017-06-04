@@ -7,7 +7,7 @@ const Paper = ({ children, useBackground, style }) =>
     style={{
       marginTop: 0,
       padding: '24px 24px 48px 0',
-      minHeight: 600,
+      minHeight: 800,
       background: useBackground ? `linear-gradient(rgba(202, 252, 216, 0.1), rgba(202, 252, 216, 0.25)), url(${Ocean})` : 'none',
       backgroundSize: useBackground ? 'cover' : 'auto',
       display: useBackground ? 'flex' : 'block',
