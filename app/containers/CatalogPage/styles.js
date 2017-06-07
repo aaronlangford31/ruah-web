@@ -8,7 +8,6 @@ export default function getStyles() {
       borderStyle: 'solid',
       borderColor: '#BDBDBD',
       borderWidth: '1px',
-      borderRadius: '5px 5px 1px 1px',
       backgroundColor: '#F5F5F5',
     },
     imageColumn: { width: 75 },

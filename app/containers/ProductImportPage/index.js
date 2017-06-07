@@ -12,7 +12,6 @@ import {
 } from './actions';
 import selectProductImportPage from './selectors';
 import Body from '../../components/styled/Body';
-import Menu from '../../components/partials/Menu';
 import ImportActions from './ImportActions';
 import ImportFail from './ImportFail';
 import ImportGuide from './ImportGuide';
@@ -29,9 +28,6 @@ const ProductImportPage = (props) => (
     />
     <Body>
       <div style={{ display: 'flex' }}>
-        <div>
-          <Menu />
-        </div>
         <div style={{ flex: 10 }}>
           {!props.uploadingToServer && !props.uploadSuccess && !props.uploadFail && <ImportActions
             onUpload={props.uploadTemplateFile}

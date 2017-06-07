@@ -27,7 +27,7 @@ function myStorePageReducer(state = initialState, action) {
     }
     case GET_STORE_SUCCESS: {
       const store = action.store;
-      store.joined = moment(action.store.joined);
+      store.Joined = moment(action.store.Joined);
       return state
         .set('loading', false)
         .set('store', fromJS(store));

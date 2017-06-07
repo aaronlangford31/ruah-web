@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import Menu from '../../components/partials/Menu';
 import Dialog from 'material-ui/Dialog';
 import MailIcon from 'material-ui/svg-icons/communication/contact-mail';
 import PersonIcon from 'material-ui/svg-icons/social/person';
@@ -24,9 +23,6 @@ function Order({
 }) {
   return (
     <div style={{ display: 'flex' }}>
-      <div>
-        <Menu />
-      </div>
       <div style={{ flex: 10 }}>
         <h4 style={{ marginBottom: 0 }}>Order ID: {order.OrderId}</h4>
         <div style={{ display: 'flex' }}>

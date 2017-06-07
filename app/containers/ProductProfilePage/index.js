@@ -20,7 +20,6 @@ import {
 } from './actions';
 import getStyles from './styles';
 import Body from '../../components/styled/Body';
-import Menu from '../../components/partials/Menu';
 import SadFaceIcon from 'material-ui/svg-icons/social/sentiment-very-dissatisfied';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
 import TextField from 'material-ui/TextField';
@@ -351,9 +350,6 @@ class ProductProfilePage extends Component {
         />
         <Body>
           <div style={{ display: 'flex' }}>
-            <div>
-              <Menu />
-            </div>
             <div style={{ flex: 10 }}>
               {this.props.loading && this.renderLoading() }
               {this.props.notFound && this.renderNotFound() }

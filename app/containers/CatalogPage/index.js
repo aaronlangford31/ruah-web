@@ -11,7 +11,6 @@ import Body from '../../components/styled/Body';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import FileUploadIcon from 'material-ui/svg-icons/file/file-upload';
-import Menu from '../../components/partials/Menu';
 import {
   Table,
   TableHeader,
@@ -84,11 +83,8 @@ class CatalogPage extends PureComponent {
             { name: 'description', content: 'Catalog Page' },
           ]}
         />
-        <Body style={{ display: 'flex' }}>
+        <Body>
           <div>
-            <Menu />
-          </div>
-          <div style={{ flex: 10 }}>
             <div style={styles.header}>
               <div>
                 <TextField onChange={this.filterProducts} floatingLabelText="Filter" />

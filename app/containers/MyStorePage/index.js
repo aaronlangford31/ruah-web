@@ -17,7 +17,7 @@ import {
   selectIsEditing,
 } from './selectors';
 import Body from '../../components/styled/Body';
-import Menu from '../../components/partials/Menu';
+import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
@@ -52,18 +52,18 @@ class MyStorePage extends Component {
 
   renderLoading() {
     return (
-      <div style={{ margin: 'auto', textAlign: 'center', width: '500px' }}>
+      <Paper style={{ margin: 'auto', textAlign: 'center', width: '500px' }}>
         <CircularProgress />
-      </div>
+      </Paper>
     );
   }
 
   renderNotSetUp() {
     return (
-      <div>
+      <Paper>
         Oops! your store is not set up yet.
         renderStoreEdit()
-      </div>
+      </Paper>
     );
   }
 
@@ -88,7 +88,7 @@ class MyStorePage extends Component {
             <span style={{ color: '#FFFFFF' }}>Save Edits</span>
           </FlatButton>
         </div>
-        <div style={{ display: 'flex' }}>
+        <Paper style={{ padding: '15px', display: 'flex' }}>
           <img style={{ width: '200px', height: '200px' }} src={this.props.store.ProfilePicUri} alt={'Profile Pic'} />
           <div style={{ padding: '0 20px' }}>
             <TextField
@@ -117,7 +117,7 @@ class MyStorePage extends Component {
             </div>
             <div style={{ display: 'flex' }}>
               <div style={{ display: 'flex', width: '400px' }}>
-                {_.map(this.props.store.MarketplaceRoles, (item, j) => (
+                {_.map(this.props.store.MarketResources, (item, j) => (
                   <div
                     key={j}
                     style={{ backgroundColor: '#F7E967', borderRadius: '5px', padding: '1px 5px', marginRight: '5px', color: '#9E9E9E' }}
@@ -144,7 +144,7 @@ class MyStorePage extends Component {
                 <TextField
                   id={'City'}
                   onChange={this.onFieldChange}
-                  value={this.props.store.City}
+                  value={this.props.store.Locality}
                   style={{ width: '150px' }}
                   floatingLabelText={'City'}
                   inputStyle={{ width: '150px' }}
@@ -184,8 +184,8 @@ class MyStorePage extends Component {
               />
             </div>
           </div>
-        </div>
-        <div style={{ marginTop: '20px' }}>
+        </Paper>
+        <Paper style={{ padding: '15px', marginTop: '20px' }}>
           <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Story</span>
           <TextField
             id={'Story'}
@@ -195,7 +195,7 @@ class MyStorePage extends Component {
             fullWidth
             multiLine
           />
-        </div>
+        </Paper>
       </div>
     );
   }
@@ -213,7 +213,7 @@ class MyStorePage extends Component {
             <span style={{ color: '#FFFFFF' }}>Edit Page</span>
           </FlatButton>
         </div>
-        <div style={{ display: 'flex' }}>
+        <Paper style={{ padding: '15px', display: 'flex' }}>
           <img style={{ width: '200px', height: '200px' }} src={this.props.store.ProfilePicUri} alt={'Profile Pic'} />
           <div style={{ padding: '0 20px' }}>
             <h1 style={{ fontWeight: '200', margin: '0', color: '#04BFBF' }}>{this.props.store.Name}</h1>
@@ -226,7 +226,7 @@ class MyStorePage extends Component {
             </div>
             <div style={{ display: 'flex' }}>
               <div style={{ display: 'flex', width: '250px' }}>
-                {_.map(this.props.store.MarketplaceRoles, (item, j) => (
+                {_.map(this.props.store.MarketResources, (item, j) => (
                   <div key={j} style={{ backgroundColor: '#F7E967', borderRadius: '5px', padding: '1px 5px', marginRight: '5px', color: '#9E9E9E' }}>
                     {item}
                   </div>
@@ -246,16 +246,16 @@ class MyStorePage extends Component {
               <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Founded</span>
             </div>
             <div style={{ display: 'flex' }}>
-              <span style={{ width: '250px' }}>{this.props.store.City}, {this.props.store.Sovereignty}, {this.props.store.Country}</span>
+              <span style={{ width: '250px' }}>{this.props.store.Locality}, {this.props.store.Sovereignty}, {this.props.store.Country}</span>
               <span style={{ width: '250px' }}>{this.props.store.Joined.fromNow()}</span>
               <span style={{ width: '250px' }}>{this.props.store.Founded}</span>
             </div>
           </div>
-        </div>
-        <div style={{ marginTop: '20px' }}>
+        </Paper>
+        <Paper style={{ padding: '15px', marginTop: '20px' }}>
           <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Story</span>
           <p style={{ whiteSpace: 'pre-wrap' }}>{this.props.store.Story}</p>
-        </div>
+        </Paper>
       </div>
     );
   }
@@ -271,9 +271,6 @@ class MyStorePage extends Component {
         />
         <Body>
           <div style={{ display: 'flex' }}>
-            <div>
-              <Menu />
-            </div>
             <div style={{ flex: 10 }}>
               {this.props.loading && this.renderLoading()}
               {!this.props.loading && !this.props.isEditing && this.renderStore()}

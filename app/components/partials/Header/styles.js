@@ -1,15 +1,15 @@
 export const menuItem = {
+  display: 'flex',
+  flexDirection: 'row',
   textDecoration: 'none',
   color: 'black',
-  padding: '5px 25px',
+  padding: '15px 15px 5px 15px',
 };
 
 export const menuItemContainer = {
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
   height: '100%',
-  width: '194px',
-  borderRight: 'solid #EEEEEE 1px',
   marginRight: '12px',
 };
 

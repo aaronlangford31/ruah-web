@@ -1,23 +1,21 @@
 import React, { PropTypes } from 'react';
-import { Paper as MaterialPaper } from 'material-ui';
 import Ocean from './Ocean.jpg';
 
 const Paper = ({ children, useBackground, style }) =>
-  <MaterialPaper
+  <div
     style={{
-      marginTop: 0,
-      padding: '24px 24px 48px 0',
-      minHeight: 800,
+      margin: '0',
+      minHeight: 720,
       background: useBackground ? `linear-gradient(rgba(202, 252, 216, 0.1), rgba(202, 252, 216, 0.25)), url(${Ocean})` : 'none',
       backgroundSize: useBackground ? 'cover' : 'auto',
-      display: useBackground ? 'flex' : 'block',
+      display: 'flex',
       alignItems: useBackground ? 'center' : 'stretch',
-      justifyContent: useBackground ? 'center' : 'flex-start',
+      justifyContent: 'center',
       ...style,
     }}
   >
     {children}
-  </MaterialPaper>;
+  </div>;
 
 Paper.propTypes = {
   children: PropTypes.node,

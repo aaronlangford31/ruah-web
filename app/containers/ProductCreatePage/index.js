@@ -8,7 +8,6 @@ import Body from '../../components/styled/Body';
 import H2 from '../../components/styled/H2';
 import ProductForm from '../../components/forms/ProductForm';
 import ErrorBox from '../App/ErrorBox';
-import Menu from '../../components/partials/Menu';
 
 function ProductCreatePage({ loading, createProduct, invalidSku, removeSku, error, removeError }) {
   return (
@@ -22,9 +21,6 @@ function ProductCreatePage({ loading, createProduct, invalidSku, removeSku, erro
       <H2>Create Product</H2>
       <Body>
         <div style={{ display: 'flex' }}>
-          <div>
-            <Menu />
-          </div>
           <div style={{ flex: 9 }}>
             <ProductForm
               createProduct={createProduct}

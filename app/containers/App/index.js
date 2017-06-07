@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectUserType } from './selectors';
+import { selectLoggedIn } from './selectors';
 import { checkLogin as actionCheckLogin, submitLogout as actionSubmitLogout } from './actions';
 import getStyles from './styles';
 import theme from '../../theme';
@@ -42,7 +42,7 @@ class App extends Component {
 
   static propTypes = {
     children: PropTypes.node,
-    userType: PropTypes.string,
+    loggedIn: PropTypes.bool,
     checkLogin: PropTypes.func,
     submitLogout: PropTypes.func,
   };
@@ -65,15 +65,14 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.userType && !this.props.userType) {
+    if (prevProps.userType && !this.props.loggedIn) {
       this.context.router.push({ pathname: '/' });
     }
   }
 
   render() {
-    const { children, userType, submitLogout } = this.props;
+    const { children, loggedIn, submitLogout } = this.props;
     const styles = getStyles();
-
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div style={styles.app}>
@@ -84,7 +83,7 @@ class App extends Component {
               { name: 'description', content: 'Team Ruah Product Management' },
             ]}
           />
-          <Header userType={userType} submitLogout={submitLogout} />
+          <Header loggedIn={loggedIn} submitLogout={submitLogout} location={this.context.router.location.pathname} />
           {React.Children.toArray(children)}
           <Footer />
         </div>
@@ -101,7 +100,7 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  userType: selectUserType(),
+  loggedIn: selectLoggedIn(),
 });
 
 // Wrap the component to inject dispatch and state into it
