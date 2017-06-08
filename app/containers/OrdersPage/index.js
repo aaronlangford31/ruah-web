@@ -96,7 +96,7 @@ class OrdersPage extends Component {
           ]}
         />
         <Body>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', maxWidth: '1000px' }}>
             <div style={{ flex: 10 }}>
               <Table selectable={false}>
                 <TableHeader

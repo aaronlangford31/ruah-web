@@ -171,7 +171,7 @@ class MyStorePage extends Component {
                   underlineStyle={{ width: '100px' }}
                 />
               </div>
-              <span style={{ width: '250px' }}>{this.props.store.Joined.fromNow()}</span>
+              <span style={{ width: '250px' }}>{this.props.store.Joined && this.props.store.Joined.fromNow()}</span>
               <TextField
                 id={'Founded'}
                 onChange={this.onFieldChange}
@@ -247,7 +247,7 @@ class MyStorePage extends Component {
             </div>
             <div style={{ display: 'flex' }}>
               <span style={{ width: '250px' }}>{this.props.store.Locality}, {this.props.store.Sovereignty}, {this.props.store.Country}</span>
-              <span style={{ width: '250px' }}>{this.props.store.Joined.fromNow()}</span>
+              <span style={{ width: '250px' }}>{this.props.store.Joined && this.props.store.Joined.fromNow()}</span>
               <span style={{ width: '250px' }}>{this.props.store.Founded}</span>
             </div>
           </div>
@@ -264,7 +264,7 @@ class MyStorePage extends Component {
     return (
       <article>
         <Helmet
-          title="Product"
+          title="My Store"
           meta={[
             { name: 'description', content: 'Product Page' },
           ]}

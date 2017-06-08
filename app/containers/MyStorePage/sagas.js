@@ -40,7 +40,7 @@ export function* putStore() {
   }
 }
 
-export function* submitIntroductionForm() {
+export function* onGetStore() {
   yield* takeLatest(GET_STORE, getStore);
 }
 
@@ -49,6 +49,6 @@ export function* onSaveEditStore() {
 }
 
 export default [
-  submitIntroductionForm,
+  onGetStore,
   onSaveEditStore,
 ];

@@ -84,7 +84,7 @@ class CatalogPage extends PureComponent {
           ]}
         />
         <Body>
-          <div>
+          <div style={{ maxWidth: '1000px' }}>
             <div style={styles.header}>
               <div>
                 <TextField onChange={this.filterProducts} floatingLabelText="Filter" />

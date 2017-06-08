@@ -5,12 +5,14 @@ import FlatButton from 'material-ui/FlatButton';
 import AssignmentIcon from 'material-ui/svg-icons/action/assignment';
 import ShoppingCartIcon from 'material-ui/svg-icons/action/shopping-cart';
 import StoreIcon from 'material-ui/svg-icons/maps/store-mall-directory';
+import PublicIcon from 'material-ui/svg-icons/social/public';
 import Logo from './logo.png';
 import { menuItem, menuItemContainer, selectedMenuItem } from './styles';
 
 const catalogPath = '/catalog';
 const ordersPath = '/orders';
 const storePath = '/myStore';
+const marketplacePath = '/marketplace/discover';
 
 const Header = ({ loggedIn, submitLogout, location }) => (
   <nav>
@@ -25,6 +27,9 @@ const Header = ({ loggedIn, submitLogout, location }) => (
           <div style={menuItemContainer}>
             <Link to={storePath} style={Object.assign({}, menuItem, (location === storePath ? selectedMenuItem : {}))}>
               <StoreIcon color={'#757575'} /> My Store
+            </Link>
+            <Link to={marketplacePath} style={Object.assign({}, menuItem, (location === marketplacePath ? selectedMenuItem : {}))}>
+              <PublicIcon color={'#757575'} /> Marketplace
             </Link>
             <Link to={catalogPath} style={Object.assign({}, menuItem, (location === catalogPath ? selectedMenuItem : {}))}>
               <ShoppingCartIcon color={'#757575'} /> Catalog
