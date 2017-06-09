@@ -5,10 +5,16 @@ import { createStructuredSelector } from 'reselect';
 import _ from 'underscore';
 import {
   getStores,
+  openChannelRequestModal,
+  cancelChannelRequestModal,
+  changeChannelRequest,
+  submitChannelRequest,
 } from './actions';
 import {
   selectStores,
   selectLoading,
+  selectChannelRequest,
+  selectChannelRequestModalOpen,
 } from './selectors';
 import Body from '../../../components/styled/Body';
 import MarketplaceMenu from '../MarketplaceMenu';
@@ -18,17 +24,30 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TradeIcon from 'material-ui/svg-icons/action/compare-arrows';
 import MailIcon from 'material-ui/svg-icons/content/mail';
-
+import Dialog from 'material-ui/Dialog';
+import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import TextField from 'material-ui/TextField';
 
 class DiscoverPage extends Component {
   constructor(props) {
     super(props);
     this.props.getStores();
+
+    this.onChannelRequestTypeChange = this.onChannelRequestTypeChange.bind(this);
+    this.onChannelRequestMessageChange = this.onChannelRequestMessageChange.bind(this);
   }
+
+  onChannelRequestTypeChange = (ev, val) => {
+    this.props.onChannelRequestChange(val, 'RequestType');
+  };
+
+  onChannelRequestMessageChange = (ev, val) => {
+    this.props.onChannelRequestChange(val, 'Message');
+  };
 
   renderLoading() {
     return (
-      <Paper style={{ margin: 'auto', textAlign: 'center', width: '500px' }}>
+      <Paper style={{ margin: 'auto', textAlign: 'center', width: '500px', height: '500px' }}>
         <CircularProgress />
       </Paper>
     );
@@ -100,7 +119,12 @@ class DiscoverPage extends Component {
               </FlatButton>
               &nbsp;
               &nbsp;
-              <FlatButton style={{ padding: '0 5px' }} backgroundColor={'#A9CF54'} >
+              <FlatButton
+                name={store.StoreId}
+                onTouchTap={() => { this.props.handleOpenChannelModal(store.StoreId); }}
+                style={{ padding: '0 5px' }}
+                backgroundColor={'#A9CF54'}
+              >
                 <TradeIcon color={'#FFFFFF'} /> <span style={{ color: '#FFFFFF' }}> Open a Channel</span>
               </FlatButton>
             </div>
@@ -134,6 +158,41 @@ class DiscoverPage extends Component {
                 <br />
               </div>
             </div>
+            <Dialog
+              title={`Send a Channel Request to ${this.props.request.StoreId}`}
+              actions={[
+                <FlatButton
+                  onTouchTap={() => this.props.handleCancelChannelRequest()}
+                >
+                  Cancel
+                </FlatButton>,
+                <FlatButton
+                  onTouchTap={() => this.props.handleSubmitChannelRequest()}
+                  disabled={!this.props.request.RequestType && !this.props.request.Message}
+                  style={{ padding: '0 5px' }}
+                  backgroundColor={'#A9CF54'}
+                >
+                  <span style={{ color: '#FFFFFF' }}> Send Request </span>
+                </FlatButton>,
+              ]}
+              modal={false}
+              open={this.props.channelRequestModalOpen}
+            >
+              <div>
+                Do you want to <strong>buy from</strong> or <strong>sell to</strong> {this.props.request.StoreId}?
+              </div>
+              <RadioButtonGroup name={'RequestType'} onChange={this.onChannelRequestTypeChange}>
+                <RadioButton value={'Buying'} label={'Buy from'} />
+                <RadioButton value={'Selling'} label={'Sell to'} />
+              </RadioButtonGroup>
+              <div>Write a personalized message to go along with your request:</div>
+              <TextField
+                name={'Message'}
+                onChange={this.onChannelRequestMessageChange}
+                multiLine
+                fullWidth
+              />
+            </Dialog>
           </Body>
         </div>
       </article>
@@ -145,6 +204,12 @@ DiscoverPage.propTypes = {
   loading: PropTypes.bool,
   stores: PropTypes.array,
   getStores: PropTypes.func,
+  request: PropTypes.object,
+  handleSubmitChannelRequest: PropTypes.func,
+  handleCancelChannelRequest: PropTypes.func,
+  onChannelRequestChange: PropTypes.func,
+  handleOpenChannelModal: PropTypes.func,
+  channelRequestModalOpen: PropTypes.bool,
 };
 
 DiscoverPage.contextTypes = {
@@ -157,12 +222,26 @@ export function mapDispatchToProps(dispatch) {
     getStores: () => {
       dispatch(getStores());
     },
+    handleOpenChannelModal: (storeId) => {
+      dispatch(openChannelRequestModal(storeId));
+    },
+    handleCancelChannelRequest: () => {
+      dispatch(cancelChannelRequestModal());
+    },
+    onChannelRequestChange: (newVal, field) => {
+      dispatch(changeChannelRequest(newVal, field));
+    },
+    handleSubmitChannelRequest: () => {
+      dispatch(submitChannelRequest());
+    },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   loading: selectLoading(),
   stores: selectStores(),
+  request: selectChannelRequest(),
+  channelRequestModalOpen: selectChannelRequestModalOpen(),
 });
 
 // Wrap the component to inject dispatch and state into it
