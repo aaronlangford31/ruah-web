@@ -31,7 +31,7 @@ function discoverPageReducer(state = initialState, action) {
         store.Joined = moment(item.Joined);
         return fromJS(store);
       });
-      stores = _.sortBy(stores, (item) => item.Joined);
+      stores = _.sortBy(stores, (item) => item.get('Joined'));
       return state
         .set('loading', false)
         .set('stores', fromJS(stores));

@@ -15,7 +15,7 @@ export function getStores() {
   };
 }
 
-export function getStoresSucess(stores) {
+export function getStoresSuccess(stores) {
   return {
     type: GET_STORES_SUCCESS,
     stores,

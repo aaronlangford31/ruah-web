@@ -7,7 +7,7 @@ import {
   PUT_CHANNEL_REQUEST_URI,
 } from './constants';
 import {
-  getStoresSucess,
+  getStoresSuccess,
   getStoresFail,
   submitChannelRequestSuccess,
 } from './actions';
@@ -20,7 +20,7 @@ export function* getStores() {
       method: 'GET',
       credentials: 'include',
     });
-    yield put(getStoresSucess(result.items));
+    yield put(getStoresSuccess(result.items));
   } catch (err) {
     yield put(getStoresFail());
   }

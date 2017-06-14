@@ -23,7 +23,6 @@ import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TradeIcon from 'material-ui/svg-icons/action/compare-arrows';
-import MailIcon from 'material-ui/svg-icons/content/mail';
 import Dialog from 'material-ui/Dialog';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
@@ -114,9 +113,6 @@ class DiscoverPage extends Component {
             </div>
             <div style={{ display: 'flex' }}>
               <span style={{ flex: 10 }}>&nbsp;</span>
-              <FlatButton style={{ padding: '0 5px' }} backgroundColor={'#F5F5F5'}>
-                <MailIcon /> Send Message
-              </FlatButton>
               &nbsp;
               &nbsp;
               <FlatButton
