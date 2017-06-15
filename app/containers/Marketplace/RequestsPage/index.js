@@ -134,8 +134,8 @@ RequestsPage.contextTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     getRequests: () => dispatch(getRequests()),
-    submitChannelApproval: (requestIx) => dispatch(submitChannelApproval(requestIx)),
-    submitChannelDecline: (requestIx) => dispatch(submitChannelDecline(requestIx)),
+    submitChannelApproval: (requestIx, request) => dispatch(submitChannelApproval(requestIx, request)),
+    submitChannelDecline: (requestIx, request) => dispatch(submitChannelDecline(requestIx, request)),
   };
 }
 

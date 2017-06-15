@@ -27,7 +27,7 @@ export function* getRequests() {
 }
 
 export function* putChannelApproval(action) {
-  const uri = `${PUT_CHANNEL_APPROVAL_URI}?storeId=${action.request.StoreId}&channelType=${action.request.RequestType}`;
+  const uri = `${PUT_CHANNEL_APPROVAL_URI}?storeId=${action.request.FromId}&channelType=${action.request.RequestType}`;
   yield call(request, uri, {
     method: 'GET',
     credentials: 'include',
