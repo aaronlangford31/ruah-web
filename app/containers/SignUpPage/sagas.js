@@ -13,7 +13,7 @@ import request from 'utils/request';
 
 export function* checkSignUpCode({ values }) {
   const signUpCode = values.get('code');
-  const requestURL = `http://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${signUpCode}`;
+  const requestURL = `https://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${signUpCode}`;
 
   try {
     const validSignUpCodeStatus = yield call(request, requestURL, {});
@@ -30,7 +30,7 @@ export function* checkSignUpCode({ values }) {
 export function* submitSignUp({ values }) {
   const userId = values.get('email') ? values.get('email').toLowerCase() : '';
 
-  const validUserIdURL = `http://api.teamruah.com/v1/user/userIdExists?userId=${userId}`;
+  const validUserIdURL = `https://api.teamruah.com/v1/user/userIdExists?userId=${userId}`;
 
   const validUserId = yield call(request, validUserIdURL, {});
 
@@ -42,7 +42,7 @@ export function* submitSignUp({ values }) {
     };
 
     try {
-      const userSignUpURL = 'http://api.teamruah.com/v1/user/signup';
+      const userSignUpURL = 'https://api.teamruah.com/v1/user/signup';
       yield call(request, userSignUpURL, {
         method: 'POST',
         headers: {

@@ -29,7 +29,7 @@ export function* getOrderById() {
   if (localOrder !== undefined) {
     yield put(loadOrderProfileDataSuccess(localOrder));
   } else {
-    const requestURL = `http://api.teamruah.com/v1/order/getOrderById?orderId=${currentOrderId}`;
+    const requestURL = `https://api.teamruah.com/v1/order/getOrderById?orderId=${currentOrderId}`;
     try {
       // Call our request helper (see 'utils/request')
       const order = yield call(request, requestURL, {
@@ -48,7 +48,7 @@ export function* getOrderById() {
 
 export function* postUpdateOrderToProcessing() {
   const currentOrderId = yield select(selectCurrentOrderId());
-  const requestURL = `http://api.teamruah.com/v1/order/updateToProcessing?orderId=${currentOrderId}`;
+  const requestURL = `https://api.teamruah.com/v1/order/updateToProcessing?orderId=${currentOrderId}`;
 
   try {
     yield call(request, requestURL, {
@@ -67,7 +67,7 @@ export function* postUpdateOrderToProcessing() {
 export function* postUpdateOrderToShipping() {
   const currentOrderId = yield select(selectCurrentOrderId());
   const fulfillmentInfo = yield select(selectFulfillmentFormData());
-  const requestURL = `http://api.teamruah.com/v1/order/updateToShipped?orderId=${currentOrderId}`;
+  const requestURL = `https://api.teamruah.com/v1/order/updateToShipped?orderId=${currentOrderId}`;
 
   try {
     yield call(request, requestURL, {

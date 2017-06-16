@@ -32,7 +32,7 @@ function readCsv(file) {
 
 export function* submitImport() {
   const csvData = yield select(selectCsvData());
-  const requestURL = 'http://api.teamruah.com/v1/product/csvBatchCreate';
+  const requestURL = 'https://api.teamruah.com/v1/product/csvBatchCreate';
 
   const data = yield readCsv(csvData);
   if (data.length > 5000) {

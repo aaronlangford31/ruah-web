@@ -9,5 +9,5 @@ export const CHANGE_CHANNEL_REQUEST = 'ruah/Marketplace/DiscoverPage/CHANGE_CHAN
 
 export const SUBMIT_CHANNEL_REQUEST_SUCCESS = 'ruah/Marketplace/DiscoverPage/SUBMIT_CHANNEL_REQUEST_SUCCESS';
 
-export const GET_STORES_URI = 'http://api.teamruah.com/v1/store/page';
-export const PUT_CHANNEL_REQUEST_URI = 'http://api.teamruah.com/v1/store/channelRequest';
+export const GET_STORES_URI = 'https://api.teamruah.com/v1/store/page';
+export const PUT_CHANNEL_REQUEST_URI = 'https://api.teamruah.com/v1/store/channelRequest';

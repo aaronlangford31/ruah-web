@@ -23,14 +23,14 @@ export function* createProductSubmit({ values }) {
   body.Created = (new Date()).toISOString();
   body.Updated = (new Date()).toISOString();
 
-  const skuCheckURL = `http://api.teamruah.com/v1/product/SkuExists?sku=${sku}`;
+  const skuCheckURL = `https://api.teamruah.com/v1/product/SkuExists?sku=${sku}`;
 
   const validSku = yield call(request, skuCheckURL, {
     credentials: 'include',
   });
 
   if (!validSku) {
-    const userSignUpURL = 'http://api.teamruah.com/v1/product/batchCreate';
+    const userSignUpURL = 'https://api.teamruah.com/v1/product/batchCreate';
 
     try {
       yield call(request, userSignUpURL, {

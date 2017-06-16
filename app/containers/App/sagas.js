@@ -9,7 +9,7 @@ import {
 import { logoutSuccess, logoutError, loginSuccess, loginError } from './actions';
 
 export function* checkLogin() {
-  const requestURL = 'http://api.teamruah.com/v1/user/isauthenticated';
+  const requestURL = 'https://api.teamruah.com/v1/user/isauthenticated';
 
   try {
     const response = yield call(fetch, requestURL, {
@@ -25,7 +25,7 @@ export function* checkLogin() {
 }
 
 export function* submitLogout() {
-  const requestURL = 'http://api.teamruah.com/v1/user/signout';
+  const requestURL = 'https://api.teamruah.com/v1/user/signout';
 
   try {
     const response = yield call(fetch, requestURL, {
@@ -44,7 +44,7 @@ export function* submitLogout() {
 }
 
 export function* submitLogin({ values }) {
-  const requestURL = 'http://api.teamruah.com/v1/user/authenticate';
+  const requestURL = 'https://api.teamruah.com/v1/user/authenticate';
 
   try {
     const response = yield call(request, requestURL, {

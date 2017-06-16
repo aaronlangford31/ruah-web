@@ -17,7 +17,7 @@ import {
 import request from 'utils/request';
 
 export function* getOrders() {
-  const requestURL = 'http://api.teamruah.com/v1/order/GetUnfulfilledOrders';
+  const requestURL = 'https://api.teamruah.com/v1/order/GetUnfulfilledOrders';
 
   try {
     const orders = yield call(request, requestURL, {
@@ -34,7 +34,7 @@ export function* getOrders() {
 }
 
 export function* updateOrderToProcessing({ orderId }) {
-  const requestURL = `http://api.teamruah.com/v1/order/updateToProcessing?orderId=${orderId}`;
+  const requestURL = `https://api.teamruah.com/v1/order/updateToProcessing?orderId=${orderId}`;
 
   try {
     yield call(request, requestURL, {
@@ -51,7 +51,7 @@ export function* updateOrderToProcessing({ orderId }) {
 }
 
 export function* updateOrderToShipping({ orderId, values }) {
-  const requestURL = `http://api.teamruah.com/v1/order/updateToShipped?orderId=${orderId}`;
+  const requestURL = `https://api.teamruah.com/v1/order/updateToShipped?orderId=${orderId}`;
 
   if (values.size !== 0) {
     try {

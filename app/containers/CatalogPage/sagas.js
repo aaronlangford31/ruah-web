@@ -7,7 +7,7 @@ import { getProductsSuccess, getProductsError } from './actions';
 import request from 'utils/request';
 
 export function* getProducts() {
-  const requestURL = 'http://api.teamruah.com/v1/product/getproductcatalog';
+  const requestURL = 'https://api.teamruah.com/v1/product/getproductcatalog';
 
   try {
     let products = yield call(request, requestURL, {

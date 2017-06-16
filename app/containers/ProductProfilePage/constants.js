@@ -11,5 +11,5 @@ export const GET_PRODUCT_BY_ID_SUCCESS = 'ruah/ProductProfilePage/GET_PRODUCT_BY
 export const GET_PRODUCT_BY_ID_NOT_FOUND = 'ruah/ProductProfilePage/GET_PRODUCT_BY_ID_NOT_FOUND';
 export const GET_PRODUCT_BY_ID_ERROR = 'ruah/ProductProfilePage/GET_PRODUCT_BY_ID_ERROR';
 
-export const URI_GET_PRODUCT_BY_ID = 'http://api.teamruah.com/v1/product/getbyId';
-export const URI_PUT_PRODUCT = 'http://api.teamruah.com/v1/product/update';
+export const URI_GET_PRODUCT_BY_ID = 'https://api.teamruah.com/v1/product/getbyId';
+export const URI_PUT_PRODUCT = 'https://api.teamruah.com/v1/product/update';
