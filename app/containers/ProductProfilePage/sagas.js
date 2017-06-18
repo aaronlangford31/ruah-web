@@ -16,7 +16,7 @@ import {
   saveCurrentProductEditsFail,
 } from './actions';
 import { selectCurrentProductId, selectCurrentProduct } from './selectors';
-import { selectProducts } from '../CatalogPage/selectors';
+import { selectProducts } from '../Catalog/MyCatalogPage/selectors';
 import request from 'utils/request';
 
 function* getProductById() {

@@ -3,13 +3,13 @@ import { Link } from 'react-router';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import FlatButton from 'material-ui/FlatButton';
 import AssignmentIcon from 'material-ui/svg-icons/action/assignment';
-import ShoppingCartIcon from 'material-ui/svg-icons/action/shopping-cart';
+import GridIcon from 'material-ui/svg-icons/action/view-module';
 import StoreIcon from 'material-ui/svg-icons/maps/store-mall-directory';
 import PublicIcon from 'material-ui/svg-icons/social/public';
 import Logo from './logo.png';
 import { menuItem, menuItemContainer, selectedMenuItem } from './styles';
 
-const catalogPath = '/catalog';
+const catalogPath = '/catalog/myproduct';
 const ordersPath = '/orders';
 const storePath = '/myStore';
 const marketplacePath = '/marketplace/discover';
@@ -32,7 +32,7 @@ const Header = ({ loggedIn, submitLogout, location }) => (
               <PublicIcon color={'#757575'} /> Marketplace
             </Link>
             <Link to={catalogPath} style={Object.assign({}, menuItem, (location === catalogPath ? selectedMenuItem : {}))}>
-              <ShoppingCartIcon color={'#757575'} /> Catalog
+              <GridIcon color={'#757575'} /> Catalog
             </Link>
             <Link to={ordersPath} style={Object.assign({}, menuItem, (location === ordersPath ? selectedMenuItem : {}))}>
               <AssignmentIcon color={'#757575'} /> Fulfillment

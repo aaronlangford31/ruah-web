@@ -12,10 +12,9 @@ const initialState = fromJS({
   filter: '',
   error: '',
   products: [],
-  openGroups: [],
 });
 
-function catalogPageReducer(state = initialState, action) {
+function myCatalogPageReducer(state = initialState, action) {
   switch (action.type) {
     case GET_PRODUCTS_SUCCESS:
       return state
@@ -39,4 +38,4 @@ function catalogPageReducer(state = initialState, action) {
   }
 }
 
-export default catalogPageReducer;
+export default myCatalogPageReducer;
