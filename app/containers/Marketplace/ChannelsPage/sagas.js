@@ -1,5 +1,6 @@
 import { takeLatest } from 'redux-saga';
-import { call, put } from 'redux-saga/effects';
+import { call, cancel, put, take } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   GET_STORE,
   GET_STORE_URI,
@@ -22,10 +23,12 @@ export function* getStore() {
   }
 }
 
-export function* onGetStore() {
-  yield* takeLatest(GET_STORE, getStore);
+export function* watchGetStore() {
+  const watcher = yield takeLatest(GET_STORE, getStore);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export default [
-  onGetStore,
+  watchGetStore,
 ];

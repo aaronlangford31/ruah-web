@@ -1,5 +1,6 @@
 import { takeLatest } from 'redux-saga';
-import { call, put, select } from 'redux-saga/effects';
+import { call, cancel, put, take, select } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   GET_STORES,
   GET_STORES_URI,
@@ -39,15 +40,19 @@ export function* putChannelRequest() {
   yield put(submitChannelRequestSuccess());
 }
 
-export function* onGetStores() {
-  yield* takeLatest(GET_STORES, getStores);
+export function* watchGetStores() {
+  const watcher = yield takeLatest(GET_STORES, getStores);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
-export function* onSubmitChannelRequest() {
-  yield* takeLatest(SUBMIT_CHANNEL_REQUEST, putChannelRequest);
+export function* watchSubmitChannelRequest() {
+  const watcher = yield takeLatest(SUBMIT_CHANNEL_REQUEST, putChannelRequest);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export default [
-  onGetStores,
-  onSubmitChannelRequest,
+  watchGetStores,
+  watchSubmitChannelRequest,
 ];

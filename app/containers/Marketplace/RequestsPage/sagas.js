@@ -1,5 +1,6 @@
 import { takeLatest } from 'redux-saga';
-import { call, put } from 'redux-saga/effects';
+import { call, cancel, put, take } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   GET_REQUESTS,
   GET_REQUESTS_URI,
@@ -42,20 +43,26 @@ export function* putChannelDecline(action) {
   });
 }
 
-export function* onGetRequests() {
-  yield* takeLatest(GET_REQUESTS, getRequests);
+export function* watchGetRequests() {
+  const watcher = yield takeLatest(GET_REQUESTS, getRequests);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
-export function* onChannelApprove() {
-  yield* takeLatest(SUBMIT_CHANNEL_APPROVAL, putChannelApproval);
+export function* watchChannelApprove() {
+  const watcher = yield takeLatest(SUBMIT_CHANNEL_APPROVAL, putChannelApproval);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
-export function* onChannelDecline() {
-  yield* takeLatest(SUBMIT_CHANNEL_DECLINE, putChannelDecline);
+export function* watchChannelDecline() {
+  const watcher = yield takeLatest(SUBMIT_CHANNEL_DECLINE, putChannelDecline);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export default [
-  onGetRequests,
-  onChannelApprove,
-  onChannelDecline,
+  watchGetRequests,
+  watchChannelApprove,
+  watchChannelDecline,
 ];
