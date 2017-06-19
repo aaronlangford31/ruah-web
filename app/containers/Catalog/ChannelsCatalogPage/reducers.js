@@ -14,7 +14,7 @@ const initialState = fromJS({
   products: fromJS([]),
 });
 
-function myCatalogPageReducer(state = initialState, action) {
+function channelsCatalogPageReducer(state = initialState, action) {
   switch (action.type) {
     case GET_PRODUCTS_SUCCESS:
       return state
@@ -38,4 +38,4 @@ function myCatalogPageReducer(state = initialState, action) {
   }
 }
 
-export default myCatalogPageReducer;
+export default channelsCatalogPageReducer;

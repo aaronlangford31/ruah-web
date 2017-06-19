@@ -53,7 +53,7 @@ class CatalogPage extends PureComponent {
     const cards = [];
     for (let j = 0; j < PRODUCT_ROW_WIDTH; j += 1) {
       if ((i * PRODUCT_ROW_WIDTH) + j < this.props.products.length) {
-        cards.push(<ProductCard key={j} isBuyer={false} product={this.props.products[(i * PRODUCT_ROW_WIDTH) + j]} />);
+        cards.push(<ProductCard key={j} isBuyer product={this.props.products[(i * PRODUCT_ROW_WIDTH) + j]} />);
       }
     }
     return (
@@ -75,7 +75,7 @@ class CatalogPage extends PureComponent {
           ]}
         />
         <div style={{ display: 'flex' }} >
-          <CatalogMenu location={'/catalog/myproduct'} />
+          <CatalogMenu location={'/catalog/channels'} />
           <Body>
             <div style={{ maxWidth: '1000px' }}>
               <Paper style={styles.header}>
@@ -92,7 +92,7 @@ class CatalogPage extends PureComponent {
                 <span style={{ flex: 5 }} />
                 <div style={{ textAlign: 'center' }}>
                   <UnhappyFaceIcon color={'#BDBDBD'} />
-                  <div>You have not listed any product on the Ruah marketplace.</div>
+                  <div>You have not opened any buying channels on the Ruah marketplace.</div>
                 </div>
                 <span style={{ flex: 5 }} />
               </Paper>

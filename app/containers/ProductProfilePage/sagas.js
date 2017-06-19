@@ -16,38 +16,27 @@ import {
   saveCurrentProductEditsFail,
 } from './actions';
 import { selectCurrentProductId, selectCurrentProduct } from './selectors';
-import { selectProducts } from '../Catalog/MyCatalogPage/selectors';
 import request from 'utils/request';
 
 function* getProductById() {
   const currentProductId = yield select(selectCurrentProductId());
-  const localProducts = yield select(selectProducts());
-  if (localProducts.size === 0) {
-    try {
-      const product = yield call(request,
-        `${URI_GET_PRODUCT_BY_ID}?id=${currentProductId}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
+  try {
+    const product = yield call(request,
+      `${URI_GET_PRODUCT_BY_ID}?id=${currentProductId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
-      product.Bullets = _.map(product.Bullets, (content, title) => ({ content, title }));
-      yield put(getProductByIdSuccess(product));
-    } catch (err) {
-      if (err.status === 404) {
-        yield put(getProductByIdNotFound());
-      } else {
-        yield put(getProductByIdError());
-      }
-    }
-  } else {
-    const product = _.findWhere(localProducts.toJS(), { RuahId: currentProductId });
-    if (product !== undefined) {
-      yield put(getProductByIdSuccess(product));
-    } else {
+        credentials: 'include',
+      },
+    );
+    product.Bullets = _.map(product.Bullets, (content, title) => ({ content, title }));
+    yield put(getProductByIdSuccess(product));
+  } catch (err) {
+    if (err.status === 404) {
       yield put(getProductByIdNotFound());
+    } else {
+      yield put(getProductByIdError());
     }
   }
 }
