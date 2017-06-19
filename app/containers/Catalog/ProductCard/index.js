@@ -41,7 +41,7 @@ const styles = {
 };
 
 const ProductCard = (props) => {
-  const { product, isBuyer } = props;
+  const { product, isBuyer, onAddToCart } = props;
   return (
     <Paper style={styles.cardPaper} >
       <div
@@ -53,7 +53,7 @@ const ProductCard = (props) => {
         <span style={{ flex: 10 }}>&nbsp;</span>
         <Link to={`/product/${product.RuahId}`} style={styles.viewProduct}><ViewIcon /></Link>
         <span>&nbsp;</span>
-        {isBuyer && <FlatButton style={styles.addToCart}>Add to Cart</FlatButton> }
+        {isBuyer && <FlatButton onTouchTap={onAddToCart} style={styles.addToCart}>Add to Cart</FlatButton> }
       </div>
       <div style={{ padding: '5px' }}>
         <div style={{ margin: '0', color: '#04BFBF' }}>
@@ -74,6 +74,7 @@ const ProductCard = (props) => {
 ProductCard.propTypes = {
   product: PropTypes.object,
   isBuyer: PropTypes.bool,
+  onAddToCart: PropTypes.func,
 };
 
 ProductCard.contextTypes = {

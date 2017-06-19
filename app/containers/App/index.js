@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectLoggedIn } from './selectors';
+import { selectCartItems } from '../CheckoutPage/selectors';
 import { checkLogin as actionCheckLogin, submitLogout as actionSubmitLogout } from './actions';
 import getStyles from './styles';
 import theme from '../../theme';
@@ -45,6 +46,7 @@ class App extends Component {
     loggedIn: PropTypes.bool,
     checkLogin: PropTypes.func,
     submitLogout: PropTypes.func,
+    cartItems: PropTypes.array,
   };
 
   static contextTypes = {
@@ -83,7 +85,7 @@ class App extends Component {
               { name: 'description', content: 'Team Ruah Product Management' },
             ]}
           />
-          <Header loggedIn={loggedIn} submitLogout={submitLogout} location={this.context.router.location.pathname} />
+          <Header loggedIn={loggedIn} submitLogout={submitLogout} location={this.context.router.location.pathname} cartCount={this.props.cartItems.length} />
           {React.Children.toArray(children)}
           <Footer />
         </div>
@@ -101,6 +103,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   loggedIn: selectLoggedIn(),
+  cartItems: selectCartItems(),
 });
 
 // Wrap the component to inject dispatch and state into it

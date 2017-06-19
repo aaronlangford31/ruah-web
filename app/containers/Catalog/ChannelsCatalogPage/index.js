@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
+import { addItemToCart } from '../../CheckoutPage/actions';
 import { selectProducts } from './selectors';
 import getStyles from './styles';
 import CatalogMenu from '../CatalogMenu';
@@ -22,6 +23,7 @@ class CatalogPage extends PureComponent {
     products: PropTypes.array,
     getProducts: PropTypes.func,
     filterProducts: PropTypes.func,
+    onAddToCart: PropTypes.func,
   };
 
   static contextTypes = {
@@ -53,7 +55,14 @@ class CatalogPage extends PureComponent {
     const cards = [];
     for (let j = 0; j < PRODUCT_ROW_WIDTH; j += 1) {
       if ((i * PRODUCT_ROW_WIDTH) + j < this.props.products.length) {
-        cards.push(<ProductCard key={j} isBuyer product={this.props.products[(i * PRODUCT_ROW_WIDTH) + j]} />);
+        const product = this.props.products[(i * PRODUCT_ROW_WIDTH) + j];
+        cards.push(
+          <ProductCard
+            key={j}
+            isBuyer
+            product={product}
+            onAddToCart={() => this.props.onAddToCart(product)}
+          />);
       }
     }
     return (
@@ -112,6 +121,9 @@ export function mapDispatchToProps(dispatch) {
     },
     getProducts: () => {
       dispatch(Actions.getProducts());
+    },
+    onAddToCart: (product) => {
+      dispatch(addItemToCart(product));
     },
   };
 }
