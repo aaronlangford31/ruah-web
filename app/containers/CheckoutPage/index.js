@@ -94,8 +94,8 @@ class CheckoutPage extends Component {
               />
               <TextField
                 hintText="Address 1"
-                value={this.props.shippingInfo.ShipAddress1}
-                onChange={(ev, newVal) => this.props.onShippingInfoChange('ShipAddress1', newVal)}
+                value={this.props.shippingInfo.ShipAddress}
+                onChange={(ev, newVal) => this.props.onShippingInfoChange('ShipAddress', newVal)}
               />
               <TextField
                 hintText="Address 2"

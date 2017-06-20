@@ -12,16 +12,25 @@ import {
   getStoresFail,
   submitChannelRequestSuccess,
 } from './actions';
-import { selectChannelRequest } from './selectors';
+import { selectChannelRequest, selectStorePageKey } from './selectors';
 import request from 'utils/request';
 
 export function* getStores() {
   try {
-    const result = yield call(request, GET_STORES_URI, {
-      method: 'GET',
-      credentials: 'include',
-    });
-    yield put(getStoresSuccess(result.items));
+    const pageKey = yield select(selectStorePageKey());
+    if (!pageKey) {
+      const result = yield call(request, GET_STORES_URI, {
+        method: 'GET',
+        credentials: 'include',
+      });
+      yield put(getStoresSuccess(result.items, result.pageToken));
+    } else {
+      const result = yield call(request, `${GET_STORES_URI}?pageToken=${pageKey}`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+      yield put(getStoresSuccess(result.items, result.pageToken));
+    }
   } catch (err) {
     yield put(getStoresFail());
   }

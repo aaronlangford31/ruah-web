@@ -146,7 +146,7 @@ class DiscoverPage extends Component {
               <div style={{ flex: 10 }}>
                 {this.props.loading && this.renderLoading()}
                 {!this.props.loading && _.map(this.props.stores, (item) => this.renderStore({ store: item }))}
-                <RaisedButton backgroundColor={'#FFFFFF'}>
+                <RaisedButton onTouchTap={() => this.props.getStores()} backgroundColor={'#FFFFFF'}>
                   See more
                 </RaisedButton>
                 <br />

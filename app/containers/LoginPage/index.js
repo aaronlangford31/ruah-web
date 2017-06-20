@@ -24,7 +24,7 @@ class LoginPage extends Component {
 
   componentDidUpdate() {
     if (this.props.authenticated) {
-      this.context.router.push({ pathname: '/catalog' });
+      this.context.router.push({ pathname: '/marketplace/discover' });
     }
   }
 

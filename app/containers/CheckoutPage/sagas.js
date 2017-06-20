@@ -29,6 +29,9 @@ function* postOrder() {
   yield call(request, POST_ORDER_URI, {
     method: 'POST',
     credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(order),
   });
   yield put(submitOrderSuccess());

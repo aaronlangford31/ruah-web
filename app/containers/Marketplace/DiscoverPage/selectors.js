@@ -7,6 +7,11 @@ const selectStores = () => createSelector(
   (state) => state.get('stores').toJS(),
 );
 
+const selectStorePageKey = () => createSelector(
+  selectDiscoverPage(),
+  (state) => state.get('storePageKey'),
+);
+
 const selectLoading = () => createSelector(
   selectDiscoverPage(),
   (state) => state.get('loading'),
@@ -24,6 +29,7 @@ const selectChannelRequestModalOpen = () => createSelector(
 
 export {
   selectStores,
+  selectStorePageKey,
   selectLoading,
   selectChannelRequest,
   selectChannelRequestModalOpen,

@@ -15,10 +15,11 @@ export function getStores() {
   };
 }
 
-export function getStoresSuccess(stores) {
+export function getStoresSuccess(stores, storePageKey) {
   return {
     type: GET_STORES_SUCCESS,
     stores,
+    storePageKey,
   };
 }
 

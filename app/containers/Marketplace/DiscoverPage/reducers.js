@@ -14,6 +14,7 @@ import {
 const initialState = fromJS({
   loading: false,
   stores: fromJS([]),
+  storePageKey: '',
   channelRequest: fromJS({}),
   channelRequestModalOpen: false,
 });
@@ -32,8 +33,10 @@ function discoverPageReducer(state = initialState, action) {
         return fromJS(store);
       });
       stores = _.sortBy(stores, (item) => item.get('Joined'));
+      stores = Array.concat(state.get('stores').toJS(), stores);
       return state
         .set('loading', false)
+        .set('storePageKey', action.storePageKey)
         .set('stores', fromJS(stores));
     }
     case GET_STORES_FAIL: {
