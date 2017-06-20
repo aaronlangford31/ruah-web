@@ -7,4 +7,12 @@ const selectCartItems = () => createSelector(
   (state) => state.get('cartItems').toJS(),
 );
 
-export { selectCartItems };
+const selectOrder = () => createSelector(
+  selectCheckoutPage(),
+  (state) => state.get('order').toJS(),
+);
+
+export {
+  selectCartItems,
+  selectOrder,
+};
