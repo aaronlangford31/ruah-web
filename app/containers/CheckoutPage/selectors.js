@@ -12,7 +12,19 @@ const selectOrder = () => createSelector(
   (state) => state.get('order').toJS(),
 );
 
+const selectLoading = () => createSelector(
+  selectCheckoutPage(),
+  (state) => state.get('loading'),
+);
+
+const selectSubmitOrderSuccess = () => createSelector(
+  selectCheckoutPage(),
+  (state) => state.get('orderSubmitSuccess'),
+);
+
 export {
   selectCartItems,
   selectOrder,
+  selectLoading,
+  selectSubmitOrderSuccess,
 };

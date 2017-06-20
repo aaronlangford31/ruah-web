@@ -3,7 +3,12 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import _ from 'underscore';
-import { selectCartItems, selectOrder } from './selectors';
+import {
+  selectCartItems,
+  selectOrder,
+  selectLoading,
+  selectSubmitOrderSuccess,
+} from './selectors';
 import {
   submitOrder,
   removeItemFromCart,
@@ -14,6 +19,7 @@ import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import HappyFaceIcon from 'material-ui/svg-icons/social/sentiment-very-satisfied';
 
 class CheckoutPage extends Component {
   constructor(props) {
@@ -23,6 +29,16 @@ class CheckoutPage extends Component {
 
   handleQuantityInputChange(ev) {
     this.props.onChangeQuantity(ev.target.name, parseInt(ev.target.value, 10));
+  }
+
+  renderCheckoutSuccess() {
+    return (
+      <Paper style={{ margin: '10px', textAlign: 'center', padding: '10px' }}>
+        <HappyFaceIcon style={{ height: '50px', width: '50px', color: '#A9CF54' }} />
+        <h2> Congratulations! </h2>
+        <p>Your order has been placed.</p>
+      </Paper>
+    );
   }
 
   renderItem(item, ix) {
@@ -57,6 +73,7 @@ class CheckoutPage extends Component {
         />
         <div style={{ display: 'flex' }} >
           <span style={{ flex: 1 }}></span>
+          {!this.props.loading && !this.props.submitOrderSuccess &&
           <Paper style={{ width: '1000px', margin: '10px', padding: '10px' }}>
             <h2>Review the items in your cart:</h2>
             {_.map(this.props.checkoutItems, (item, ix) => this.renderItem(item, ix))}
@@ -125,6 +142,10 @@ class CheckoutPage extends Component {
               </FlatButton>
             </div>
           </Paper>
+          }
+          {!this.props.loading && this.props.submitOrderSuccess &&
+            this.renderCheckoutSuccess()
+          }
           <span style={{ flex: 1 }}></span>
         </div>
       </article>
@@ -135,6 +156,8 @@ class CheckoutPage extends Component {
 CheckoutPage.propTypes = {
   checkoutItems: PropTypes.array,
   shippingInfo: PropTypes.object,
+  loading: PropTypes.bool,
+  submitOrderSuccess: PropTypes.bool,
   onShippingInfoChange: PropTypes.func,
   onChangeQuantity: PropTypes.func,
   onSubmitOrder: PropTypes.func,
@@ -161,6 +184,8 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   checkoutItems: selectCartItems(),
   shippingInfo: selectOrder(),
+  loading: selectLoading(),
+  submitOrderSuccess: selectSubmitOrderSuccess(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CheckoutPage);

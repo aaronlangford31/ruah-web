@@ -2,12 +2,16 @@ import {
   ADD_ITEM_TO_CART,
   UPDATE_SHIPPING_FORM,
   UPDATE_ITEM_QUANTITY,
+  SUBMIT_ORDER,
+  SUBMIT_ORDER_SUCCESS,
 } from './constants';
 import { fromJS } from 'immutable';
 
 const initialState = fromJS({
   cartItems: fromJS([]),
   order: fromJS({}),
+  orderSubmitSuccess: false,
+  loading: false,
 });
 
 export default function checkoutPageReducer(state = initialState, action) {
@@ -18,6 +22,7 @@ export default function checkoutPageReducer(state = initialState, action) {
       item.Quantity = 1;
       items.push(item);
       return state
+        .set('orderSubmitSuccess', false)
         .set('cartItems', fromJS(items));
     }
     case UPDATE_SHIPPING_FORM: {
@@ -31,6 +36,17 @@ export default function checkoutPageReducer(state = initialState, action) {
       items[action.ix].Quantity = action.quantity;
       return state
         .set('cartItems', fromJS(items));
+    }
+    case SUBMIT_ORDER: {
+      return state
+        .set('loading', true);
+    }
+    case SUBMIT_ORDER_SUCCESS: {
+      return state
+        .set('cartItems', fromJS([]))
+        .set('order', fromJS({}))
+        .set('loading', false)
+        .set('orderSubmitSuccess', true);
     }
     default:
       return state;
