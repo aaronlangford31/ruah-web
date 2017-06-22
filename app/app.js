@@ -23,6 +23,7 @@ import 'file?name=[name].[ext]!./.htaccess';
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
+import GA from 'react-ga';
 import { Provider } from 'react-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
@@ -63,6 +64,9 @@ const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: selectLocationState(),
 });
 
+// Initialize Google Analytics
+GA.initialize('UA-101504520-1');
+
 // Set up the router, wrapping all Routes in the App component
 import App from 'containers/App';
 import createRoutes from './routes';
@@ -77,6 +81,15 @@ const render = () => {
       <Router
         history={history}
         routes={rootRoute}
+        onUpdate={() => {
+          GA.set({ page: window.location.pathname });
+          if (store.getState().getIn(['app', 'loggedIn'])) {
+            const userId = store.getState().getIn(['app', 'userId']);
+            const storeId = store.getState().getIn(['app', 'storeId']);
+            GA.set({ userId, storeId });
+          }
+          GA.pageview(window.location.pathname);
+        }}
         render={
             // Scroll to top when going to a new page, imitating default browser
             // behaviour

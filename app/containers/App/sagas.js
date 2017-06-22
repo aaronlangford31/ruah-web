@@ -17,7 +17,7 @@ export function* checkLogin() {
     });
 
     if (response.status === 200) {
-      yield put(loginSuccess('default', 'default'));
+      yield put(loginSuccess(response.userId, response.storeId));
     }
   } catch (err) {
     // not checked
@@ -33,7 +33,7 @@ export function* submitLogout() {
     });
 
     if (response.status === 200) {
-      yield put(logoutSuccess());
+      yield put(logoutSuccess(response.userId, response.storeId));
     } else {
       yield put(logoutError());
     }

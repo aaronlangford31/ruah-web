@@ -35,7 +35,7 @@ class CheckoutPage extends Component {
     return (
       <Paper style={{ margin: '10px', textAlign: 'center', padding: '10px' }}>
         <HappyFaceIcon style={{ height: '50px', width: '50px', color: '#A9CF54' }} />
-        <h2> Congratulations! </h2>
+        <h2>Congratulations!</h2>
         <p>Your order has been placed.</p>
       </Paper>
     );

@@ -16,10 +16,11 @@ export function login(values) {
   };
 }
 
-export function loginSuccess(userType) {
+export function loginSuccess(userId, storeId) {
   return {
     type: LOGIN_SUCCESS,
-    userType,
+    userId,
+    storeId,
   };
 }
 
