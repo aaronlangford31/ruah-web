@@ -9,7 +9,7 @@ import {
   Stepper,
   StepLabel,
 } from 'material-ui/Stepper';
-import ShippingForm from '../../components/forms/ShippingForm';
+import ShippingForm from '../../../components/forms/ShippingForm';
 import NextStepButton from './NextStepButton';
 import OrderPhase from './OrderPhase';
 
@@ -102,13 +102,13 @@ function Order({
             Product Name: {order.OrderItems[0].ProductName}
           </p>
           <p>
-            Product Price: {order.OrderItems[0].ProductPrice}
+            Product Price: ${order.OrderItems[0].ProductPrice.toFixed(2)}
           </p>
           <p>
             Quantity: {order.OrderItems[0].Quantity}
           </p>
           <p>
-            Shipping Price: {order.OrderItems[0].ShippingPrice || 'Free'}
+            Shipping Price: ${order.OrderItems[0].ShippingPrice.toFixed(2)}
           </p>
         </div>}
       </div>

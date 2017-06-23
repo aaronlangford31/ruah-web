@@ -12,13 +12,11 @@ export function* checkLogin() {
   const requestURL = 'https://api.teamruah.com/v1/user/isauthenticated';
 
   try {
-    const response = yield call(fetch, requestURL, {
+    const response = yield call(request, requestURL, {
       credentials: 'include',
     });
 
-    if (response.status === 200) {
-      yield put(loginSuccess(response.userId, response.storeId));
-    }
+    yield put(loginSuccess(response.userId, response.storeId));
   } catch (err) {
     // not checked
   }
@@ -33,7 +31,7 @@ export function* submitLogout() {
     });
 
     if (response.status === 200) {
-      yield put(logoutSuccess(response.userId, response.storeId));
+      yield put(logoutSuccess());
     } else {
       yield put(logoutError());
     }
@@ -60,7 +58,7 @@ export function* submitLogin({ values }) {
       credentials: 'include',
     });
 
-    yield put(loginSuccess(response.userType));
+    yield put(loginSuccess(response.userId, response.storeId));
   } catch (err) {
     yield put(loginError('There is no flavor. There are no spices. Where are the chips? ...these credentials were no good.'));
   }

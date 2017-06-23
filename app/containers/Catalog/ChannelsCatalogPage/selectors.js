@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const selectChannelCatalogPage = () => (state) => state.get('channelCatalogPage');
+const selectChannelCatalogPage = () => (state) => state.get('channelsCatalogPage');
 
 const selectProducts = () => createSelector(
   selectChannelCatalogPage(),

@@ -1,8 +1,8 @@
 import _ from 'underscore';
 import moment from 'moment';
 import {
-  GET_ORDERS_REQUEST,
-  GET_ORDERS_SUCCESS,
+  GET_RECEIVED_ORDERS,
+  GET_RECEIVED_ORDERS_SUCCESS,
   GET_ORDERS_ERROR,
   UPDATE_ORDER_TO_PROCESSING,
   UPDATE_ORDER_TO_PROCESSING_SUCCESS,
@@ -16,12 +16,17 @@ import { fromJS } from 'immutable';
 const initialState = fromJS({
   loading: false,
   error: '',
-  orders: [],
+  pageKey: '',
+  orders: fromJS([]),
 });
 
 function ordersPageReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_ORDERS_SUCCESS: {
+    case GET_RECEIVED_ORDERS: {
+      return state
+        .set('loading', true);
+    }
+    case GET_RECEIVED_ORDERS_SUCCESS: {
       const transformedOrders = _.map(action.orders, (order) => ({
         OrderId: order.OrderId,
         OrderCreatedDate: moment(order.OrderCreatedDate),
@@ -37,18 +42,18 @@ function ordersPageReducer(state = initialState, action) {
         ShipState: order.ShipState,
         ShipZip: order.ShipZip,
       }));
+
       transformedOrders.sort((a, b) => (a.OrderCreatedDate - b.OrderCreatedDate));
+      const orders = Array.concat(state.get('orders').toJS(), transformedOrders);
       return state
-        .set('orders', fromJS(transformedOrders))
+        .set('orders', fromJS(orders))
+        .set('pageKey', action.pageKey)
         .set('loading', false);
     }
     case GET_ORDERS_ERROR:
       return state
         .set('error', action.error)
         .set('loading', false);
-    case GET_ORDERS_REQUEST:
-      return state
-        .set('loading', true);
     case REMOVE_ERROR:
       return state
         .set('error', false);

@@ -11,7 +11,7 @@ import Logo from './logo.png';
 import { menuItem, menuItemContainer, selectedMenuItem } from './styles';
 
 const catalogPath = '/catalog/myproduct';
-const ordersPath = '/orders';
+const ordersPath = '/fulfillment/received';
 const storePath = '/myStore';
 const marketplacePath = '/marketplace/discover';
 
@@ -26,16 +26,16 @@ const Header = ({ loggedIn, submitLogout, location, cartCount }) => (
         </div>
         { loggedIn &&
           <div style={menuItemContainer}>
-            <Link to={storePath} style={Object.assign({}, menuItem, (location === storePath ? selectedMenuItem : {}))}>
+            <Link to={storePath} style={Object.assign({}, menuItem, (location.startsWith('/myStore') ? selectedMenuItem : {}))}>
               <StoreIcon color={'#757575'} /> My Store
             </Link>
-            <Link to={marketplacePath} style={Object.assign({}, menuItem, (location === marketplacePath ? selectedMenuItem : {}))}>
+            <Link to={marketplacePath} style={Object.assign({}, menuItem, (location.startsWith('/marketplace') ? selectedMenuItem : {}))}>
               <PublicIcon color={'#757575'} /> Marketplace
             </Link>
-            <Link to={catalogPath} style={Object.assign({}, menuItem, (location === catalogPath ? selectedMenuItem : {}))}>
+            <Link to={catalogPath} style={Object.assign({}, menuItem, (location.startsWith('/catalog') ? selectedMenuItem : {}))}>
               <GridIcon color={'#757575'} /> Catalog
             </Link>
-            <Link to={ordersPath} style={Object.assign({}, menuItem, (location === ordersPath ? selectedMenuItem : {}))}>
+            <Link to={ordersPath} style={Object.assign({}, menuItem, (location.startsWith('/fulfillment') ? selectedMenuItem : {}))}>
               <AssignmentIcon color={'#757575'} /> Fulfillment
             </Link>
           </div>

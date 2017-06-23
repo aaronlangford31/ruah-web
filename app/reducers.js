@@ -9,12 +9,13 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { reducer as form } from 'redux-form/immutable';
 import signUpPageReducer from 'containers/SignUpPage/reducers';
 import myCatalogPageReducer from 'containers/Catalog/MyCatalogPage/reducers';
-import channelCatalogPageReducer from 'containers/Catalog/ChannelsCatalogPage/reducers';
+import channelsCatalogPageReducer from 'containers/Catalog/ChannelsCatalogPage/reducers';
 import productProfilePageReducer from 'containers/ProductProfilePage/reducers';
 import productCreatePageReducer from 'containers/ProductCreatePage/reducers';
 import productImportPageReducer from 'containers/ProductImportPage/reducers';
-import ordersPageReducer from 'containers/OrdersPage/reducers';
-import orderProfilePageReducer from 'containers/OrderProfilePage/reducers';
+import receivedOrdersPageReducer from 'containers/Fulfillment/ReceivedOrdersPage/reducers';
+import sentOrdersPageReducer from 'containers/Fulfillment/SentOrdersPage/reducers';
+import orderProfilePageReducer from 'containers/Fulfillment/OrderProfilePage/reducers';
 import myStorePageReducer from 'containers/MyStorePage/reducers';
 import discoverPageReducer from 'containers/Marketplace/DiscoverPage/reducers';
 import requestsPageReducer from 'containers/Marketplace/RequestsPage/reducers';
@@ -60,11 +61,12 @@ export default function createReducer(asyncReducers) {
     app: appReducer,
     signUpPage: signUpPageReducer,
     myCatalogPage: myCatalogPageReducer,
-    channelCatalogPage: channelCatalogPageReducer,
+    channelsCatalogPage: channelsCatalogPageReducer,
     productProfilePage: productProfilePageReducer,
     productCreatePage: productCreatePageReducer,
     productImportPage: productImportPageReducer,
-    ordersPage: ordersPageReducer,
+    receivedOrdersPage: receivedOrdersPageReducer,
+    sentOrdersPage: sentOrdersPageReducer,
     orderProfilePage: orderProfilePageReducer,
     myStorePage: myStorePageReducer,
     discoverPage: discoverPageReducer,

@@ -66,6 +66,12 @@ const history = syncHistoryWithStore(browserHistory, store, {
 
 // Initialize Google Analytics
 GA.initialize('UA-101504520-1');
+if (store.getState().getIn(['app', 'loggedIn'])) {
+  const userId = store.getState().getIn(['app', 'userId']);
+  const storeId = store.getState().getIn(['app', 'storeId']);
+  GA.set({ userId });
+  GA.set({ storeId });
+}
 
 // Set up the router, wrapping all Routes in the App component
 import App from 'containers/App';
@@ -86,7 +92,8 @@ const render = () => {
           if (store.getState().getIn(['app', 'loggedIn'])) {
             const userId = store.getState().getIn(['app', 'userId']);
             const storeId = store.getState().getIn(['app', 'storeId']);
-            GA.set({ userId, storeId });
+            GA.set({ userId });
+            GA.set({ storeId });
           }
           GA.pageview(window.location.pathname);
         }}

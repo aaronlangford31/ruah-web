@@ -57,7 +57,7 @@ const ProductCard = (props) => {
       </div>
       <div style={{ padding: '5px' }}>
         <div style={{ margin: '0', color: '#04BFBF' }}>
-          {product.ProductName.substr(0, 48)}{product.ProductName.length > 48 ? <span>&hellip;</span> : '' }
+          {product.ProductName.substr(0, 48)}{product.ProductName.length > 48 && <span>&hellip;</span> }
         </div>
         {!isBuyer && <div style={{ color: '#BDBDBD', fontSize: '12px' }}>{product.SKU}</div>}
         {isBuyer && <div style={{ color: '#BDBDBD', fontSize: '12px' }}>{product.StoreId}</div>}

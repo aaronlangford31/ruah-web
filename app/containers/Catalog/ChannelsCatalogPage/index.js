@@ -5,12 +5,13 @@ import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
 import { addItemToCart } from '../../CheckoutPage/actions';
-import { selectProducts } from './selectors';
+import { selectProducts, selectLoading } from './selectors';
 import getStyles from './styles';
 import CatalogMenu from '../CatalogMenu';
 import ProductCard from '../ProductCard';
 import Body from '../../../components/styled/Body';
 import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import FileUploadIcon from 'material-ui/svg-icons/file/file-upload';
@@ -21,6 +22,7 @@ const PRODUCT_ROW_WIDTH = 4;
 class CatalogPage extends PureComponent {
   static propTypes = {
     products: PropTypes.array,
+    loading: PropTypes.bool,
     getProducts: PropTypes.func,
     filterProducts: PropTypes.func,
     onAddToCart: PropTypes.func,
@@ -38,6 +40,14 @@ class CatalogPage extends PureComponent {
   filterProducts = ({ target: { value } }) => {
     this.props.filterProducts(value);
   };
+
+  renderLoading() {
+    return (
+      <Paper style={{ margin: 'auto', textAlign: 'center', width: '500px' }}>
+        <CircularProgress />
+      </Paper>
+    );
+  }
 
   renderRows = () => {
     const rows = [];
@@ -95,8 +105,9 @@ class CatalogPage extends PureComponent {
                   <FlatButton label="Import" icon={<FileUploadIcon />} labelPosition="before" />
                 </Link>
               </Paper>
-              {this.renderRows()}
-              {this.props.products.length === 0 &&
+              {this.props.loading && this.renderLoading()}
+              {!this.props.loading && this.renderRows()}
+              {!this.props.loading && this.props.products.length === 0 &&
               <Paper style={{ display: 'flex', flexDirection: 'row', padding: '5px', margin: '5px', width: '750px' }}>
                 <span style={{ flex: 5 }} />
                 <div style={{ textAlign: 'center' }}>
@@ -130,6 +141,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   products: selectProducts(),
+  loading: selectLoading(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CatalogPage);

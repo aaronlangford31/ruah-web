@@ -3,7 +3,7 @@ import ShippedIcon from 'material-ui/svg-icons/maps/local-shipping';
 import NewIcon from 'material-ui/svg-icons/av/new-releases';
 import ProcessingIcon from 'material-ui/svg-icons/action/update';
 import getStyles from './styles';
-import colors from '../../theme/colors';
+import colors from '../../../theme/colors';
 
 function OrderPhase({ phase }) {
   const styles = getStyles();

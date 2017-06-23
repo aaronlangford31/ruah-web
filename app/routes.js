@@ -194,13 +194,13 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/order/:orderId',
+      path: '/fulfillment/order/:orderId',
       name: 'order-profile',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/OrderProfilePage/reducers'),
-          System.import('containers/OrderProfilePage/sagas'),
-          System.import('containers/OrderProfilePage'),
+          System.import('containers/Fulfillment/OrderProfilePage/reducers'),
+          System.import('containers/Fulfillment/OrderProfilePage/sagas'),
+          System.import('containers/Fulfillment/OrderProfilePage'),
         ]);
 
         const renderRoute = loadModule(cb);
@@ -214,19 +214,39 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/orders',
-      name: 'orders',
+      path: '/fulfillment/received',
+      name: 'receivedOrders',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/OrdersPage/reducers'),
-          System.import('containers/OrdersPage/sagas'),
-          System.import('containers/OrdersPage'),
+          System.import('containers/Fulfillment/ReceivedOrdersPage/reducers'),
+          System.import('containers/Fulfillment/ReceivedOrdersPage/sagas'),
+          System.import('containers/Fulfillment/ReceivedOrdersPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
         importModules.then(([reducer, sagas, component]) => {
-          injectReducer('ordersPage', reducer.default);
+          injectReducer('receivedOrdersPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/fulfillment/sent',
+      name: 'sentOrders',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/Fulfillment/SentOrdersPage/reducers'),
+          System.import('containers/Fulfillment/SentOrdersPage/sagas'),
+          System.import('containers/Fulfillment/SentOrdersPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('sentOrdersPage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });

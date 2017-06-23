@@ -15,7 +15,7 @@ import {
   onUpdateOrderToShippingSuccess,
   onUpdateOrderToShippingError,
 } from './actions';
-import { selectOrders } from '../OrdersPage/selectors';
+import { selectOrders } from '../ReceivedOrdersPage/selectors';
 import {
   selectCurrentOrderId,
   selectFulfillmentFormData,

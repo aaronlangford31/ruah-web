@@ -1,6 +1,6 @@
 import {
-  GET_ORDERS_REQUEST,
-  GET_ORDERS_SUCCESS,
+  GET_RECEIVED_ORDERS,
+  GET_RECEIVED_ORDERS_SUCCESS,
   GET_ORDERS_ERROR,
   UPDATE_ORDER_TO_PROCESSING,
   UPDATE_ORDER_TO_PROCESSING_SUCCESS,
@@ -13,14 +13,15 @@ import {
 
 export function getOrders() {
   return {
-    type: GET_ORDERS_REQUEST,
+    type: GET_RECEIVED_ORDERS,
   };
 }
 
-export function getOrdersSuccess(orders) {
+export function getOrdersSuccess(orders, pageKey) {
   return {
-    type: GET_ORDERS_SUCCESS,
+    type: GET_RECEIVED_ORDERS_SUCCESS,
     orders,
+    pageKey,
   };
 }
 

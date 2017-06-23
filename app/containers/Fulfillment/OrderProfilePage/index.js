@@ -9,7 +9,7 @@ import {
   selectShippingFromModalOpen,
 } from './selectors';
 import * as OrderProfilePageActions from './actions';
-import Body from '../../components/styled/Body';
+import Body from '../../../components/styled/Body';
 import Order from './Order';
 
 class OrderProfilePage extends Component {

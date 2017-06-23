@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect';
 import { fromJS } from 'immutable';
 
-const selectOrdersPage = () => (state) => state.get('ordersPage');
+const selectReceivedOrdersPage = () => (state) => state.get('receivedOrdersPage');
 
 const selectOrders = () => createSelector(
-  selectOrdersPage(),
+  selectReceivedOrdersPage(),
   (state) => state.get('orders').toJS(),
 );
 
@@ -16,12 +16,18 @@ const selectShippingFormFields = () => createSelector(
 );
 
 const selectLoading = () => createSelector(
-  selectOrdersPage(),
+  selectReceivedOrdersPage(),
   (state) => state.get('loading'),
+);
+
+const selectPageKey = () => createSelector(
+  selectReceivedOrdersPage(),
+  (state) => state.get('pageKey'),
 );
 
 export {
   selectOrders,
   selectLoading,
   selectShippingFormFields,
+  selectPageKey,
 };
