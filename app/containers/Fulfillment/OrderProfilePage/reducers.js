@@ -26,6 +26,9 @@ function orderProfilePageReducer(state = initialState, action) {
     case LOAD_ORDER_PROFILE_DATA_SUCCESS: {
       const order = action.order;
       order.OrderCreatedDate = moment(order.OrderCreatedDate);
+      if (order.FulfillmentInfo) {
+        order.FulfillmentInfo.EstimatedShipmentDate = moment(order.FulfillmentInfo.EstimatedShipmentDate);
+      }
       return state
         .set('loading', false)
         .set('currentOrderLoaded', true)

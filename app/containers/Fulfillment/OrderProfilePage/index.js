@@ -8,6 +8,9 @@ import {
   selectCurrentOrderLoaded,
   selectShippingFromModalOpen,
 } from './selectors';
+import {
+  selectStoreId,
+} from '../../App/selectors';
 import * as OrderProfilePageActions from './actions';
 import Body from '../../../components/styled/Body';
 import Order from './Order';
@@ -20,6 +23,7 @@ class OrderProfilePage extends Component {
 
   render() {
     const {
+      currentStoreId,
       orderId,
       orderLoaded,
       order,
@@ -40,6 +44,7 @@ class OrderProfilePage extends Component {
         <Body>
           {orderLoaded && <Order
             order={order}
+            currentStoreId={currentStoreId}
             updateOrderToProcessing={updateOrderToProcessing}
             updateOrderToShipping={updateOrderToShipping}
             openFulfilmentDialog={openFulfilmentDialog}
@@ -53,6 +58,7 @@ class OrderProfilePage extends Component {
 }
 
 OrderProfilePage.propTypes = {
+  currentStoreId: PropTypes.string,
   order: PropTypes.object,
   orderId: PropTypes.string,
   orderLoaded: PropTypes.bool,
@@ -90,6 +96,7 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
+  currentStoreId: selectStoreId(),
   order: selectCurrentOrder(),
   orderId: selectCurrentOrderId(),
   orderLoaded: selectCurrentOrderLoaded(),

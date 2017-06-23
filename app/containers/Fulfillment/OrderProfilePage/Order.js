@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import MailIcon from 'material-ui/svg-icons/communication/contact-mail';
+import ShippedIcon from 'material-ui/svg-icons/maps/local-shipping';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import ProductIcon from 'material-ui/svg-icons/action/work';
 import Divider from 'material-ui/Divider';
@@ -14,6 +15,7 @@ import NextStepButton from './NextStepButton';
 import OrderPhase from './OrderPhase';
 
 function Order({
+  currentStoreId,
   order,
   updateOrderToProcessing,
   openFulfilmentDialog,
@@ -36,12 +38,19 @@ function Order({
         <div>
           <Stepper activeStep={order.OrderPhase}>
             <Step>
-              <StepLabel>Acknowledge New Order</StepLabel>
+              {currentStoreId === order.StoreId
+                ? <StepLabel>Acknowledge New Order</StepLabel>
+                : <StepLabel>Awaiting Acknowledgement</StepLabel>
+              }
             </Step>
             <Step>
-              <StepLabel>Enter Fulfillment Info</StepLabel>
+              {currentStoreId === order.StoreId
+                ? <StepLabel>Enter Fulfillment Info</StepLabel>
+                : <StepLabel>Awaiting Fulfillment</StepLabel>
+              }
             </Step>
           </Stepper>
+          {currentStoreId === order.StoreId &&
           <div>
             <div style={{ marginTop: 12, marginBottom: 12 }}>
               <NextStepButton
@@ -61,8 +70,29 @@ function Order({
               </Dialog>
             </div>
           </div>
+          }
         </div>
         <Divider />
+        { order.FulfillmentInfo &&
+        <div>
+          <h3><ShippedIcon style={{ marginRight: 5 }} /> Fulfillment Info</h3>
+          <p>
+            Carrier Code: {order.FulfillmentInfo.CarrierCode}
+          </p>
+          <p>
+            Carrier Name: {order.FulfillmentInfo.CarrierName}
+          </p>
+          <p>
+            Shipping Method: {order.FulfillmentInfo.ShippingMethod}
+          </p>
+          <p>
+            Tracking Code: {order.FulfillmentInfo.ShipTrackCode}
+          </p>
+          <p>
+            Estimated Ship Date: {order.FulfillmentInfo.EstimatedShipmentDate.format('MMMM D, YYYY')}
+          </p>
+        </div>
+        }
         <div style={{ display: 'flex' }}>
           <div style={{ flex: 1 }}>
             <h3><PersonIcon style={{ marginRight: 5 }} /> Buyer Info</h3>
@@ -117,6 +147,7 @@ function Order({
 }
 
 Order.propTypes = {
+  currentStoreId: PropTypes.string,
   order: PropTypes.object,
   updateOrderToProcessing: PropTypes.func,
   openFulfilmentDialog: PropTypes.func,

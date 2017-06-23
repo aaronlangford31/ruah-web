@@ -33,15 +33,12 @@ export function* getOrderById() {
     try {
       // Call our request helper (see 'utils/request')
       const order = yield call(request, requestURL, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
         credentials: 'include',
       });
 
       yield put(loadOrderProfileDataSuccess(order));
     } catch (err) {
-      yield put(loadOrderProfileDataError(`Error: ${err.message}`));
+      yield put(loadOrderProfileDataError(`Error: ${err}`));
     }
   }
 }
@@ -52,9 +49,6 @@ export function* postUpdateOrderToProcessing() {
 
   try {
     yield call(request, requestURL, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
       credentials: 'include',
     });
 

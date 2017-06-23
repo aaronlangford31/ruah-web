@@ -22,9 +22,14 @@ const selectLocationState = () => {
 
 const selectLoginPage = () => (state) => state.get('app');
 
-const selectUserType = () => createSelector(
+const selectUserId = () => createSelector(
   selectLoginPage(),
-  (state) => state.get('userType'),
+  (state) => state.get('userId'),
+);
+
+const selectStoreId = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('storeId'),
 );
 
 const selectLoggedIn = () => createSelector(
@@ -51,7 +56,8 @@ const selectLoading = () => createSelector(
 
 export {
   selectLocationState,
-  selectUserType,
+  selectUserId,
+  selectStoreId,
   selectLoggedIn,
   selectLoginFields,
   selectError,
