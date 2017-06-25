@@ -44,19 +44,22 @@ class CheckoutPage extends Component {
   renderItem(item, ix) {
     return (
       <div key={ix} style={{ display: 'flex', flexDirection: 'row' }}>
-        <div style={{ flex: 8 }}>
-          <div>{item.ProductName}</div>
+        <div style={{ flex: 7 }}>
+          <div>{item.ProductName.substring(0, 84)}{item.ProductName.length > 84 && <span>&hellip;</span>}</div>
           <div>{item.RuahId}</div>
         </div>
         <input
           name={ix}
-          style={{ flex: 1, width: '10px', margin: '5px' }}
+          style={{ flex: 1, width: '10px', margin: '0 0 25px 0' }}
           type={'number'}
           value={item.Quantity}
           onChange={this.handleQuantityInputChange}
         />
         <div style={{ flex: 1 }}>
-          ${(item.WholesalePrice * item.Quantity).toFixed(2)}
+          ${(item.RetailPrice * item.Quantity).toFixed(2)}
+        </div>
+        <div style={{ flex: 1 }}>
+          ${(item.ShippingPrice * item.Quantity).toFixed(2)}
         </div>
       </div>
     );
@@ -79,14 +82,17 @@ class CheckoutPage extends Component {
             {_.map(this.props.checkoutItems, (item, ix) => this.renderItem(item, ix))}
             <Divider />
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <strong style={{ flex: 8 }}>
+              <strong style={{ flex: 7 }}>
                 Total
               </strong>
               <strong style={{ flex: 1 }}>
                 {_.reduce(this.props.checkoutItems, (memo, item) => memo + item.Quantity, 0)}
               </strong>
               <strong style={{ flex: 1 }}>
-                ${_.reduce(this.props.checkoutItems, (memo, item) => memo + (item.Quantity * item.WholesalePrice), 0).toFixed(2)}
+                ${_.reduce(this.props.checkoutItems, (memo, item) => memo + (item.Quantity * item.RetailPrice), 0).toFixed(2)}
+              </strong>
+              <strong style={{ flex: 1 }}>
+                ${_.reduce(this.props.checkoutItems, (memo, item) => memo + (item.Quantity * item.ShippingPrice), 0).toFixed(2)}
               </strong>
             </div>
             <br />

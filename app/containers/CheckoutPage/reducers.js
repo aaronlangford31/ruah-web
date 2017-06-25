@@ -19,6 +19,8 @@ export default function checkoutPageReducer(state = initialState, action) {
     case ADD_ITEM_TO_CART: {
       const items = state.get('cartItems').toJS();
       const item = action.product;
+      item.RetailPrice = item.WholesalePrice;
+      item.ShippingPrice = item.ShippingFee;
       item.Quantity = 1;
       items.push(item);
       return state
