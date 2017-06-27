@@ -2,11 +2,26 @@ import React, { PropTypes } from 'react';
 import ShippedIcon from 'material-ui/svg-icons/maps/local-shipping';
 import NewIcon from 'material-ui/svg-icons/av/new-releases';
 import ProcessingIcon from 'material-ui/svg-icons/action/update';
-import getStyles from './styles';
 import colors from '../../../theme/colors';
 
 function OrderPhase({ phase }) {
-  const styles = getStyles();
+  const styles = {
+    new: {
+      width: 50,
+      textAlign: 'center',
+      fontSize: 12,
+    },
+    processing: {
+      width: 50,
+      textAlign: 'center',
+      fontSize: 12,
+    },
+    shipped: {
+      width: 60,
+      textAlign: 'center',
+      fontSize: 12,
+    },
+  };
   switch (phase) {
     case 0:
       return (
