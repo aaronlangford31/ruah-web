@@ -63,6 +63,9 @@ class App extends Component {
 
   componentWillMount() {
     const { checkLogin } = this.props;
+    if (this.props.loggedIn) {
+      this.context.router.push({ pathname: '/marketplace/discover' });
+    }
     checkLogin();
   }
 

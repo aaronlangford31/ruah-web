@@ -14,7 +14,6 @@ import Body from '../../../components/styled/Body';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
 import Divider from 'material-ui/Divider';
-import FlatButton from 'material-ui/FlatButton';
 
 class StoreProfilePage extends Component {
   constructor(props) {
@@ -33,17 +32,7 @@ class StoreProfilePage extends Component {
   renderStore() {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '1000px' }}>
-        <div style={{ display: 'flex' }}>
-          <span style={{ flex: 10 }} />
-          <FlatButton
-            backgroundColor={'#A9CF94'}
-            color={'#FFFFFF'}
-            onTouchTap={this.onEditClicked}
-          >
-            <span style={{ color: '#FFFFFF' }}>Edit Page</span>
-          </FlatButton>
-        </div>
-        <Paper style={{ padding: '15px', display: 'flex' }}>
+        <Paper style={{ padding: '15px', margin: '10px', display: 'flex' }}>
           <img style={{ width: '200px', height: '200px' }} src={this.props.store.ProfilePicUri} alt={'Profile Pic'} />
           <div style={{ padding: '0 20px' }}>
             <h1 style={{ fontWeight: '200', margin: '0', color: '#04BFBF' }}>{this.props.store.Name}</h1>
@@ -82,7 +71,7 @@ class StoreProfilePage extends Component {
             </div>
           </div>
         </Paper>
-        <Paper style={{ padding: '15px', marginTop: '20px' }}>
+        <Paper style={{ padding: '15px', margin: '10px' }}>
           <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Story</span>
           <p style={{ whiteSpace: 'pre-wrap' }}>{this.props.store.Story}</p>
         </Paper>

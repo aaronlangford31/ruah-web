@@ -1,4 +1,5 @@
 import { fromJS } from 'immutable';
+import moment from 'moment';
 import {
   GET_STORE_BY_ID,
   GET_STORE_BY_ID_SUCCESS,
@@ -23,10 +24,12 @@ function storeProfilePageReducer(state = initialState, action) {
         .set('currentStoreId', action.StoreId);
     }
     case GET_STORE_BY_ID_SUCCESS: {
+      const store = action.store;
+      store.Joined = moment(store.Joined);
       return state
         .set('loading', false)
         .set('isEditing', false)
-        .set('currentProduct', fromJS(action.store));
+        .set('currentStore', fromJS(action.store));
     }
     case GET_STORE_BY_ID_NOT_FOUND: {
       return state

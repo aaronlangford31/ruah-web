@@ -17,7 +17,7 @@ function* getStoreById() {
   const currentStoreId = yield select(selectCurrentStoreId());
   try {
     const store = yield call(request,
-      `${URI_GET_STORE_BY_ID}?id=${currentStoreId}`, {
+      `${URI_GET_STORE_BY_ID}?storeId=${currentStoreId}`, {
         credentials: 'include',
       },
     );
