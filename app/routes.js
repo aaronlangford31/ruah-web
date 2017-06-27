@@ -338,6 +338,27 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/marketplace/store/:storeId',
+      name: 'storeProfilePage',
+
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/Marketplace/StoreProfilePage/reducers'),
+          System.import('containers/Marketplace/StoreProfilePage/sagas'),
+          System.import('containers/Marketplace/StoreProfilePage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('storeProfilePage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '/checkout',
       name: 'checkoutPage',
 

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import _ from 'underscore';
@@ -71,7 +72,7 @@ class DiscoverPage extends Component {
           />
           <div style={{ padding: '0 0 0 20px' }}>
             <div style={{ display: 'flex' }}>
-              <div style={{ margin: '0', color: '#04BFBF' }}>{store.Name}</div>
+              <Link to={`/marketplace/store/${store.StoreId}`} style={{ margin: '0', color: '#04BFBF', textDecoration: 'none' }}>{store.Name}</Link>
               &nbsp;
               <div style={{ color: '#BDBDBD' }}>{store.StoreId}</div>
             </div>
