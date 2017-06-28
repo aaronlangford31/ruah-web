@@ -5,20 +5,26 @@ import { createStructuredSelector } from 'reselect';
 import _ from 'underscore';
 import {
   getStoreById,
+  getStoreProductById,
 } from './actions';
 import {
   selectCurrentStore,
   selectLoading,
+  selectCurrentStoreProducts,
 } from './selectors';
 import Body from '../../../components/styled/Body';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
 import Divider from 'material-ui/Divider';
+import ProductCard from '../../Catalog/ProductCard';
+
+const PRODUCT_ROW_WIDTH = 4;
 
 class StoreProfilePage extends Component {
   constructor(props) {
     super(props);
     this.props.getStore(this.props.router.params.storeId);
+    this.props.getStoreProduct(this.props.router.params.storeId);
   }
 
   renderLoading() {
@@ -26,6 +32,37 @@ class StoreProfilePage extends Component {
       <Paper style={{ margin: 'auto', textAlign: 'center', width: '500px' }}>
         <CircularProgress />
       </Paper>
+    );
+  }
+
+  renderRows = () => {
+    const rows = [];
+    for (let i = 0; i < this.props.storeProducts.length / PRODUCT_ROW_WIDTH; i += 1) {
+      rows.push(this.renderRow(i));
+    }
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {rows}
+      </div>
+    );
+  };
+
+  renderRow = (i) => {
+    const cards = [];
+    for (let j = 0; j < PRODUCT_ROW_WIDTH; j += 1) {
+      if ((i * PRODUCT_ROW_WIDTH) + j < this.props.storeProducts.length) {
+        const product = this.props.storeProducts[(i * PRODUCT_ROW_WIDTH) + j];
+        cards.push(
+          <ProductCard
+            key={product.RuahId}
+            product={product}
+          />);
+      }
+    }
+    return (
+      <div key={i} style={{ display: 'flex', flexDirection: 'row' }}>
+        {cards}
+      </div>
     );
   }
 
@@ -75,6 +112,7 @@ class StoreProfilePage extends Component {
           <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Story</span>
           <p style={{ whiteSpace: 'pre-wrap' }}>{this.props.store.Story}</p>
         </Paper>
+        {this.renderRows()}
       </div>
     );
   }
@@ -104,8 +142,10 @@ class StoreProfilePage extends Component {
 StoreProfilePage.propTypes = {
   loading: PropTypes.bool,
   store: PropTypes.object,
+  storeProducts: PropTypes.array,
   router: PropTypes.object,
   getStore: PropTypes.func,
+  getStoreProduct: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -113,12 +153,16 @@ export function mapDispatchToProps(dispatch) {
     getStore: (id) => {
       dispatch(getStoreById(id));
     },
+    getStoreProduct: (id) => {
+      dispatch(getStoreProductById(id));
+    },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   loading: selectLoading(),
   store: selectCurrentStore(),
+  storeProducts: selectCurrentStoreProducts(),
 });
 
 // Wrap the component to inject dispatch and state into it

@@ -5,11 +5,13 @@ import {
   GET_STORE_BY_ID_SUCCESS,
   GET_STORE_BY_ID_NOT_FOUND,
   GET_STORE_BY_ID_ERROR,
+  GET_STORE_PRODUCT_BY_ID_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
   loading: false,
   currentStore: fromJS({}),
+  currentStoreProducts: fromJS([]),
   currentStoreId: '',
   notFound: false,
 });
@@ -40,6 +42,10 @@ function storeProfilePageReducer(state = initialState, action) {
       return state
         .set('loading', false)
         .set('notFound', false);
+    }
+    case GET_STORE_PRODUCT_BY_ID_SUCCESS: {
+      return state
+        .set('currentStoreProducts', fromJS(action.products));
     }
     default:
       return state;

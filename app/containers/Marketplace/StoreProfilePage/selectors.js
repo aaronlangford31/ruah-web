@@ -22,8 +22,14 @@ const selectNotFound = () => createSelector(
   (state) => state.get('notFound'),
 );
 
+const selectCurrentStoreProducts = () => createSelector(
+  selectStoreProfilePage(),
+  (state) => state.get('currentStoreProducts').toJS(),
+);
+
 export {
   selectCurrentStore,
+  selectCurrentStoreProducts,
   selectCurrentStoreId,
   selectLoading,
   selectNotFound,
