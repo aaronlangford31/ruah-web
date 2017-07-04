@@ -44,6 +44,10 @@ class CatalogPage extends PureComponent {
     this.props.searchProducts(this.props.products, query.toLowerCase());
   };
 
+  filterAutocomplete(searchText, key) {
+    return key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
+  }
+
   renderRows = () => {
     const rows = [];
     const products = this.props.filteredProducts;
@@ -76,10 +80,6 @@ class CatalogPage extends PureComponent {
         {cards}
       </div>
     );
-  }
-
-  filterAutocomplete(searchText, key) {
-    return key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
   }
 
   renderLoading() {
