@@ -1,16 +1,40 @@
 import { fromJS } from 'immutable';
 import {
-  FILTER_PRODUCTS,
+  SEARCH_PRODUCTS,
+  SEARCH_PRODUCTS_SUCCESS,
   GET_PRODUCTS,
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS_ERROR,
   REMOVE_ERROR,
+  SET_QUERY,
+  SET_AUTOCOMPLETE,
 } from './constants';
 
-export function filterProducts(filter) {
+export function setQuery(query) {
   return {
-    type: FILTER_PRODUCTS,
-    payload: fromJS({ filter }),
+    type: SET_QUERY,
+    payload: { query },
+  };
+}
+
+export function setAutocomplete(items) {
+  return {
+    type: SET_AUTOCOMPLETE,
+    payload: fromJS({ items }),
+  };
+}
+
+export function searchProducts(products, query) {
+  return {
+    type: SEARCH_PRODUCTS,
+    payload: fromJS({ products, query }),
+  };
+}
+
+export function searchProductsSuccess(filteredProducts) {
+  return {
+    type: SEARCH_PRODUCTS_SUCCESS,
+    payload: fromJS({ filteredProducts }),
   };
 }
 

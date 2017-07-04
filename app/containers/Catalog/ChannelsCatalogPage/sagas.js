@@ -1,9 +1,10 @@
 import { takeLatest } from 'redux-saga';
 import { call, put, take, cancel } from 'redux-saga/effects';
+import { Set } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import _ from 'underscore';
-import { GET_PRODUCTS, GET_PRODUCTS_URI } from './constants';
-import { getProductsSuccess, getProductsError } from './actions';
+import { GET_PRODUCTS, GET_PRODUCTS_URI, SEARCH_PRODUCTS } from './constants';
+import { getProductsSuccess, getProductsError, searchProductsSuccess, setAutocomplete } from './actions';
 import request from 'utils/request';
 
 export function* getProducts() {
@@ -20,9 +21,35 @@ export function* getProducts() {
       return mutated;
     });
     yield put(getProductsSuccess(products));
+
+    // Only put the manufacturer name in for the autocomplete for now, it's getting late
+    const items = new Set(_.map(products, (product) => product.ManufacturerName));
+    yield put(setAutocomplete(items.toArray()));
   } catch (err) {
     yield put(getProductsError(`Error: ${err.message}`));
   }
+}
+
+export function* searchProducts(action) {
+  const query = action.payload.get('query').toLowerCase();
+  const products = action.payload.get('products');
+  if (query.trim().length === 0) {
+    yield put(searchProductsSuccess(products));
+    return;
+  }
+  const filteredProducts = products.filter((product) => {
+    if (product.get('ManufacturerName').toLowerCase() === query) {
+      return true;
+    }
+    return false;
+  });
+  yield put(searchProductsSuccess(filteredProducts));
+}
+
+export function* watchSearchProducts() {
+  const watcher = yield takeLatest(SEARCH_PRODUCTS, searchProducts);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export function* watchGetProducts() {
@@ -33,4 +60,5 @@ export function* watchGetProducts() {
 
 export default [
   watchGetProducts,
+  watchSearchProducts,
 ];

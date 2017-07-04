@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
@@ -40,36 +40,42 @@ const styles = {
   },
 };
 
-const ProductCard = (props) => {
-  const { product, isBuyer, onAddToCart } = props;
-  return (
-    <Paper style={styles.cardPaper} >
-      <div
-        style={product.MainImageUri ? {
-          ...styles.productImage,
-          backgroundImage: `url(${product.MainImageUri})`,
-        } : styles.productImageEmpty}
-      >
-        <span style={{ flex: 10 }}>&nbsp;</span>
-        <Link to={`/product/${product.RuahId}`} style={styles.viewProduct}><ViewIcon /></Link>
-        <span>&nbsp;</span>
-        {isBuyer && <FlatButton onTouchTap={onAddToCart} style={styles.addToCart}>Add to Cart</FlatButton> }
-      </div>
-      <div style={{ padding: '5px' }}>
-        <div style={{ margin: '0', color: '#04BFBF' }}>
-          {product.ProductName.substr(0, 48)}{product.ProductName.length > 48 && <span>&hellip;</span> }
+class ProductCard extends Component {
+  shouldComponentUpdate() {
+    return false;
+  }
+
+  render() {
+    const { product, isBuyer, onAddToCart } = this.props;
+    return (
+      <Paper style={styles.cardPaper} >
+        <div
+          style={product.MainImageUri ? {
+            ...styles.productImage,
+            backgroundImage: `url(${product.MainImageUri})`,
+          } : styles.productImageEmpty}
+        >
+          <span style={{ flex: 10 }}>&nbsp;</span>
+          <Link to={`/product/${product.RuahId}`} style={styles.viewProduct}><ViewIcon /></Link>
+          <span>&nbsp;</span>
+          {isBuyer && <FlatButton onTouchTap={onAddToCart} style={styles.addToCart}>Add to Cart</FlatButton> }
         </div>
-        {!isBuyer && <div style={{ color: '#BDBDBD', fontSize: '12px' }}>{product.SKU}</div>}
-        {isBuyer && <div style={{ color: '#BDBDBD', fontSize: '12px' }}>{product.StoreId}</div>}
-        <div>
-          <CardIcon color={'#757575'} /> ${product.WholesalePrice.toFixed(2)}&nbsp;&nbsp;
-          <ShipIcon color={'#757575'} /> ${product.ShippingFee.toFixed(2)}&nbsp;&nbsp;
-          <span style={{ color: '#757575', fontWeight: 600 }}>INV</span> {product.Inventory}&nbsp;
+        <div style={{ padding: '5px' }}>
+          <div style={{ margin: '0', color: '#04BFBF' }}>
+            {product.ProductName.substr(0, 48)}{product.ProductName.length > 48 && <span>&hellip;</span> }
+          </div>
+          {!isBuyer && <div style={{ color: '#BDBDBD', fontSize: '12px' }}>{product.SKU}</div>}
+          {isBuyer && <div style={{ color: '#BDBDBD', fontSize: '12px' }}>{product.StoreId}</div>}
+          <div>
+            <CardIcon color={'#757575'} /> ${product.WholesalePrice.toFixed(2)}&nbsp;&nbsp;
+            <ShipIcon color={'#757575'} /> ${product.ShippingFee.toFixed(2)}&nbsp;&nbsp;
+            <span style={{ color: '#757575', fontWeight: 600 }}>INV</span> {product.Inventory}&nbsp;
+          </div>
         </div>
-      </div>
-    </Paper>
-  );
-};
+      </Paper>
+    );
+  }
+}
 
 ProductCard.propTypes = {
   product: PropTypes.object,

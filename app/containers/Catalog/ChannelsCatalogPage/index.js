@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
 import { addItemToCart } from '../../CheckoutPage/actions';
-import { selectProducts, selectLoading } from './selectors';
+import { selectProducts, selectLoading, selectFilteredProducts, selectAutocomplete } from './selectors';
 import getStyles from './styles';
 import CatalogMenu from '../CatalogMenu';
 import ProductCard from '../ProductCard';
@@ -13,18 +13,21 @@ import Body from '../../../components/styled/Body';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
+import AutoComplete from 'material-ui/AutoComplete';
 import FileUploadIcon from 'material-ui/svg-icons/file/file-upload';
 import UnhappyFaceIcon from 'material-ui/svg-icons/social/sentiment-dissatisfied';
+
 
 const PRODUCT_ROW_WIDTH = 4;
 
 class CatalogPage extends PureComponent {
   static propTypes = {
     products: PropTypes.array,
+    filteredProducts: PropTypes.array,
+    autocomplete: PropTypes.array,
     loading: PropTypes.bool,
     getProducts: PropTypes.func,
-    filterProducts: PropTypes.func,
+    searchProducts: PropTypes.func,
     onAddToCart: PropTypes.func,
   };
 
@@ -37,22 +40,15 @@ class CatalogPage extends PureComponent {
     this.props.getProducts();
   }
 
-  filterProducts = ({ target: { value } }) => {
-    this.props.filterProducts(value);
+  searchProducts = (query) => {
+    this.props.searchProducts(this.props.products, query.toLowerCase());
   };
-
-  renderLoading() {
-    return (
-      <Paper style={{ margin: 'auto', textAlign: 'center', width: '500px' }}>
-        <CircularProgress />
-      </Paper>
-    );
-  }
 
   renderRows = () => {
     const rows = [];
-    for (let i = 0; i < this.props.products.length / PRODUCT_ROW_WIDTH; i += 1) {
-      rows.push(this.renderRow(i));
+    const products = this.props.filteredProducts;
+    for (let i = 0; i < products.length / PRODUCT_ROW_WIDTH; i += 1) {
+      rows.push(this.renderRow(products, i));
     }
     return (
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -61,11 +57,11 @@ class CatalogPage extends PureComponent {
     );
   };
 
-  renderRow = (i) => {
+  renderRow = (products, i) => {
     const cards = [];
     for (let j = 0; j < PRODUCT_ROW_WIDTH; j += 1) {
-      if ((i * PRODUCT_ROW_WIDTH) + j < this.props.products.length) {
-        const product = this.props.products[(i * PRODUCT_ROW_WIDTH) + j];
+      if ((i * PRODUCT_ROW_WIDTH) + j < products.length) {
+        const product = products[(i * PRODUCT_ROW_WIDTH) + j];
         cards.push(
           <ProductCard
             key={j}
@@ -82,9 +78,21 @@ class CatalogPage extends PureComponent {
     );
   }
 
+  filterAutocomplete(searchText, key) {
+    return key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
+  }
+
+  renderLoading() {
+    return (
+      <Paper style={{ margin: 'auto', textAlign: 'center', width: '500px' }}>
+        <CircularProgress />
+      </Paper>
+    );
+  }
+
   render() {
     const styles = getStyles();
-
+    const message = 'You have not opened any buying channels on the Ruah marketplace.';
     return (
       <article>
         <Helmet
@@ -99,7 +107,7 @@ class CatalogPage extends PureComponent {
             <div style={{ maxWidth: '1000px' }}>
               <Paper style={styles.header}>
                 <div>
-                  <TextField onChange={this.filterProducts} floatingLabelText="Filter" />
+                  <AutoComplete floatingLabelText="Search" onNewRequest={(query) => this.searchProducts(query)} filter={(searchText, key) => this.filterAutocomplete(searchText, key)} maxSearchResults={5} dataSource={this.props.autocomplete} />
                 </div>
                 <Link to={'product/import'}>
                   <FlatButton label="Import" icon={<FileUploadIcon />} labelPosition="before" />
@@ -112,7 +120,7 @@ class CatalogPage extends PureComponent {
                 <span style={{ flex: 5 }} />
                 <div style={{ textAlign: 'center' }}>
                   <UnhappyFaceIcon color={'#BDBDBD'} />
-                  <div>You have not opened any buying channels on the Ruah marketplace.</div>
+                  <div>{message}</div>
                 </div>
                 <span style={{ flex: 5 }} />
               </Paper>
@@ -127,21 +135,23 @@ class CatalogPage extends PureComponent {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    filterProducts: (filter) => {
-      dispatch(Actions.filterProducts(filter));
-    },
     getProducts: () => {
       dispatch(Actions.getProducts());
     },
     onAddToCart: (product) => {
       dispatch(addItemToCart(product));
     },
+    searchProducts: (products, query) => {
+      dispatch(Actions.searchProducts(products, query));
+    },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   products: selectProducts(),
+  filteredProducts: selectFilteredProducts(),
   loading: selectLoading(),
+  autocomplete: selectAutocomplete(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CatalogPage);
