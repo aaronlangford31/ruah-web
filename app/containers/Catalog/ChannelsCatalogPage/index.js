@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
 import { addItemToCart } from '../../CheckoutPage/actions';
-import { selectProducts, selectLoading } from './selectors';
+import { selectProducts, selectVisibleProducts, selecetVisibleStartIx, selectLoading } from './selectors';
 import getStyles from './styles';
 import CatalogMenu from '../CatalogMenu';
 import ProductCard from '../ProductCard';
@@ -22,10 +22,14 @@ const PRODUCT_ROW_WIDTH = 4;
 class CatalogPage extends PureComponent {
   static propTypes = {
     products: PropTypes.array,
+    visibleProducts: PropTypes.array,
+    visibleStartIx: PropTypes.number,
     loading: PropTypes.bool,
     getProducts: PropTypes.func,
     filterProducts: PropTypes.func,
     onAddToCart: PropTypes.func,
+    pageForward: PropTypes.func,
+    pageBackward: PropTypes.func,
   };
 
   static contextTypes = {
@@ -51,7 +55,7 @@ class CatalogPage extends PureComponent {
 
   renderRows = () => {
     const rows = [];
-    for (let i = 0; i < this.props.products.length / PRODUCT_ROW_WIDTH; i += 1) {
+    for (let i = 0; i < this.props.visibleProducts.length / PRODUCT_ROW_WIDTH; i += 1) {
       rows.push(this.renderRow(i));
     }
     return (
@@ -64,8 +68,8 @@ class CatalogPage extends PureComponent {
   renderRow = (i) => {
     const cards = [];
     for (let j = 0; j < PRODUCT_ROW_WIDTH; j += 1) {
-      if ((i * PRODUCT_ROW_WIDTH) + j < this.props.products.length) {
-        const product = this.props.products[(i * PRODUCT_ROW_WIDTH) + j];
+      if ((i * PRODUCT_ROW_WIDTH) + j < this.props.visibleProducts.length) {
+        const product = this.props.visibleProducts[(i * PRODUCT_ROW_WIDTH) + j];
         cards.push(
           <ProductCard
             key={j}
@@ -79,6 +83,24 @@ class CatalogPage extends PureComponent {
       <div key={i} style={{ display: 'flex', flexDirection: 'row' }}>
         {cards}
       </div>
+    );
+  }
+
+  renderPagination() {
+    return (
+      <Paper style={{ display: 'flex', flexDirection: 'row', margin: '5px', padding: '5px' }}>
+        <div>
+          <strong>Showing {this.props.visibleStartIx + 1} - {this.props.visibleStartIx + 32} of {this.props.products.length} products</strong>
+        </div>
+        <div>
+          {this.props.visibleStartIx > 0 &&
+          <FlatButton onTouchTap={this.props.pageBackward} >Prev</FlatButton>
+          }
+          {this.props.visibleStartIx + 32 < this.props.products.length &&
+          <FlatButton onTouchTap={this.props.pageForward} >Next</FlatButton>
+          }
+        </div>
+      </Paper>
     );
   }
 
@@ -106,8 +128,9 @@ class CatalogPage extends PureComponent {
                 </Link>
               </Paper>
               {this.props.loading && this.renderLoading()}
+              {!this.props.loading && this.renderPagination()}
               {!this.props.loading && this.renderRows()}
-              {!this.props.loading && this.props.products.length === 0 &&
+              {!this.props.loading && this.props.visibleProducts.length === 0 &&
               <Paper style={{ display: 'flex', flexDirection: 'row', padding: '5px', margin: '5px', width: '750px' }}>
                 <span style={{ flex: 5 }} />
                 <div style={{ textAlign: 'center' }}>
@@ -136,11 +159,19 @@ export function mapDispatchToProps(dispatch) {
     onAddToCart: (product) => {
       dispatch(addItemToCart(product));
     },
+    pageForward: () => {
+      dispatch(Actions.pageForward());
+    },
+    pageBackward: () => {
+      dispatch(Actions.pageBackward());
+    },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   products: selectProducts(),
+  visibleProducts: selectVisibleProducts(),
+  visibleStartIx: selecetVisibleStartIx(),
   loading: selectLoading(),
 });
 

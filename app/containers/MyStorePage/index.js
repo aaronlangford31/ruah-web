@@ -8,14 +8,14 @@ import {
   cancelEditStore,
   saveStoreEdits,
   editStore,
-  getStore,
 } from './actions';
+import { getStore } from '../App/actions';
 import {
-  selectStore,
   selectLoading,
   selectStoreNotSetup,
   selectIsEditing,
 } from './selectors';
+import { selectStore } from '../App/selectors';
 import Body from '../../components/styled/Body';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';

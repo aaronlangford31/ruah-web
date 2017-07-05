@@ -32,6 +32,11 @@ const selectStoreId = () => createSelector(
   (state) => state.get('storeId'),
 );
 
+const selectStore = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('store').toJS(),
+);
+
 const selectLoggedIn = () => createSelector(
   selectLoginPage(),
   (state) => state.get('loggedIn'),
@@ -62,4 +67,5 @@ export {
   selectLoginFields,
   selectError,
   selectLoading,
+  selectStore,
 };

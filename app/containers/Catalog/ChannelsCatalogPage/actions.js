@@ -5,6 +5,8 @@ import {
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS_ERROR,
   REMOVE_ERROR,
+  PAGE_FORWARD,
+  PAGE_BACKWARD,
 } from './constants';
 
 export function filterProducts(filter) {
@@ -37,5 +39,17 @@ export function getProductsError(error) {
 export function removeError() {
   return {
     type: REMOVE_ERROR,
+  };
+}
+
+export function pageForward() {
+  return {
+    type: PAGE_FORWARD,
+  };
+}
+
+export function pageBackward() {
+  return {
+    type: PAGE_BACKWARD,
   };
 }

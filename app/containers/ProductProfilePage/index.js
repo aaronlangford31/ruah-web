@@ -10,8 +10,7 @@ import {
   selectNotFound,
   selectIsEditing,
 } from './selectors';
-import { selectStoreId } from '../App/selectors';
-import { selectStore } from '../MyStorePage/selectors';
+import { selectStoreId, selectStore } from '../App/selectors';
 import {
   getProductById,
   startEditCurrentProduct,
@@ -19,7 +18,7 @@ import {
   editCurrentProduct,
   saveCurrentProductEdits,
 } from './actions';
-import { getStore } from '../MyStorePage/actions';
+import { getStore } from '../App/actions';
 import Body from '../../components/styled/Body';
 import SadFaceIcon from 'material-ui/svg-icons/social/sentiment-very-dissatisfied';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
@@ -85,8 +84,7 @@ class ProductProfilePage extends Component {
           Edit Listing
         </FlatButton>
       );
-    }
-    if (this.props.currentStoreId !== this.props.product.StoreId && _.contains(this.props.store.BuysFrom, this.props.product.StoreId)) {
+    } else if (_.contains(this.props.store.BuysFrom, this.props.product.StoreId)) {
       return (
         <FlatButton style={{ backgroundColor: '#A9CF54', color: 'white' }}>
           Add To Cart
