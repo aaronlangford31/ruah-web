@@ -2,11 +2,6 @@ import { createSelector } from 'reselect';
 
 const selectMyStorePage = () => (state) => state.get('myStorePage');
 
-const selectStore = () => createSelector(
-  selectMyStorePage(),
-  (state) => state.get('store').toJS(),
-);
-
 const selectLoading = () => createSelector(
   selectMyStorePage(),
   (state) => state.get('loading'),
@@ -23,7 +18,6 @@ const selectIsEditing = () => createSelector(
 );
 
 export {
-  selectStore,
   selectStoreNotSetup,
   selectLoading,
   selectIsEditing,

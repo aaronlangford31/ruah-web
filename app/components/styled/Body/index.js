@@ -11,6 +11,7 @@ const Paper = ({ children, useBackground, style }) =>
       display: 'flex',
       alignItems: useBackground ? 'center' : 'stretch',
       justifyContent: 'center',
+      paddingBottom: useBackground ? 0 : '75px',
       ...style,
     }}
   >

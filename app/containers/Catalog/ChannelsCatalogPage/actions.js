@@ -8,6 +8,8 @@ import {
   REMOVE_ERROR,
   SET_QUERY,
   SET_AUTOCOMPLETE,
+  PAGE_FORWARD,
+  PAGE_BACKWARD,
 } from './constants';
 
 export function setQuery(query) {
@@ -24,10 +26,10 @@ export function setAutocomplete(items) {
   };
 }
 
-export function searchProducts(products, query) {
+export function searchProducts(query) {
   return {
     type: SEARCH_PRODUCTS,
-    payload: fromJS({ products, query }),
+    payload: fromJS({ query }),
   };
 }
 
@@ -61,5 +63,17 @@ export function getProductsError(error) {
 export function removeError() {
   return {
     type: REMOVE_ERROR,
+  };
+}
+
+export function pageForward() {
+  return {
+    type: PAGE_FORWARD,
+  };
+}
+
+export function pageBackward() {
+  return {
+    type: PAGE_BACKWARD,
   };
 }

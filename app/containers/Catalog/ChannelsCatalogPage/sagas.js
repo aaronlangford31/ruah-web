@@ -1,10 +1,11 @@
 import { takeLatest } from 'redux-saga';
-import { call, put, take, cancel } from 'redux-saga/effects';
+import { call, put, take, cancel, select } from 'redux-saga/effects';
 import { Set } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import _ from 'underscore';
 import { GET_PRODUCTS, GET_PRODUCTS_URI, SEARCH_PRODUCTS } from './constants';
 import { getProductsSuccess, getProductsError, searchProductsSuccess, setAutocomplete } from './actions';
+import { selectProducts } from './selectors';
 import request from 'utils/request';
 
 export function* getProducts() {
@@ -32,13 +33,13 @@ export function* getProducts() {
 
 export function* searchProducts(action) {
   const query = action.payload.get('query').toLowerCase();
-  const products = action.payload.get('products');
+  const products = yield select(selectProducts());
   if (query.trim().length === 0) {
     yield put(searchProductsSuccess(products));
     return;
   }
   const filteredProducts = products.filter((product) => {
-    if (product.get('ManufacturerName').toLowerCase() === query) {
+    if (product.ManufacturerName.toLowerCase() === query) {
       return true;
     }
     return false;

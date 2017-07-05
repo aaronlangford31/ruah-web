@@ -7,6 +7,10 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
   REMOVE_ERROR,
+  GET_STORE,
+  GET_STORE_NO_DATA,
+  GET_STORE_SUCCESS,
+  GET_STORE_FAIL,
 } from './constants';
 
 export function login(values) {
@@ -59,5 +63,30 @@ export function logoutError(error) {
   return {
     type: LOGOUT_ERROR,
     error,
+  };
+}
+
+export function getStore() {
+  return {
+    type: GET_STORE,
+  };
+}
+
+export function getStoreSucess(store) {
+  return {
+    type: GET_STORE_SUCCESS,
+    store,
+  };
+}
+
+export function getStoreNoData() {
+  return {
+    type: GET_STORE_NO_DATA,
+  };
+}
+
+export function getStoreFail() {
+  return {
+    type: GET_STORE_FAIL,
   };
 }

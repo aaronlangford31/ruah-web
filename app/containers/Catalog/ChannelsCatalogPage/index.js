@@ -5,7 +5,13 @@ import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
 import { addItemToCart } from '../../CheckoutPage/actions';
-import { selectProducts, selectLoading, selectFilteredProducts, selectAutocomplete } from './selectors';
+import {
+  selectFilteredProducts,
+  selectAutocomplete,
+  selectVisibleProducts,
+  selecetVisibleStartIx,
+  selectLoading,
+} from './selectors';
 import getStyles from './styles';
 import CatalogMenu from '../CatalogMenu';
 import ProductCard from '../ProductCard';
@@ -22,13 +28,16 @@ const PRODUCT_ROW_WIDTH = 4;
 
 class CatalogPage extends PureComponent {
   static propTypes = {
-    products: PropTypes.array,
     filteredProducts: PropTypes.array,
     autocomplete: PropTypes.array,
+    visibleProducts: PropTypes.array,
+    visibleStartIx: PropTypes.number,
     loading: PropTypes.bool,
     getProducts: PropTypes.func,
     searchProducts: PropTypes.func,
     onAddToCart: PropTypes.func,
+    pageForward: PropTypes.func,
+    pageBackward: PropTypes.func,
   };
 
   static contextTypes = {
@@ -41,7 +50,7 @@ class CatalogPage extends PureComponent {
   }
 
   searchProducts = (query) => {
-    this.props.searchProducts(this.props.products, query.toLowerCase());
+    this.props.searchProducts(query.toLowerCase());
   };
 
   filterAutocomplete(searchText, key) {
@@ -50,7 +59,7 @@ class CatalogPage extends PureComponent {
 
   renderRows = () => {
     const rows = [];
-    const products = this.props.filteredProducts;
+    const products = this.props.visibleProducts;
     for (let i = 0; i < products.length / PRODUCT_ROW_WIDTH; i += 1) {
       rows.push(this.renderRow(products, i));
     }
@@ -89,6 +98,26 @@ class CatalogPage extends PureComponent {
       </Paper>
     );
   }
+  renderPagination() {
+    const visibleEndIx = this.props.visibleStartIx + 32;
+    const to = visibleEndIx > this.props.filteredProducts.length ? this.props.filteredProducts.length : visibleEndIx;
+    return (
+      <Paper style={{ display: 'flex', flexDirection: 'row', margin: '5px', padding: '5px' }}>
+        <div>
+          <strong>Showing {this.props.visibleStartIx + 1} - {to} of {this.props.filteredProducts.length} products</strong>
+        </div>
+        <div>
+          {this.props.visibleStartIx > 0 &&
+          <FlatButton onTouchTap={this.props.pageBackward} >Prev</FlatButton>
+          }
+          {this.props.visibleStartIx + 32 < this.props.filteredProducts.length &&
+          <FlatButton onTouchTap={this.props.pageForward} >Next</FlatButton>
+          }
+        </div>
+      </Paper>
+    );
+  }
+
 
   render() {
     const styles = getStyles();
@@ -114,8 +143,9 @@ class CatalogPage extends PureComponent {
                 </Link>
               </Paper>
               {this.props.loading && this.renderLoading()}
+              {!this.props.loading && this.renderPagination()}
               {!this.props.loading && this.renderRows()}
-              {!this.props.loading && this.props.products.length === 0 &&
+              {!this.props.loading && this.props.visibleProducts.length === 0 &&
               <Paper style={{ display: 'flex', flexDirection: 'row', padding: '5px', margin: '5px', width: '750px' }}>
                 <span style={{ flex: 5 }} />
                 <div style={{ textAlign: 'center' }}>
@@ -141,15 +171,22 @@ export function mapDispatchToProps(dispatch) {
     onAddToCart: (product) => {
       dispatch(addItemToCart(product));
     },
-    searchProducts: (products, query) => {
-      dispatch(Actions.searchProducts(products, query));
+    searchProducts: (query) => {
+      dispatch(Actions.searchProducts(query));
+    },
+    pageForward: () => {
+      dispatch(Actions.pageForward());
+    },
+    pageBackward: () => {
+      dispatch(Actions.pageBackward());
     },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  products: selectProducts(),
   filteredProducts: selectFilteredProducts(),
+  visibleProducts: selectVisibleProducts(),
+  visibleStartIx: selecetVisibleStartIx(),
   loading: selectLoading(),
   autocomplete: selectAutocomplete(),
 });
