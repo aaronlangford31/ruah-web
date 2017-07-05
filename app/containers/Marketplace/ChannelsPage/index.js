@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import _ from 'underscore';
+import { Link } from 'react-router';
 import Body from '../../../components/styled/Body';
 import MarketplaceMenu from '../MarketplaceMenu';
 import {
@@ -34,9 +35,9 @@ class ChannelsPage extends Component {
 
   renderChannel({ key, channel }) {
     return (
-      <div key={key}>
+      <Link to={`https://app.teamruah.com/marketplace/store/${channel}`} key={key}>
         {channel}
-      </div>
+      </Link>
     );
   }
 

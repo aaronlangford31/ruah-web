@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import _ from 'underscore';
 import { connect } from 'react-redux';
-import { Tabs, Tab } from 'material-ui/Tabs';
-import { GridList, GridTile } from 'material-ui/GridList';
+import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import {
   selectCurrentProduct,
@@ -11,6 +10,8 @@ import {
   selectNotFound,
   selectIsEditing,
 } from './selectors';
+import { selectStoreId } from '../App/selectors';
+import { selectStore } from '../MyStorePage/selectors';
 import {
   getProductById,
   startEditCurrentProduct,
@@ -18,241 +19,41 @@ import {
   editCurrentProduct,
   saveCurrentProductEdits,
 } from './actions';
-import getStyles from './styles';
+import { getStore } from '../MyStorePage/actions';
 import Body from '../../components/styled/Body';
 import SadFaceIcon from 'material-ui/svg-icons/social/sentiment-very-dissatisfied';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
+import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
+import CurrencyInput from 'react-currency-input';
 import IconButton from 'material-ui/IconButton';
-import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit';
 import SaveIcon from 'material-ui/svg-icons/content/save';
 import CancelIcon from 'material-ui/svg-icons/navigation/cancel';
+import FlatButton from 'material-ui/FlatButton';
+import ShipIcon from 'material-ui/svg-icons/maps/local-shipping';
+import CardIcon from 'material-ui/svg-icons/action/credit-card';
 
 class ProductProfilePage extends Component {
   constructor(props) {
     super(props);
     this.props.getProductById(this.props.router.params.productId);
+    this.props.getStore();
+    this.onFieldChange = this.onFieldChange.bind(this);
+    this.onCurrencyFieldChange = this.onCurrencyFieldChange.bind(this);
+  }
+
+  onFieldChange(ev) {
+    this.props.handleEditProduct(ev.target.value, ev.target.name);
+  }
+
+  onCurrencyFieldChange(ev, mask, floatVal) {
+    this.props.handleEditProduct(floatVal, ev.target.name);
   }
 
   renderLoading() {
     return (
       <div style={{ margin: 'auto', textAlign: 'center', width: '500px' }}>
         <CircularProgress />
-      </div>
-    );
-  }
-
-  renderMarketplaceInfoReadOnly() {
-    const styles = getStyles();
-    return (
-      <div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Wholesale Price:</p>
-          <p style={styles.productFieldRowVal}>${this.props.product.WholesalePrice.toFixed(2)}</p>
-        </div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Shipping Fee:</p>
-          <p style={styles.productFieldRowVal}>${this.props.product.ShippingFee.toFixed(2)}</p>
-        </div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Inventory Available:</p>
-          <div style={styles.productFieldRowVal}>{this.props.product.Inventory}</div>
-        </div>
-      </div>
-    );
-  }
-
-  renderMarketplaceInfoEdit() {
-    const styles = getStyles();
-    const onFieldChange = (ev, newVal) => { this.props.handleEditProduct(newVal, ev.target.id); };
-    return (
-      <div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Wholesale Price:</p>
-          <div style={styles.productFieldRowVal}>
-            <TextField
-              id={'WholesalePrice'}
-              type={'number'}
-              min={0.01}
-              step={0.01}
-              value={this.props.product.WholesalePrice.toFixed(2)}
-              onChange={onFieldChange}
-            />
-          </div>
-        </div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Shipping Fee:</p>
-          <div style={styles.productFieldRowVal}>
-            <TextField
-              id={'ShippingFee'}
-              type={'number'}
-              min={0.00}
-              step={0.01}
-              value={this.props.product.ShippingFee.toFixed(2)}
-              onChange={onFieldChange}
-            />
-          </div>
-        </div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Inventory Available:</p>
-          <div style={styles.productFieldRowVal}>
-            <TextField
-              id={'Inventory'}
-              type={'number'}
-              min={0}
-              step={1}
-              value={this.props.product.Inventory}
-              onChange={onFieldChange}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  /* eslint-disable react/no-danger */
-  renderGlobalAttributesReadOnly() {
-    const styles = getStyles();
-    return (
-      <div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Product Name:</p>
-          <p style={styles.productFieldRowVal}>{this.props.product.ProductName}</p>
-        </div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Brand Name:</p>
-          <p style={styles.productFieldRowVal}>{this.props.product.Brand}</p>
-        </div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Manufacturer Name:</p>
-          <p style={styles.productFieldRowVal}>{this.props.product.ManufacturerName}</p>
-        </div>
-        <div style={styles.productFieldRow}>
-          <div style={styles.productFieldRowHeader}>Description:</div>
-          <span style={styles.productFieldRowVal} dangerouslySetInnerHTML={{ __html: this.props.product.Description }} />
-        </div>
-        <div style={styles.productFieldRow}>
-          <div style={styles.productFieldRowHeader}>Bullets:</div>
-          <ul style={styles.productFieldRowVal}>
-            {_.map(this.props.product.Bullets, (bullet, ix) => (
-              <li key={ix}>
-                <div>{bullet.title}</div>
-                <div>{bullet.content}</div>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div style={styles.productFieldRow}>
-          <div style={styles.productFieldRowHeader}>Keywords:</div>
-          <div style={styles.productFieldRowVal}>{this.props.product.Keywords}</div>
-        </div>
-      </div>
-    );
-  }
-
-  renderGlobalAttributesEdit() {
-    const styles = getStyles();
-    const onFieldChange = (ev, newVal) => { this.props.handleEditProduct(newVal, ev.target.id); };
-    const onBulletTitleChange = (ev, newVal) => {
-      const bullets = this.props.product.Bullets;
-      bullets[ev.target.name].title = newVal;
-      this.props.handleEditProduct(bullets, 'Bullets');
-    };
-    const onBulletContentChange = (ev, newVal) => {
-      const bullets = this.props.product.Bullets;
-      bullets[ev.target.name].content = newVal;
-      this.props.handleEditProduct(bullets, 'Bullets');
-    };
-    return (
-      <div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Product Name:</p>
-          <div style={styles.productFieldRowVal}>
-            <TextField
-              id={'ProductName'}
-              type={'text'}
-              fullWidth
-              value={this.props.product.ProductName}
-              onChange={onFieldChange}
-            />
-          </div>
-        </div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Brand Name:</p>
-          <div style={styles.productFieldRowVal}>
-            <TextField
-              id={'Brand'}
-              type={'text'}
-              fullWidth
-              value={this.props.product.Brand}
-              onChange={onFieldChange}
-            />
-          </div>
-        </div>
-        <div style={styles.productFieldRow}>
-          <p style={styles.productFieldRowHeader}>Manufacturer Name:</p>
-          <div style={styles.productFieldRowVal}>
-            <TextField
-              id={'ManufacturerName'}
-              type={'text'}
-              fullWidth
-              value={this.props.product.ManufacturerName}
-              onChange={onFieldChange}
-            />
-          </div>
-        </div>
-        <div style={styles.productFieldRow}>
-          <div style={styles.productFieldRowHeader}>Description:</div>
-          <div style={styles.productFieldRowVal}>
-            <TextField
-              id={'Description'}
-              type={'text'}
-              fullWidth
-              multiLine
-              value={this.props.product.Description}
-              onChange={onFieldChange}
-            />
-          </div>
-        </div>
-        <div style={styles.productFieldRow}>
-          <div style={styles.productFieldRowHeader}>Bullets:</div>
-          <ul style={styles.productFieldRowVal}>
-            {_.map(this.props.product.Bullets, (bullet, ix) => (
-              <li key={ix}>
-                <TextField
-                  id={bullet.title}
-                  name={`${ix}`}
-                  type={'text'}
-                  fullWidth
-                  value={bullet.title}
-                  onChange={onBulletTitleChange}
-                />
-                <TextField
-                  id={bullet.content}
-                  name={`${ix}`}
-                  type={'text'}
-                  fullWidth
-                  multiLine
-                  value={bullet.content}
-                  onChange={onBulletContentChange}
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div style={styles.productFieldRow}>
-          <div style={styles.productFieldRowHeader}>Keywords:</div>
-          <div style={styles.productFieldRowVal}>
-            <TextField
-              id={'Keywords'}
-              type={'text'}
-              fullWidth
-              multiLine
-              value={this.props.product.Keywords}
-              onChange={onFieldChange}
-            />
-          </div>
-        </div>
       </div>
     );
   }
@@ -269,72 +70,173 @@ class ProductProfilePage extends Component {
     );
   }
 
-  renderProduct() {
-    const styles = getStyles();
+  renderSeller() {
+    return (
+      <Paper style={{ margin: '10px', padding: '10px' }}>
+        <h4 style={{ margin: 0 }}>Sold by <Link to={`/marketplace/store/${this.props.product.StoreId}`}>{this.props.product.StoreId}</Link></h4>
+      </Paper>
+    );
+  }
+
+  renderActions() {
+    if (this.props.currentStoreId === this.props.product.StoreId) {
+      return (
+        <FlatButton style={{ backgroundColor: '#A9CF54', color: 'white' }} onTouchTap={this.props.handleStartEditProduct}>
+          Edit Listing
+        </FlatButton>
+      );
+    }
+    if (this.props.currentStoreId !== this.props.product.StoreId && _.contains(this.props.store.BuysFrom, this.props.product.StoreId)) {
+      return (
+        <FlatButton style={{ backgroundColor: '#A9CF54', color: 'white' }}>
+          Add To Cart
+        </FlatButton>
+      );
+    }
+    return (
+      <div />
+    );
+  }
+
+  renderEditingProduct() {
+    const onBulletTitleChange = (ev, newVal) => {
+      const bullets = this.props.product.Bullets;
+      bullets[ev.target.name].title = newVal;
+      this.props.handleEditProduct(bullets, 'Bullets');
+    };
+    const onBulletContentChange = (ev, newVal) => {
+      const bullets = this.props.product.Bullets;
+      bullets[ev.target.name].content = newVal;
+      this.props.handleEditProduct(bullets, 'Bullets');
+    };
     return (
       <div>
-        <div>
-          <div style={styles.horizontalDiv}>
-            <div style={styles.imageColumn}>
-              <div
-                style={this.props.product.MainImageUri ? {
-                  ...styles.productImage,
-                  backgroundImage: `url(${this.props.product.MainImageUri})`,
-                } : styles.productImageEmpty}
+        <Paper style={{ margin: '10px', padding: '10px', display: 'flex', flexDirection: 'row' }}>
+          <TextField
+            multiLine
+            name={'ProductName'}
+            type={'text'}
+            onChange={this.onFieldChange}
+            style={{ flex: 52, margin: 0, paddingRight: '20px' }}
+            value={this.props.product.ProductName}
+          />
+          <div style={{ flex: 16, margin: 0 }}>
+            <CardIcon color={'#757575'} />&nbsp;
+            <CurrencyInput
+              name={'WholesalePrice'}
+              prefix={'$'}
+              style={{ width: '65px' }}
+              onChangeEvent={this.onCurrencyFieldChange}
+              value={this.props.product.WholesalePrice}
+            />
+          </div>
+          <div style={{ flex: 16, margin: 0 }}>
+            <ShipIcon color={'#757575'} />&nbsp;
+            <CurrencyInput
+              name={'ShippingFee'}
+              prefix={'$'}
+              style={{ width: '65px' }}
+              onChangeEvent={this.onCurrencyFieldChange}
+              value={this.props.product.ShippingFee}
+            />
+          </div>
+          <div style={{ flex: 16, margin: 0 }}>
+            <strong style={{ color: '#757575' }}>INV</strong>
+            <input
+              name={'Inventory'}
+              type={'number'}
+              onChange={this.onFieldChange}
+              style={{ width: '65px' }}
+              value={this.props.product.Inventory}
+            />
+          </div>
+          <IconButton onTouchTap={this.props.handleCancelEditProduct}>
+            <CancelIcon />
+          </IconButton>
+          <IconButton onTouchTap={this.props.handleSaveProduct}>
+            <SaveIcon color={'#A9CF54'} />
+          </IconButton>
+        </Paper>
+        <Paper style={{ margin: '10px', padding: '10px', display: 'flex', flexWrap: 'nowrap', overflowX: 'auto' }}>
+          <img style={{ height: '350px', padding: '10px', width: 'auto' }} src={this.props.product.MainImageUri} alt={'Main'} />
+          {_.map(this.props.product.AltImageUris, (item) => (
+            <img src={item} alt={'Alternate'} />
+          ))}
+        </Paper>
+        <Paper style={{ margin: '10px', padding: '10px', flex: 5 }}>
+          <h3>Highlights</h3>
+          {_.map(this.props.product.Bullets, (item, ix) => (
+            <div style={{ display: 'flex', flexDirection: 'column' }} key={item.title}>
+              <TextField
+                style={{ width: '100%' }}
+                name={ix}
+                type={'text'}
+                onChange={onBulletTitleChange}
+                value={item.title}
+              />
+              <TextField
+                multiLine
+                style={{ width: '100%' }}
+                name={ix}
+                type={'text'}
+                onChange={onBulletContentChange}
+                value={item.content}
               />
             </div>
-            <div style={{ width: '100%' }}>
-              <h2>
-                {this.props.product.ProductName}
-              </h2>
-              <div style={styles.tinyId}>
-                SKU: {this.props.product.SKU}
-              </div>
-              <div style={styles.tinyId}>
-                RUAH-ID: {this.props.product.RuahId}
-              </div>
+          ))}
+        </Paper>
+        <Paper style={{ margin: '10px', padding: '10px', flex: 5 }}>
+          <h3>Description</h3>
+          <TextField
+            multiLine
+            style={{ width: '100%' }}
+            name={'Description'}
+            type={'text'}
+            onChange={this.onFieldChange}
+            value={this.props.product.Description}
+          />
+        </Paper>
+      </div>
+    );
+  }
+
+  renderProduct() {
+    return (
+      <div>
+        <Paper style={{ margin: '10px', padding: '10px', display: 'flex', flexDirection: 'row' }}>
+          <h4 style={{ flex: 52, margin: 0, paddingRight: '20px' }}>
+            {this.props.product.ProductName}
+          </h4>
+          <h4 style={{ flex: 16, margin: 0 }}>
+            <CardIcon color={'#757575'} /> ${this.props.product.WholesalePrice.toFixed(2)}
+          </h4>
+          <h4 style={{ flex: 16, margin: 0 }}>
+            <ShipIcon color={'#757575'} /> ${this.props.product.ShippingFee.toFixed(2)}
+          </h4>
+          <h4 style={{ flex: 16, margin: 0 }}>
+            <span style={{ color: '#757575' }}>INV</span> {this.props.product.Inventory}
+          </h4>
+          {this.renderActions()}
+        </Paper>
+        <Paper style={{ margin: '10px', padding: '10px', display: 'flex', flexWrap: 'nowrap', overflowX: 'auto' }}>
+          <img style={{ height: '350px', padding: '10px', width: 'auto' }} src={this.props.product.MainImageUri} alt={'Main'} />
+          {_.map(this.props.product.AltImageUris, (item) => (
+            <img src={item} alt={'Alternate'} />
+          ))}
+        </Paper>
+        <Paper style={{ margin: '10px', padding: '10px', flex: 5 }}>
+          <h3>Highlights</h3>
+          {_.map(this.props.product.Bullets, (item) => (
+            <div key={item.title}>
+              <strong>{item.title}</strong>
+              <p>{item.content}</p>
             </div>
-            {this.props.isEditing ?
-              <div style={styles.horizontalDiv}>
-                <IconButton onTouchTap={this.props.handleSaveProduct}>
-                  <SaveIcon />
-                </IconButton>
-                <IconButton onTouchTap={this.props.handleCancelEditProduct}>
-                  <CancelIcon />
-                </IconButton>
-              </div>
-              : <div style={styles.horizontalDiv}>
-                <IconButton onTouchTap={this.props.handleStartEditProduct}>
-                  <ModeEditIcon />
-                </IconButton>
-              </div>
-            }
-          </div>
-          <Tabs>
-            <Tab label="Marketplace Info">
-              {this.props.isEditing ? this.renderMarketplaceInfoEdit() : this.renderMarketplaceInfoReadOnly()}
-            </Tab>
-            <Tab label="Global Attributes">
-              {this.props.isEditing ? this.renderGlobalAttributesEdit() : this.renderGlobalAttributesReadOnly()}
-            </Tab>
-            <Tab label="Media">
-              <div style={{ display: 'flex' }}>
-                <GridList style={{ flex: 50 }}>
-                  <GridTile cols={2} rows={2} title="Main Image" titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)">
-                    <img src={this.props.product.MainImageUri} alt={this.props.product.ProductName} />
-                  </GridTile>
-                </GridList>
-                <GridList style={{ flex: 50 }}>
-                  {_.map(this.props.product.AltImageUris, (uri, i) => (
-                    <GridTile key={i} title={`Alternate ${(i + 1)}`} titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)">
-                      <img src={uri} alt={this.props.product.ProducName} />
-                    </GridTile>
-                  ))}
-                </GridList>
-              </div>
-            </Tab>
-          </Tabs>
-        </div>
+          ))}
+        </Paper>
+        <Paper style={{ margin: '10px', padding: '10px', flex: 5 }}>
+          <h3>Description</h3>
+          <p>{this.props.product.Description}</p>
+        </Paper>
       </div>
     );
   }
@@ -349,12 +251,17 @@ class ProductProfilePage extends Component {
           ]}
         />
         <Body>
-          <div style={{ display: 'flex' }}>
-            <div style={{ flex: 10 }}>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ width: '250px' }}>
+              {!this.props.notFound && !this.props.loading && this.renderSeller() }
+            </div>
+            <div style={{ width: '750px' }}>
               {this.props.loading && this.renderLoading() }
               {this.props.notFound && this.renderNotFound() }
-              {!this.props.notFound && !this.props.loading && this.renderProduct()}
+              {!this.props.notFound && !this.props.loading && !this.props.isEditing && this.renderProduct()}
+              {!this.props.notFound && !this.props.loading && this.props.isEditing && this.renderEditingProduct()}
             </div>
+            <div style={{ flex: 1 }} />
           </div>
         </Body>
       </article>
@@ -367,12 +274,15 @@ ProductProfilePage.propTypes = {
   notFound: PropTypes.bool,
   isEditing: PropTypes.bool,
   product: PropTypes.object,
+  store: PropTypes.object,
   router: PropTypes.object,
+  currentStoreId: PropTypes.string,
   handleStartEditProduct: PropTypes.func,
   handleEditProduct: PropTypes.func,
   handleSaveProduct: PropTypes.func,
   handleCancelEditProduct: PropTypes.func,
   getProductById: PropTypes.func,
+  getStore: PropTypes.func,
 };
 
 ProductProfilePage.contextTypes = {
@@ -397,11 +307,16 @@ export function mapDispatchToProps(dispatch) {
     getProductById: (id) => {
       dispatch(getProductById(id));
     },
+    getStore: () => {
+      dispatch(getStore());
+    },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   product: selectCurrentProduct(),
+  store: selectStore(),
+  currentStoreId: selectStoreId(),
   loading: selectLoading(),
   notFound: selectNotFound(),
   isEditing: selectIsEditing(),
