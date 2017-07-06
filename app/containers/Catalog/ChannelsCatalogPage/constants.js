@@ -1,6 +1,8 @@
 export const SET_QUERY = 'ruah/Catalog/ChannelsCatalogPage/SET_QUERY';
 export const SEARCH_PRODUCTS = 'ruah/Catalog/ChannelsCatalogPage/SEARCH_PRODUCTS';
 export const SEARCH_PRODUCTS_SUCCESS = 'ruah/Catalog/ChannelsCatalogPage/SEARCH_PRODUCTS_SUCCESS';
+export const PAGE_FORWARD = 'ruah/Catalog/ChannelsCatalogPage/PAGE_FORWARD';
+export const PAGE_BACKWARD = 'ruah/Catalog/ChannelsCatalogPage/PAGE_BACKWARD';
 export const GET_PRODUCTS = 'ruah/Catalog/ChannelsCatalogPage/GET_PRODUCTS';
 export const GET_PRODUCTS_SUCCESS = 'ruah/Catalog/ChannelsCatalogPage/GET_PRODUCTS_SUCCESS';
 export const GET_PRODUCTS_ERROR = 'ruah/Catalog/ChannelsCatalogPage/GET_PRODUCTS_ERROR';

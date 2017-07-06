@@ -59,9 +59,8 @@ class CatalogPage extends PureComponent {
 
   renderRows = () => {
     const rows = [];
-    const products = this.props.visibleProducts;
-    for (let i = 0; i < products.length / PRODUCT_ROW_WIDTH; i += 1) {
-      rows.push(this.renderRow(products, i));
+    for (let i = 0; i < this.props.visibleProducts.length / PRODUCT_ROW_WIDTH; i += 1) {
+      rows.push(this.renderRow(i));
     }
     return (
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -70,11 +69,11 @@ class CatalogPage extends PureComponent {
     );
   };
 
-  renderRow = (products, i) => {
+  renderRow = (i) => {
     const cards = [];
     for (let j = 0; j < PRODUCT_ROW_WIDTH; j += 1) {
-      if ((i * PRODUCT_ROW_WIDTH) + j < products.length) {
-        const product = products[(i * PRODUCT_ROW_WIDTH) + j];
+      if ((i * PRODUCT_ROW_WIDTH) + j < this.props.visibleProducts.length) {
+        const product = this.props.visibleProducts[(i * PRODUCT_ROW_WIDTH) + j];
         cards.push(
           <ProductCard
             key={j}
@@ -98,6 +97,7 @@ class CatalogPage extends PureComponent {
       </Paper>
     );
   }
+
   renderPagination() {
     const visibleEndIx = this.props.visibleStartIx + 32;
     const to = visibleEndIx > this.props.filteredProducts.length ? this.props.filteredProducts.length : visibleEndIx;
@@ -117,7 +117,6 @@ class CatalogPage extends PureComponent {
       </Paper>
     );
   }
-
 
   render() {
     const styles = getStyles();

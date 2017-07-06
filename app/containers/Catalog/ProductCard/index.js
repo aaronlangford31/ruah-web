@@ -41,8 +41,8 @@ const styles = {
 };
 
 class ProductCard extends Component {
-  shouldComponentUpdate() {
-    return false;
+  shouldComponentUpdate(nextProps) {
+    return nextProps.product.RuahId !== this.props.product.RuahId;
   }
 
   render() {
