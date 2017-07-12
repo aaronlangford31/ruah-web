@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable';
 import {
   SET_SKU_FILTER,
   FILTER_PRODUCTS,
@@ -10,9 +9,9 @@ export function filterProducts() {
   };
 }
 
-export function setSKUFilter(SKU_Filter) {
+export function setSKUFilter(skuFilter) {
   return {
     type: SET_SKU_FILTER,
-    payload: { SKU_Filter },
+    payload: { skuFilter },
   };
 }
