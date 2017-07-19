@@ -27,7 +27,7 @@ function sentOrdersPageReducer(state = initialState, action) {
         BuyerEmail: order.BuyerEmail,
         BuyerName: order.BuyerName,
         BuyerPhone: order.BuyerPhone,
-        Fufilled: order.Fufilled,
+        Fulfilled: order.Fufilled,
         OrderItems: order.OrderItems,
         OrderPhase: order.OrderPhase,
         ShipAddress: order.ShipAddress,
@@ -35,9 +35,19 @@ function sentOrdersPageReducer(state = initialState, action) {
         ShipCity: order.ShipCity,
         ShipState: order.ShipState,
         ShipZip: order.ShipZip,
+        SourceStoreId: order.SourceStoreId,
+        StoreId: order.StoreId,
+        FulfillmentInfo: order.FulfillmentInfo,
+        RequestedShipService: order.RequestedShipService,
       }));
 
-      transformedOrders.sort((a, b) => (a.OrderCreatedDate - b.OrderCreatedDate));
+      transformedOrders.sort((a, b) => {
+        if (a.Fulfilled && b.Fulfilled) {
+          return b.OrderCreatedDate - a.OrderCreatedDate;
+        }
+        return a.Fulfilled - b.Fulfilled;
+      });
+
       const orders = Array.concat(state.get('orders').toJS(), transformedOrders);
       return state
         .set('orders', fromJS(orders))

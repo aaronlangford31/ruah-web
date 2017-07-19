@@ -135,7 +135,12 @@ class CatalogPage extends PureComponent {
             <div style={{ maxWidth: '1000px' }}>
               <Paper style={styles.header}>
                 <div>
-                  <AutoComplete floatingLabelText="Search" onNewRequest={(query) => this.searchProducts(query)} filter={(searchText, key) => this.filterAutocomplete(searchText, key)} maxSearchResults={5} dataSource={this.props.autocomplete} />
+                  <AutoComplete
+                    floatingLabelText="Search"
+                    onNewRequest={(query) => this.searchProducts(query)}
+                    filter={(searchText, key) => this.filterAutocomplete(searchText, key)}
+                    maxSearchResults={5} dataSource={this.props.autocomplete}
+                  />
                 </div>
                 <Link to={'product/import'}>
                   <FlatButton label="Import" icon={<FileUploadIcon />} labelPosition="before" />

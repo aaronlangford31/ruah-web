@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Ocean from './Ocean.jpg';
+import Ocean from './BubbleScene.jpg';
 
 const Paper = ({ children, useBackground, style }) =>
   <div
