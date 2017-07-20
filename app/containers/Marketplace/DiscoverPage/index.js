@@ -81,14 +81,14 @@ class DiscoverPage extends Component {
               <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Taxonomy</span>
             </div>
             <div style={{ display: 'flex' }}>
-              <div style={{ display: 'flex', width: '250px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', width: '250px' }}>
                 {_.map(store.MarketResources, (item, j) => (
                   <div key={j} style={{ backgroundColor: '#F7E967', borderRadius: '5px', padding: '1px 5px', marginRight: '5px', color: '#9E9E9E' }}>
                     {item}
                   </div>
                 ))}
               </div>
-              <div style={{ display: 'flex', width: '250px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', width: '250px' }}>
                 {_.map(store.TaxonomicClassifications, (item, j) => (
                   <div key={j} style={{ backgroundColor: '#F7E967', borderRadius: '5px', padding: '1px 5px', marginRight: '5px', color: '#9E9E9E' }}>
                     {item}&nbsp;
