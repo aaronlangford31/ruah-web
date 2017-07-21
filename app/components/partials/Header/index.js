@@ -2,20 +2,10 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import FlatButton from 'material-ui/FlatButton';
-import AssignmentIcon from 'material-ui/svg-icons/action/assignment';
-import GridIcon from 'material-ui/svg-icons/action/view-module';
-import StoreIcon from 'material-ui/svg-icons/maps/store-mall-directory';
-import PublicIcon from 'material-ui/svg-icons/social/public';
-import CartIcon from 'material-ui/svg-icons/action/shopping-cart';
 import Logo from './logo.png';
-import { menuItem, menuItemContainer, selectedMenuItem } from './styles';
+import { menuItemContainer } from './styles';
 
-const catalogPath = '/catalog/myproduct';
-const ordersPath = '/fulfillment/received';
-const storePath = '/myStore';
-const marketplacePath = '/marketplace/discover';
-
-const Header = ({ loggedIn, submitLogout, location, cartCount }) => (
+const Header = ({ loggedIn, submitLogout }) => (
   <nav>
     <Toolbar style={{ backgroundColor: '#FFFFFF' }}>
       <ToolbarGroup>
@@ -26,38 +16,12 @@ const Header = ({ loggedIn, submitLogout, location, cartCount }) => (
         </div>
         { loggedIn &&
           <div style={menuItemContainer}>
-            <Link to={storePath} style={Object.assign({}, menuItem, (location.startsWith('/myStore') ? selectedMenuItem : {}))}>
-              <StoreIcon color={'#757575'} /> My Store
-            </Link>
-            <Link to={marketplacePath} style={Object.assign({}, menuItem, (location.startsWith('/marketplace') ? selectedMenuItem : {}))}>
-              <PublicIcon color={'#757575'} /> Marketplace
-            </Link>
-            <Link to={catalogPath} style={Object.assign({}, menuItem, (location.startsWith('/catalog') ? selectedMenuItem : {}))}>
-              <GridIcon color={'#757575'} /> Catalog
-            </Link>
-            <Link to={ordersPath} style={Object.assign({}, menuItem, (location.startsWith('/fulfillment') ? selectedMenuItem : {}))}>
-              <AssignmentIcon color={'#757575'} /> Fulfillment
-            </Link>
+            <strong>TODO: SEARCHY MCSEARCH</strong>
           </div>
         }
       </ToolbarGroup>
       <ToolbarGroup>
         {loggedIn && <div>
-          <Link to={'/checkout'}>
-            <CartIcon color={'#04BFBF'} />
-            <span
-              style={{
-                borderRadius: '25px',
-                backgroundColor: '#04BFBF',
-                color: 'white',
-                textDecoration: 'none',
-                padding: '4px 8px',
-                fontSize: '14px',
-              }}
-            >
-              { cartCount }
-            </span>
-          </Link>
           <FlatButton label="Logout" onClick={submitLogout} />
         </div>}
       </ToolbarGroup>
@@ -68,8 +32,6 @@ const Header = ({ loggedIn, submitLogout, location, cartCount }) => (
 Header.propTypes = {
   loggedIn: PropTypes.bool,
   submitLogout: PropTypes.func,
-  location: PropTypes.string,
-  cartCount: PropTypes.number,
 };
 
 export default Header;

@@ -380,6 +380,48 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/conversations',
+      name: 'conversationsPage',
+
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/ConversationsPage/reducers'),
+          System.import('containers/ConversationsPage/sagas'),
+          System.import('containers/ConversationsPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('conversationsPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/conversation/:channelId',
+      name: 'conversationPage',
+
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/ConversationPage/reducers'),
+          System.import('containers/ConversationPage/sagas'),
+          System.import('containers/ConversationPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('conversationPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

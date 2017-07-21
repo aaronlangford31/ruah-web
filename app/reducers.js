@@ -22,6 +22,8 @@ import requestsPageReducer from 'containers/Marketplace/RequestsPage/reducers';
 import channelsPageReducer from 'containers/Marketplace/ChannelsPage/reducers';
 import storeProfilePageReducer from 'containers/Marketplace/StoreProfilePage/reducers';
 import checkoutPageReducer from 'containers/CheckoutPage/reducers';
+import conversationsPageReducer from 'containers/ConversationsPage/reducers';
+import conversationPageReducer from 'containers/ConversationPage/reducers';
 import appReducer from 'containers/App/reducers';
 
 /*
@@ -75,6 +77,8 @@ export default function createReducer(asyncReducers) {
     channelsPage: channelsPageReducer,
     storeProfilePage: storeProfilePageReducer,
     checkoutPage: checkoutPageReducer,
+    conversationsPage: conversationsPageReducer,
+    conversationPage: conversationPageReducer,
     ...asyncReducers,
   });
 }

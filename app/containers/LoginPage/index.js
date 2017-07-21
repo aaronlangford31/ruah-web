@@ -22,9 +22,15 @@ class LoginPage extends Component {
     router: PropTypes.object,
   };
 
+  componentDidMount() {
+    if (this.props.authenticated) {
+      this.context.router.push({ pathname: '/conversations' });
+    }
+  }
+
   componentDidUpdate() {
     if (this.props.authenticated) {
-      this.context.router.push({ pathname: '/marketplace/discover' });
+      this.context.router.push({ pathname: '/conversations' });
     }
   }
 

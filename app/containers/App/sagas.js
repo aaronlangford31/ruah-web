@@ -13,6 +13,7 @@ import {
   logoutError,
   loginSuccess,
   loginError,
+  getStore as getStoreAction,
   getStoreSucess,
   getStoreFail,
 } from './actions';
@@ -25,6 +26,7 @@ export function* checkLogin() {
       credentials: 'include',
     });
 
+    yield put(getStoreAction(response.userId));
     yield put(loginSuccess(response.userId, response.storeId));
   } catch (err) {
     // not checked
@@ -66,7 +68,7 @@ export function* submitLogin({ values }) {
       }),
       credentials: 'include',
     });
-
+    yield put(getStoreAction(response.userId));
     yield put(loginSuccess(response.userId, response.storeId));
   } catch (err) {
     yield put(loginError('There is no flavor. There are no spices. Where are the chips? ...these credentials were no good.'));
