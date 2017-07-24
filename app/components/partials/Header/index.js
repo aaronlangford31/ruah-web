@@ -16,7 +16,6 @@ const Header = ({ loggedIn, submitLogout }) => (
         </div>
         { loggedIn &&
           <div style={menuItemContainer}>
-            <strong>TODO: SEARCHY MCSEARCH</strong>
           </div>
         }
       </ToolbarGroup>

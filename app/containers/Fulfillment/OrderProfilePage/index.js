@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import _ from 'underscore';
 import {
   selectCurrentOrder,
   selectCurrentOrderId,
@@ -138,21 +139,21 @@ class OrderProfilePage extends Component {
             </div>
           </div>
           <Divider />
-          {this.props.order.OrderItems && this.props.order.OrderItems.length && <div>
+          {this.props.order.OrderItems && this.props.order.OrderItems.length && _.map(this.props.order.OrderItems, (item, ix) => <div key={ix}>
             <h3><ProductIcon style={{ marginRight: 5 }} /> Order Items</h3>
             <p>
-              Product Name: {this.props.order.OrderItems[0].ProductName}
+              Product Name: {item.ProductName}
             </p>
             <p>
-              Product Price: ${this.props.order.OrderItems[0].ProductPrice.toFixed(2)}
+              Product Price: ${item.ProductPrice.toFixed(2)}
             </p>
             <p>
-              Quantity: {this.props.order.OrderItems[0].Quantity}
+              Quantity: {item.Quantity}
             </p>
             <p>
-              Shipping Price: ${this.props.order.OrderItems[0].ShippingPrice.toFixed(2)}
+              Shipping Price: ${item.ShippingPrice.toFixed(2)}
             </p>
-          </div>}
+          </div>)}
         </div>
       </div>
     );

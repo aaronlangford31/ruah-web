@@ -10,6 +10,14 @@ import {
   SEND_MESSAGE,
   SEND_MESSAGE_SUCCESS,
   UPDATE_MESSAGE_CHANNEL_ID,
+  OPEN_ORDER_BUILDER,
+  GET_PRODUCT_SUCCESS,
+  ADD_ORDER_ITEM,
+  ABORT_ORDER,
+  SHOW_SHIPPING_FORM,
+  SET_ORDER_SHIPPING,
+  INCREMENT_ITEM_QUANTITY,
+  DECREMENT_ITEM_QUANTITY,
 } from './constants';
 
 const initialState = fromJS({
@@ -17,6 +25,11 @@ const initialState = fromJS({
   conversation: fromJS([]),
   stores: fromJS({}),
   message: fromJS({}),
+  order: fromJS({}),
+  orderShipping: fromJS({}),
+  orderBuilderOpen: false,
+  shippingFormOpen: false,
+  products: fromJS([]),
 });
 
 function conversationsPageReducer(state = initialState, action) {
@@ -85,7 +98,60 @@ function conversationsPageReducer(state = initialState, action) {
     }
     case SEND_MESSAGE_SUCCESS: {
       return state
+        .set('order', fromJS({}))
         .set('message', fromJS({ Content: '' }));
+    }
+    case OPEN_ORDER_BUILDER: {
+      return state
+        .set('orderBuilderOpen', true);
+    }
+    case GET_PRODUCT_SUCCESS: {
+      return state
+        .set('products', fromJS(action.products));
+    }
+    case ADD_ORDER_ITEM: {
+      const order = state.get('order').toJS();
+      if (!order.OrderItems) {
+        order.OrderItems = {};
+      }
+      order.OrderItems[action.product.RuahId] = {
+        Quantity: 1,
+        RuahId: action.product.RuahId,
+        SKU: action.product.SKU,
+        ProductName: action.product.ProductName,
+        RetailPrice: action.product.WholesalePrice,
+        ShippingPrice: action.product.ShippingFee,
+      };
+      return state
+        .set('order', fromJS(order));
+    }
+    case ABORT_ORDER: {
+      return state
+        .set('order', fromJS({}))
+        .set('orderBuilderOpen', false)
+        .set('shippingFormOpen', false);
+    }
+    case SHOW_SHIPPING_FORM: {
+      return state
+        .set('orderBuilderOpen', false)
+        .set('shippingFormOpen', true);
+    }
+    case SET_ORDER_SHIPPING: {
+      return state
+        .set('orderShipping', action.orderShipping)
+        .set('shippingFormOpen', false);
+    }
+    case INCREMENT_ITEM_QUANTITY: {
+      const order = state.get('order').toJS();
+      order.OrderItems[action.ruahId].Quantity += 1;
+      return state
+        .set('order', fromJS(order));
+    }
+    case DECREMENT_ITEM_QUANTITY: {
+      const order = state.get('order').toJS();
+      order.OrderItems[action.ruahId].Quantity -= 1;
+      return state
+        .set('order', fromJS(order));
     }
     default:
       return state;

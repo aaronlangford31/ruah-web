@@ -1,6 +1,7 @@
 import { takeLatest, takeEvery } from 'redux-saga';
 import { call, put, take, cancel, select } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import _ from 'underscore';
 import {
   GET_CONVERSATION,
   GET_STORE,
@@ -8,14 +9,20 @@ import {
   GET_STORE_URI,
   SEND_MESSAGE,
   POST_MESSAGE_URI,
+  GET_PRODUCT,
+  SEARCH_PRODUCT_URI,
+  GET_PRODUCT_BY_ID_URI,
+  POST_ORDER_URI,
 } from './constants';
 import {
   getStore,
   getConversationSuccess,
   getStoreSuccess,
   sendMessageSuccess,
+  getProductSuccess,
 } from './actions';
-import { selectMessage, selectConversation } from './selectors';
+import { selectMessage, selectConversation, selectOrder, selectShippingFormData } from './selectors';
+import { selectStore } from '../App/selectors';
 import request from 'utils/request';
 
 function* getConversation(action) {
@@ -43,6 +50,7 @@ function* getStoreSaga(action) {
     method: 'GET',
     credentials: 'include',
   });
+
   yield put(getStoreSuccess(store));
 }
 
@@ -63,6 +71,22 @@ function* postMessage() {
       delete message.Attachments[i].Data.File;
     }
   }
+
+  const orderItems = yield select(selectOrder());
+  if (orderItems.OrderItems) {
+    const order = yield select(selectShippingFormData());
+    order.OrderItems = _.map(orderItems.OrderItems, (val) => val);
+
+    yield call(request, POST_ORDER_URI, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order),
+    });
+  }
+
   const conversation = yield select(selectConversation());
   conversation[conversation.length - 1] = message;
   yield put(getConversationSuccess(conversation));
@@ -75,6 +99,31 @@ function* postMessage() {
     body: JSON.stringify(message),
   });
   yield put(sendMessageSuccess());
+}
+
+function* fetchProduct(action) {
+  if (action.query) {
+    const result = yield call(request, `${SEARCH_PRODUCT_URI}?query=${action.query}&storeId=${action.storeId}`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+    result.sort((a, b) => b.Score - a.Score);
+    yield put(getProductSuccess(_.map(result, (item) => item.Item)));
+  } else {
+    const products = [];
+    const store = yield select(selectStore());
+    const recentProducts = store.MsgChannels[action.storeId].RecentProducts;
+    if (recentProducts) {
+      for (let i = 0; i < recentProducts.length; i += 1) {
+        const product = yield call(request, `${GET_PRODUCT_BY_ID_URI}?id=${recentProducts[i]}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        products.push(product);
+      }
+    }
+    yield put(getProductSuccess(products));
+  }
 }
 
 function* watchGetConversations() {
@@ -95,8 +144,15 @@ function* watchSendMessage() {
   yield cancel(watcher);
 }
 
+function* watchGetProduct() {
+  const watcher = yield takeLatest(GET_PRODUCT, fetchProduct);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
+
 export default [
   watchGetConversations,
   watchGetStore,
   watchSendMessage,
+  watchGetProduct,
 ];
