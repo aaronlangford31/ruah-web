@@ -7,10 +7,13 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
   REMOVE_ERROR,
+  REQUEST_CREDENTIALS,
   GET_STORE,
   GET_STORE_NO_DATA,
   GET_STORE_SUCCESS,
   GET_STORE_FAIL,
+  SUBMIT_SEARCH,
+  SUBMIT_SEARCH_SUCCESS,
 } from './constants';
 
 export function login(values) {
@@ -44,6 +47,13 @@ export function checkLogin() {
 export function removeError() {
   return {
     type: REMOVE_ERROR,
+  };
+}
+
+export function requestCredentials(locationOnSuccess) {
+  return {
+    type: REQUEST_CREDENTIALS,
+    locationOnSuccess,
   };
 }
 
@@ -88,5 +98,19 @@ export function getStoreNoData() {
 export function getStoreFail() {
   return {
     type: GET_STORE_FAIL,
+  };
+}
+
+export function submitSearch(query) {
+  return {
+    type: SUBMIT_SEARCH,
+    query,
+  };
+}
+
+export function submitSearchSuccess(products) {
+  return {
+    type: SUBMIT_SEARCH_SUCCESS,
+    products,
   };
 }

@@ -1,22 +1,30 @@
 import request from 'utils/request';
 import { takeLatest } from 'redux-saga';
-import { call, put } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
+import _ from 'underscore';
 import {
   CHECK_LOGIN,
   LOGOUT_SUBMIT,
   LOGIN_REQUEST,
   GET_STORE,
   GET_STORE_URI,
+  SUBMIT_SEARCH,
+  SEARCH_PRODUCT_URI,
+  SEARCH_STORE_URI,
 } from './constants';
 import {
   logoutSuccess,
   logoutError,
   loginSuccess,
   loginError,
+  requestCredentials,
   getStore as getStoreAction,
   getStoreSucess,
   getStoreFail,
+  getProductSuccess,
 } from './actions';
+import { selectLocationOnSuccess } from './selectors';
 
 export function* checkLogin() {
   const requestURL = 'https://api.teamruah.com/v1/user/isauthenticated';
@@ -29,7 +37,9 @@ export function* checkLogin() {
     yield put(getStoreAction(response.userId));
     yield put(loginSuccess(response.userId, response.storeId));
   } catch (err) {
-    // not checked
+    const loc = window.location.pathname;
+    yield put(requestCredentials(loc));
+    yield put(push('/'));
   }
 }
 
@@ -68,8 +78,12 @@ export function* submitLogin({ values }) {
       }),
       credentials: 'include',
     });
+
+    const locationOnSuccess = yield select(selectLocationOnSuccess());
     yield put(getStoreAction(response.userId));
     yield put(loginSuccess(response.userId, response.storeId));
+
+    yield put(push(locationOnSuccess));
   } catch (err) {
     yield put(loginError('There is no flavor. There are no spices. Where are the chips? ...these credentials were no good.'));
   }
@@ -85,6 +99,21 @@ function* getStore() {
   } catch (err) {
     yield put(getStoreFail());
   }
+}
+
+function* omniSearch(action) {
+  const productResults = yield call(request, `${SEARCH_PRODUCT_URI}?query=${action.query}`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+  const storeResults = yield call(request, `${SEARCH_STORE_URI}?query=${action.query}`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+  const searchResults = Array.concat(productResults, storeResults);
+  searchResults.sort((a, b) => b.Score - a.Score);
+  yield put(getProductSuccess(_.map(searchResults, (item) => item.Item)));
+  yield put(push('/search'));
 }
 
 export function* getCheckLoginData() {
@@ -103,9 +132,14 @@ export function* onGetStore() {
   yield* takeLatest(GET_STORE, getStore);
 }
 
+function* watchSearch() {
+  yield takeLatest(SUBMIT_SEARCH, omniSearch);
+}
+
 export default [
   getCheckLoginData,
   submitLogoutData,
   submitLoginData,
   onGetStore,
+  watchSearch,
 ];

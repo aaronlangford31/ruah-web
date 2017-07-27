@@ -56,6 +56,7 @@ class ConversationPage extends Component {
     this.props.getConversation(this.props.router.params.channelId);
     this.props.updateMessageChannelId(this.props.router.params.channelId);
     this.handleMessageChange = this.handleMessageChange.bind(this);
+    this.handleMessageChange(null, '');
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleFileOpen = this.handleFileOpen.bind(this);
     this.handleFileAttach = this.handleFileAttach.bind(this);
@@ -356,7 +357,7 @@ class ConversationPage extends Component {
                     </div>
                     {item.Attachments && item.Attachments.length > 0 && _.map(item.Attachments, (attch, jx) =>
                       <div key={jx} style={{ backgroundColor: '#F5F5F5', margin: '5px', padding: '5px' }}>
-                        <a href={attch.ResourceUri}>{attch.Title}</a>
+                        <a href={attch.ResourceUri} target={'blank'}>{attch.Title}</a>
                       </div>
                     )}
                   </div>

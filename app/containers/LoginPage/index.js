@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import * as AppActions from '../App/actions';
-import { selectError, selectLoggedIn, selectLoading } from '../App/selectors';
+import { selectError, selectLoggedIn, selectLoading, selectLocationOnSuccess } from '../App/selectors';
 import LoginForm from '../../components/forms/LoginForm';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
@@ -16,6 +16,7 @@ class LoginPage extends Component {
     close: PropTypes.func,
     authenticated: PropTypes.bool,
     loading: PropTypes.bool,
+    locationOnSuccess: PropTypes.string,
   };
 
   static contextTypes = {
@@ -24,13 +25,13 @@ class LoginPage extends Component {
 
   componentDidMount() {
     if (this.props.authenticated) {
-      this.context.router.push({ pathname: '/conversations' });
+      this.context.router.push({ pathname: this.props.locationOnSuccess });
     }
   }
 
   componentDidUpdate() {
     if (this.props.authenticated) {
-      this.context.router.push({ pathname: '/conversations' });
+      this.context.router.push({ pathname: this.props.locationOnSuccess });
     }
   }
 
@@ -70,6 +71,7 @@ const mapStateToProps = createStructuredSelector({
   error: selectError(),
   authenticated: selectLoggedIn(),
   loading: selectLoading(),
+  locationOnSuccess: selectLocationOnSuccess(),
 });
 
 // Wrap the component to inject dispatch and state into it

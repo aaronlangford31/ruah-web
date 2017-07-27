@@ -3,8 +3,7 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectLoggedIn } from './selectors';
-import { selectCartItems } from '../CheckoutPage/selectors';
-import { checkLogin as actionCheckLogin, submitLogout as actionSubmitLogout } from './actions';
+import { checkLogin as actionCheckLogin, submitLogout as actionSubmitLogout, submitSearch } from './actions';
 import getStyles from './styles';
 import theme from '../../theme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -46,7 +45,7 @@ class App extends Component {
     loggedIn: PropTypes.bool,
     checkLogin: PropTypes.func,
     submitLogout: PropTypes.func,
-    cartItems: PropTypes.array,
+    submitSearch: PropTypes.func,
   };
 
   static contextTypes = {
@@ -63,16 +62,7 @@ class App extends Component {
 
   componentWillMount() {
     const { checkLogin } = this.props;
-    if (this.props.loggedIn) {
-      this.context.router.push({ pathname: '/conversations' });
-    }
     checkLogin();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.userType && !this.props.loggedIn) {
-      this.context.router.push({ pathname: '/' });
-    }
   }
 
   render() {
@@ -88,7 +78,11 @@ class App extends Component {
               { name: 'description', content: 'Team Ruah Product Management' },
             ]}
           />
-          <Header loggedIn={loggedIn} submitLogout={submitLogout} location={this.context.router.location.pathname} cartCount={this.props.cartItems.length} />
+          <Header
+            loggedIn={loggedIn}
+            submitLogout={submitLogout}
+            onSearch={this.props.submitSearch}
+          />
           {React.Children.toArray(children)}
           <Footer />
         </div>
@@ -101,12 +95,12 @@ export function mapDispatchToProps(dispatch) {
   return {
     checkLogin: () => dispatch(actionCheckLogin()),
     submitLogout: () => dispatch(actionSubmitLogout()),
+    submitSearch: (query) => dispatch(submitSearch(query)),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   loggedIn: selectLoggedIn(),
-  cartItems: selectCartItems(),
 });
 
 // Wrap the component to inject dispatch and state into it

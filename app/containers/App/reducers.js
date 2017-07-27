@@ -20,6 +20,7 @@ import {
   LOGOUT_ERROR,
   REMOVE_ERROR,
   GET_STORE_SUCCESS,
+  REQUEST_CREDENTIALS,
 } from './constants';
 import moment from 'moment';
 import { fromJS } from 'immutable';
@@ -29,6 +30,7 @@ const initialState = fromJS({
   error: '',
   loggedIn: false,
   store: fromJS({}),
+  locationOnSuccess: '/conversations',
 });
 
 function appReducer(state = initialState, action) {
@@ -67,6 +69,10 @@ function appReducer(state = initialState, action) {
     case REMOVE_ERROR:
       return state
         .set('error', false);
+    case REQUEST_CREDENTIALS: {
+      return state
+        .set('locationOnSuccess', action.locationOnSuccess);
+    }
     case GET_STORE_SUCCESS: {
       const store = action.store;
       store.Joined = moment(action.store.Joined);

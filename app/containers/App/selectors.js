@@ -59,6 +59,11 @@ const selectLoading = () => createSelector(
   (state) => state.get('loading'),
 );
 
+const selectLocationOnSuccess = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('locationOnSuccess'),
+);
+
 export {
   selectLocationState,
   selectUserId,
@@ -68,4 +73,5 @@ export {
   selectError,
   selectLoading,
   selectStore,
+  selectLocationOnSuccess,
 };
