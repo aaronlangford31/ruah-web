@@ -1,5 +1,6 @@
 import { takeLatest } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 import { CHECK_SIGN_UP_CODE, SUBMIT_SIGN_UP } from './constants';
 import {
   signUpCodeChecked,
@@ -17,7 +18,7 @@ export function* checkSignUpCode({ values }) {
 
   try {
     const validSignUpCodeStatus = yield call(request, requestURL, {});
-    if (validSignUpCodeStatus) {
+    if (validSignUpCodeStatus.Valid) {
       yield put(signUpCodeChecked(signUpCode));
     } else {
       yield put(signUpCodeCheckingError('Invalid Sign Up Code'));
@@ -51,6 +52,7 @@ export function* submitSignUp({ values }) {
         body: JSON.stringify(body),
       });
       yield put(submitSignUpComplete());
+      yield put(push('/'));
     } catch (err) {
       yield put(submitSignUpError(`Error: ${err.message}`));
     }
