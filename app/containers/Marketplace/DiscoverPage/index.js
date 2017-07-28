@@ -18,6 +18,8 @@ import {
   selectChannelRequestModalOpen,
 } from './selectors';
 import Body from '../../../components/styled/Body';
+import Brick from '../../../components/styled/Brick';
+import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import MarketplaceMenu from '../MarketplaceMenu';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
@@ -64,6 +66,30 @@ class DiscoverPage extends Component {
           maxWidth: '1000px',
         }}
       >
+        <Brick>
+          <Card style={{ margin: '0 0 10px 0' }}>
+            <CardHeader>
+              <div style={{ display: 'flex', margin: '-10px 0 0 0' }}>
+                <div style={{ width: '50%' }}>
+                  <span style={{ color: '#04BFBF' }}>{store.Name}</span>
+                  &nbsp;
+                  <span style={{ color: '#BDBDBD' }}>{store.StoreId}</span>
+                </div>
+                <div style={{ width: '50%', textAlign: 'right' }}>3 hrs</div>
+              </div>
+            </CardHeader>
+            <CardText style={{ margin: '0px 25px 15px 25px', border: '1px solid' }}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
+              Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
+              Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+            </CardText>
+            <CardActions style={{ width: '100%', textAlign: 'right', margin: '-10px 0 0 0' }}>
+              <FlatButton label="Action1" />
+              <FlatButton label="Action2" />
+            </CardActions>
+          </Card>
+        </Brick>
         <Paper style={{ padding: '15px', display: 'flex' }}>
           <img
             style={{ width: '200px', height: '200px' }}
@@ -81,14 +107,14 @@ class DiscoverPage extends Component {
               <span style={{ width: '250px', fontSize: '14px', fontWeight: '600' }}>Taxonomy</span>
             </div>
             <div style={{ display: 'flex' }}>
-              <div style={{ display: 'flex', width: '250px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', width: '250px' }}>
                 {_.map(store.MarketResources, (item, j) => (
                   <div key={j} style={{ backgroundColor: '#F7E967', borderRadius: '5px', padding: '1px 5px', marginRight: '5px', color: '#9E9E9E' }}>
                     {item}
                   </div>
                 ))}
               </div>
-              <div style={{ display: 'flex', width: '250px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', width: '250px' }}>
                 {_.map(store.TaxonomicClassifications, (item, j) => (
                   <div key={j} style={{ backgroundColor: '#F7E967', borderRadius: '5px', padding: '1px 5px', marginRight: '5px', color: '#9E9E9E' }}>
                     {item}&nbsp;
