@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import SignUpForm from '../../components/forms/SignUpForm/index';
 import CodeForm from '../../components/forms/CodeForm/index';
+import CreateStoreForm from '../../components/forms/CreateStoreForm/index';
 import * as SignUpActions from './actions';
 import { selectValidSignUpCode, selectError, selectLoading } from './selectors';
 import ErrorBox from '../App/ErrorBox';
@@ -21,9 +22,28 @@ export const SignUpPage = ({ checkSignUpCode, submitSignUp, validSignUpCode, err
               checkSignUpCode={checkSignUpCode}
               loading={loading}
             />
-          </div>);
-
-
+          </div>
+        );
+      case 2:
+        return (
+          <div>
+            <CreateStoreForm />
+          </div>
+        );
+      case 3:
+        return (
+          <div>
+            <SignUpForm
+              initialValues={{ code: validSignUpCode }}
+              signUp={submitSignUp}
+              loading={loading}
+            />
+          </div>
+        );
+      case 4:
+        return (
+          <div></div>
+        );
       default:
         return 'oops';
     }
@@ -38,14 +58,6 @@ export const SignUpPage = ({ checkSignUpCode, submitSignUp, validSignUpCode, err
       />
       <Body useBackground>
         {renderForm()}
-        {!validSignUpCode ? <CodeForm
-          checkSignUpCode={checkSignUpCode}
-          loading={loading}
-        /> : <SignUpForm
-          initialValues={{ code: validSignUpCode }}
-          signUp={submitSignUp}
-          loading={loading}
-        />}
       </Body>
       <ErrorBox error={error} show={!!error} close={close} />
     </article>

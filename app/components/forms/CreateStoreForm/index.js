@@ -1,42 +1,116 @@
 import React, { PropTypes } from 'react';
-import { reduxForm } from 'redux-form/immutable';
+import { Field, reduxForm } from 'redux-form/immutable';
 import validate from './validate';
 import RaisedButton from 'material-ui/RaisedButton';
-import BasicForm from '../../styled/BasicForm';
-import Spinner from '../../../components/styled/Spinner';
-import Paper from 'material-ui/Paper';
-import { Link } from 'react-router';
-// import { TextField, CheckboxField } from '../Fields';
+import { TextField, CheckboxField } from '../Fields';
 
-const CreateStoreForm = ({ handleSubmit, login, loading }) => (
+const CreateStoreForm = ({ handleSubmit, invalid, pristine }) => (
   <div style={{ display: 'flex' }}>
-    { loading && <Spinner /> }
-    <BasicForm onSubmit={handleSubmit(login)}></BasicForm>
-    <div style={{ display: 'flex', flexDirection: 'column', padding: '40px', borderRadius: '3px', background: 'rgba(255, 255, 255, 0.85)' }}>
-      <Paper style={{ padding: '20px', maxWidth: '350px', height: '100%' }}>
-        <h2 style={{ fontWeight: '400' }}>New here?</h2>
-        <p>{'Very nice to meet you, virtually that is. Consider this an official invitation to join the Ruah community!'}</p>
-        <p>Ruah is a place where small business grows by meeting helpful retailers and other service providers.</p>
-        <p>{'Let\'s start by getting to know you:'}</p>
-        <div>
-          <Link to={'/introduction'}>
-            <RaisedButton backgroundColor={'#04BFBF'} style={{ color: '#FAFAFA' }}>{'Let\'s go!'}</RaisedButton>
-          </Link>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <Link to={'/sign-up'}>
-            <RaisedButton>&nbsp;&nbsp;&nbsp;I have a sign-up code&nbsp;&nbsp;&nbsp;</RaisedButton>
-          </Link>
-        </div>
-      </Paper>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <h1>Sign-up Form</h1>
+      <p style={{ marginBottom: 0 }}>Picture</p>
+      {
+        // *** Need an upload link here ***
+      }
+      <p style={{ marginBottom: 0 }}>Handle</p>
+      <Field
+        name="handle"
+        type="text"
+        label="Handle"
+        component={TextField}
+      />
+      <p style={{ marginBottom: 0 }}>Slogan</p>
+      <Field
+        name="slogan"
+        type="text"
+        label="Slogan"
+        component={TextField}
+      />
+      <p style={{ marginBottom: 0 }}>Location</p>
+      <div>
+        <Field
+          name="city"
+          type="text"
+          label="City"
+          style={{ paddingRight: '10px' }}
+          component={TextField}
+        />
+        <Field
+          name="sovereignty"
+          type="text"
+          label="State/Province"
+          style={{ width: '110px', paddingLeft: '10px' }}
+          component={TextField}
+        />
+      </div>
+      <p style={{ marginBottom: 0 }}>Year Founded</p>
+      <Field
+        name="founded"
+        type="text"
+        label="Founded"
+        component={TextField}
+      />
+      <p>Categories</p>
+      <Field
+        name="accessories"
+        type="checkbox"
+        label="Accessories"
+        component={CheckboxField}
+      />
+      <Field
+        name="electronics"
+        type="checkbox"
+        label="Electronics"
+        component={CheckboxField}
+      />
+      <Field
+        name="food"
+        type="checkbox"
+        label="Food"
+        component={CheckboxField}
+      />
+      <Field
+        name="gifts"
+        type="checkbox"
+        label="Gifts"
+        component={CheckboxField}
+      />
+      <Field
+        name="personalcare"
+        type="checkbox"
+        label="Personal Care &amp; Beauty"
+        component={CheckboxField}
+      />
+      <Field
+        name="sporting-goods"
+        type="checkbox"
+        label="Sporting Goods"
+        component={CheckboxField}
+      />
+      <Field
+        name="other"
+        type="checkbox"
+        label="Other (tell us about it below)"
+        component={CheckboxField}
+      />
+      <Field
+        name="otherDetail"
+        type="text"
+        multiLine
+        component={TextField}
+      />
+      <div style={{ marginTop: 12, display: 'flex' }} className="button">
+        <RaisedButton type="submit" disabled={pristine || invalid}>Send</RaisedButton>
+      </div>
+    </form>
   </div>
 
 );
 
 CreateStoreForm.propTypes = {
   handleSubmit: PropTypes.func,
-  login: PropTypes.func,
-  loading: PropTypes.bool,
+  invalid: PropTypes.bool,
+  pristine: PropTypes.bool,
 };
 
 export default reduxForm({
