@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -8,52 +8,31 @@ import LoginForm from '../../components/forms/LoginForm';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
 
-class LoginPage extends Component {
+const LoginPage = ({ login, error, close, loading }) => (
+  <article>
+    <Helmet
+      title="Login"
+      meta={[
+        { name: 'description', content: 'Login Page' },
+      ]}
+    />
+    <Body useBackground>
+      <LoginForm login={login} error={error} loading={loading} />
+    </Body>
+    <ErrorBox error={error} show={!!error} close={close} />
+  </article>
+);
 
-  static propTypes = {
-    login: PropTypes.func,
-    error: PropTypes.string,
-    close: PropTypes.func,
-    authenticated: PropTypes.bool,
-    loading: PropTypes.bool,
-    locationOnSuccess: PropTypes.string,
-  };
+LoginPage.propTypes = {
+  login: PropTypes.func,
+  error: PropTypes.string,
+  close: PropTypes.func,
+  loading: PropTypes.bool,
+};
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
-  componentDidMount() {
-    if (this.props.authenticated) {
-      this.context.router.push({ pathname: this.props.locationOnSuccess });
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.authenticated) {
-      this.context.router.push({ pathname: this.props.locationOnSuccess });
-    }
-  }
-
-  render() {
-    const { login, error, close, loading } = this.props;
-
-    return (
-      <article>
-        <Helmet
-          title="Login"
-          meta={[
-            { name: 'description', content: 'Login Page' },
-          ]}
-        />
-        <Body useBackground>
-          <LoginForm login={login} error={error} loading={loading} />
-        </Body>
-        <ErrorBox error={error} show={!!error} close={close} />
-      </article>
-    );
-  }
-}
+LoginPage.contextTypes = {
+  router: PropTypes.object,
+};
 
 export function mapDispatchToProps(dispatch) {
   return {

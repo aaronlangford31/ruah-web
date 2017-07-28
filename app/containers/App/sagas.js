@@ -1,7 +1,7 @@
 import request from 'utils/request';
 import { takeLatest } from 'redux-saga';
-import { call, put, take, cancel, select } from 'redux-saga/effects';
-import { LOCATION_CHANGE, push } from 'react-router-redux';
+import { call, put, select } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 import _ from 'underscore';
 import {
   CHECK_LOGIN,
@@ -28,6 +28,16 @@ import { selectLocationOnSuccess } from './selectors';
 
 export function* checkLogin() {
   const requestURL = 'https://api.teamruah.com/v1/user/isauthenticated';
+  const isPublicPath = (path) => {
+    if (path === '/') {
+      return true;
+    } else if (path === '/sign-up') {
+      return true;
+    } else if (path === '/introduction') {
+      return true;
+    }
+    return false;
+  };
 
   try {
     const response = yield call(request, requestURL, {
@@ -38,8 +48,10 @@ export function* checkLogin() {
     yield put(loginSuccess(response.userId, response.storeId));
   } catch (err) {
     const loc = window.location.pathname;
-    yield put(requestCredentials(loc));
-    yield put(push('/'));
+    if (!isPublicPath(loc)) {
+      yield put(requestCredentials(loc));
+      yield put(push('/'));
+    }
   }
 }
 
@@ -56,6 +68,8 @@ export function* submitLogout() {
     } else {
       yield put(logoutError());
     }
+
+    yield put(push('/'));
   } catch (err) {
     // not checked
     yield put(logoutError('Error'));
@@ -82,7 +96,6 @@ export function* submitLogin({ values }) {
     const locationOnSuccess = yield select(selectLocationOnSuccess());
     yield put(getStoreAction(response.userId));
     yield put(loginSuccess(response.userId, response.storeId));
-
     yield put(push(locationOnSuccess));
   } catch (err) {
     yield put(loginError('There is no flavor. There are no spices. Where are the chips? ...these credentials were no good.'));
@@ -132,10 +145,13 @@ export function* onGetStore() {
   yield* takeLatest(GET_STORE, getStore);
 }
 
+let watchingSearch = false;
+
 function* watchSearch() {
-  const watcher = yield takeLatest(SUBMIT_SEARCH, omniSearch);
-  yield take(LOCATION_CHANGE);
-  yield cancel(watcher);
+  if (!watchingSearch) {
+    watchingSearch = true;
+    yield takeLatest(SUBMIT_SEARCH, omniSearch);
+  }
 }
 
 export default [

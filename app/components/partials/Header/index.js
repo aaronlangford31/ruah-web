@@ -18,7 +18,7 @@ const Header = ({ loggedIn, submitLogout, onSearch }) => {
       <Toolbar style={{ backgroundColor: '#FFFFFF' }}>
         <ToolbarGroup>
           <div style={{ height: '100%', width: '170px' }}>
-            <Link to={'/conversations'}>
+            <Link to={loggedIn ? '/conversations' : '/'}>
               <img src={Logo} alt="Logo" style={{ maxHeight: '100%' }} />
             </Link>
           </div>
