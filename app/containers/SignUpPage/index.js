@@ -9,27 +9,48 @@ import { selectValidSignUpCode, selectError, selectLoading } from './selectors';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
 
-export const SignUpPage = ({ checkSignUpCode, submitSignUp, validSignUpCode, error, close, loading }) => (
-  <article>
-    <Helmet
-      title="Sign Up"
-      meta={[
-        { name: 'description', content: 'Sign Up Page' },
-      ]}
-    />
-    <Body useBackground>
-      {!validSignUpCode ? <CodeForm
-        checkSignUpCode={checkSignUpCode}
-        loading={loading}
-      /> : <SignUpForm
-        initialValues={{ code: validSignUpCode }}
-        signUp={submitSignUp}
-        loading={loading}
-      />}
-    </Body>
-    <ErrorBox error={error} show={!!error} close={close} />
-  </article>
-);
+
+export const SignUpPage = ({ checkSignUpCode, submitSignUp, validSignUpCode, error, close, loading }) => {
+  const renderForm = () => {
+    const foo = 1;
+    switch (foo) {
+      case 1:
+        return (
+          <div>
+            <CodeForm
+              checkSignUpCode={checkSignUpCode}
+              loading={loading}
+            />
+          </div>);
+
+
+      default:
+        return 'oops';
+    }
+  };
+  return (
+    <article>
+      <Helmet
+        title="Sign Up"
+        meta={[
+          { name: 'description', content: 'Sign Up Page' },
+        ]}
+      />
+      <Body useBackground>
+        {renderForm()}
+        {!validSignUpCode ? <CodeForm
+          checkSignUpCode={checkSignUpCode}
+          loading={loading}
+        /> : <SignUpForm
+          initialValues={{ code: validSignUpCode }}
+          signUp={submitSignUp}
+          loading={loading}
+        />}
+      </Body>
+      <ErrorBox error={error} show={!!error} close={close} />
+    </article>
+  );
+};
 
 SignUpPage.propTypes = {
   checkSignUpCode: PropTypes.func,
