@@ -27,10 +27,22 @@ const selectCurrentStoreProducts = () => createSelector(
   (state) => state.get('currentStoreProducts').toJS(),
 );
 
+const selectChannelRequest = () => createSelector(
+  selectStoreProfilePage(),
+  (state) => state.get('channelRequest').toJS()
+);
+
+const selectChannelRequestModalOpen = () => createSelector(
+  selectStoreProfilePage(),
+  (state) => state.get('channelRequestModalOpen')
+);
+
 export {
   selectCurrentStore,
   selectCurrentStoreProducts,
   selectCurrentStoreId,
   selectLoading,
   selectNotFound,
+  selectChannelRequest,
+  selectChannelRequestModalOpen,
 };
