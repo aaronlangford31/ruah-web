@@ -51,9 +51,9 @@ class SearchPage extends Component {
           </div>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <span style={{ flex: 1 }} />
-            <Link to={`/conversation/${channel.ChannelId}`}>
+            {channel && <Link to={`/conversation/${channel.ChannelId}`}>
               <FlatButton><SendIcon /> Chat</FlatButton>
-            </Link>
+            </Link>}
           </div>
         </div>
       </Paper>);
@@ -82,9 +82,9 @@ class SearchPage extends Component {
           </div>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <span style={{ flex: 1 }} />
-            <Link to={`/conversation/${channel.ChannelId}`}>
+            {channel && <Link to={`/conversation/${channel.ChannelId}`}>
               <FlatButton><SendIcon /> Chat</FlatButton>
-            </Link>
+            </Link>}
           </div>
         </div>
       </Paper>);
