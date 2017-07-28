@@ -64,6 +64,11 @@ const selectLocationOnSuccess = () => createSelector(
   (state) => state.get('locationOnSuccess'),
 );
 
+const selectSearchResults = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('searchResults').toJS(),
+);
+
 export {
   selectLocationState,
   selectUserId,
@@ -74,4 +79,5 @@ export {
   selectLoading,
   selectStore,
   selectLocationOnSuccess,
+  selectSearchResults,
 };

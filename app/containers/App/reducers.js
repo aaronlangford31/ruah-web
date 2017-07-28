@@ -21,6 +21,7 @@ import {
   REMOVE_ERROR,
   GET_STORE_SUCCESS,
   REQUEST_CREDENTIALS,
+  SUBMIT_SEARCH_SUCCESS,
 } from './constants';
 import moment from 'moment';
 import { fromJS } from 'immutable';
@@ -31,6 +32,7 @@ const initialState = fromJS({
   loggedIn: false,
   store: fromJS({}),
   locationOnSuccess: '/conversations',
+  searchResults: fromJS([]),
 });
 
 function appReducer(state = initialState, action) {
@@ -78,6 +80,10 @@ function appReducer(state = initialState, action) {
       store.Joined = moment(action.store.Joined);
       return state
           .set('store', fromJS(store));
+    }
+    case SUBMIT_SEARCH_SUCCESS: {
+      return state
+        .set('searchResults', fromJS(action.products));
     }
     default:
       return state;

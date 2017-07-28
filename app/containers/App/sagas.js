@@ -1,7 +1,7 @@
 import request from 'utils/request';
 import { takeLatest } from 'redux-saga';
-import { call, put, select } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+import { call, put, take, cancel, select } from 'redux-saga/effects';
+import { LOCATION_CHANGE, push } from 'react-router-redux';
 import _ from 'underscore';
 import {
   CHECK_LOGIN,
@@ -22,7 +22,7 @@ import {
   getStore as getStoreAction,
   getStoreSucess,
   getStoreFail,
-  getProductSuccess,
+  submitSearchSuccess,
 } from './actions';
 import { selectLocationOnSuccess } from './selectors';
 
@@ -112,8 +112,8 @@ function* omniSearch(action) {
   });
   const searchResults = Array.concat(productResults, storeResults);
   searchResults.sort((a, b) => b.Score - a.Score);
-  yield put(getProductSuccess(_.map(searchResults, (item) => item.Item)));
-  yield put(push('/search'));
+  yield put(submitSearchSuccess(_.map(searchResults, (item) => item.Item)));
+  yield put(push(`/search/${action.query}`));
 }
 
 export function* getCheckLoginData() {
@@ -133,7 +133,9 @@ export function* onGetStore() {
 }
 
 function* watchSearch() {
-  yield takeLatest(SUBMIT_SEARCH, omniSearch);
+  const watcher = yield takeLatest(SUBMIT_SEARCH, omniSearch);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export default [

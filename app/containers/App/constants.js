@@ -19,4 +19,4 @@ export const SUBMIT_SEARCH_SUCCESS = 'ruah/App/SUBMIT_SEARCH_SUCCESS';
 
 export const GET_STORE_URI = 'https://api.teamruah.com/v1/store/get';
 export const SEARCH_PRODUCT_URI = 'https://api.teamruah.com/v1/product/search';
-export const SEARCH_STORE_URI = 'https://api.teamruah/com/v1/store/search';
+export const SEARCH_STORE_URI = 'https://api.teamruah.com/v1/store/search';
