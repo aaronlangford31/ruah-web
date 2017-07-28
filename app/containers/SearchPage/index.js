@@ -11,8 +11,7 @@ import { selectSearchResults, selectStore } from '../App/selectors';
 import Body from '../../components/styled/Body';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
-import SendIcon from 'material-ui/svg-icons/content/send';
+import LocationIcon from 'material-ui/svg-icons/communication/location-on';
 
 class SearchPage extends Component {
   constructor(props) {
@@ -41,19 +40,32 @@ class SearchPage extends Component {
           style={{ width: '100px', height: '100px', padding: '5px' }}
         />
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <div>
-            <strong>{product.ProductName}</strong> <span>SKU: {product.SKU}</span>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div>
+              <strong>{product.ProductName.substr(0, 55)}{product.ProductName.length > 55 && '...'}</strong>
+            </div>
+            <div style={{ fontSize: '12px' }}>
+              Ruah ID: {product.RuahId}
+            </div>
+            <div style={{ fontSize: '12px' }}>
+              SKU: {product.SKU}
+            </div>
           </div>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
             <div style={{ flex: 1 }}>
-              &nbsp;{product.Description}
+              {product.Description.substr(0, 255)}{product.Description.length > 255 && '...'}
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <span style={{ flex: 1 }} />
-            {channel && <Link to={`/conversation/${channel.ChannelId}`}>
-              <FlatButton><SendIcon /> Chat</FlatButton>
-            </Link>}
+            {channel ?
+              <Link to={`/conversation/${channel.ChannelId}`}>
+                Go to conversation
+              </Link>
+              : <div>
+                You {"don't"} have a relationship with {product.StoreId} yet. <Link to={`/marketplace/store/${product.StoreId}`}>Click here to connect.</Link>
+              </div>
+            }
           </div>
         </div>
       </Paper>);
@@ -75,16 +87,24 @@ class SearchPage extends Component {
           <div>
             <strong>{store.Name}</strong> <span>{store.StoreId}</span>
           </div>
+          <div>
+            <LocationIcon /> {store.Locality}, {store.Sovereignty}
+          </div>
           <div style={{ flex: 1 }}>
-            <em style={{ flex: 1 }}>
-              &nbsp;{store.Slogan}
+            <em>
+              {store.Slogan}
             </em>
           </div>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <span style={{ flex: 1 }} />
-            {channel && <Link to={`/conversation/${channel.ChannelId}`}>
-              <FlatButton><SendIcon /> Chat</FlatButton>
-            </Link>}
+            {channel ?
+              <Link to={`/conversation/${channel.ChannelId}`}>
+                Go to conversation
+              </Link>
+              : <div>
+                You {"don't"} have a relationship with {store.StoreId} yet. <Link to={`/marketplace/store/${store.StoreId}`}>Click here to connect.</Link>
+              </div>
+            }
           </div>
         </div>
       </Paper>);
