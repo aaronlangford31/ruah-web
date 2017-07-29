@@ -11,9 +11,9 @@ import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
 
 
-export const SignUpPage = ({ checkSignUpCode, submitSignUp, validSignUpCode, error, close, loading }) => {
+export const SignUpPage = ({ checkSignUpCode, submitStore, submitSignUp, validSignUpCode, error, close, loading }) => {
   const renderForm = () => {
-    const foo = 1;
+    const foo = 2;
     switch (foo) {
       case 1:
         return (
@@ -27,7 +27,9 @@ export const SignUpPage = ({ checkSignUpCode, submitSignUp, validSignUpCode, err
       case 2:
         return (
           <div>
-            <CreateStoreForm />
+            <CreateStoreForm
+              handleSubmit={submitStore}
+            />
           </div>
         );
       case 3:
@@ -71,6 +73,7 @@ SignUpPage.propTypes = {
   error: PropTypes.string,
   close: PropTypes.func,
   loading: PropTypes.bool,
+  submitStore: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {

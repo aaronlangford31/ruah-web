@@ -2,16 +2,20 @@ import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
 import validate from './validate';
 import RaisedButton from 'material-ui/RaisedButton';
-import { TextField, CheckboxField } from '../Fields';
+import { TextField, CheckboxField, FileField } from '../Fields';
+import BasicForm from '../../styled/BasicForm';
 
 const CreateStoreForm = ({ handleSubmit, invalid, pristine }) => (
-  <div style={{ display: 'flex' }}>
-    <form onSubmit={handleSubmit}>
+  <div>
+    <BasicForm style={{ marginBottom: '50px' }} onSubmit={handleSubmit}>
       <h1>Sign-up Form</h1>
-      <p style={{ marginBottom: 0 }}>Picture</p>
-      {
-        // *** Need an upload link here ***
-      }
+      <p style={{ marginBottom: 0 }}>Logo</p>
+      <Field
+        name="logo"
+        type="file"
+        label="Logo"
+        component={FileField}
+      />
       <p style={{ marginBottom: 0 }}>Handle</p>
       <Field
         name="handle"
@@ -50,6 +54,15 @@ const CreateStoreForm = ({ handleSubmit, invalid, pristine }) => (
         label="Founded"
         component={TextField}
       />
+      <p style={{ marginBottom: 0 }}>Story</p>
+      <Field
+        name="story"
+        type="text"
+        label="Story"
+        rows={2}
+        rowsMax={4}
+        component={TextField}
+      />
       <p>Categories</p>
       <Field
         name="accessories"
@@ -76,13 +89,13 @@ const CreateStoreForm = ({ handleSubmit, invalid, pristine }) => (
         component={CheckboxField}
       />
       <Field
-        name="personalcare"
+        name="personalCare"
         type="checkbox"
         label="Personal Care &amp; Beauty"
         component={CheckboxField}
       />
       <Field
-        name="sporting-goods"
+        name="sportingGoods"
         type="checkbox"
         label="Sporting Goods"
         component={CheckboxField}
@@ -90,21 +103,21 @@ const CreateStoreForm = ({ handleSubmit, invalid, pristine }) => (
       <Field
         name="other"
         type="checkbox"
-        label="Other (tell us about it below)"
+        label="Other (enter below)"
         component={CheckboxField}
       />
       <Field
         name="otherDetail"
         type="text"
+        label="Other"
         multiLine
         component={TextField}
       />
       <div style={{ marginTop: 12, display: 'flex' }} className="button">
-        <RaisedButton type="submit" disabled={pristine || invalid}>Send</RaisedButton>
+        <RaisedButton type="submit" disabled={pristine || invalid}>Submit</RaisedButton>
       </div>
-    </form>
+    </BasicForm>
   </div>
-
 );
 
 CreateStoreForm.propTypes = {
