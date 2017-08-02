@@ -26,7 +26,7 @@ const FileField = ({ label, style }) => (
           const { fields } = this.props;
           // convert files to an array
           const files = [...e.target.files];
-          fields.yourField.handleChange(files);
+          fields.yourField.onChange(files);
         }
       }
     />
