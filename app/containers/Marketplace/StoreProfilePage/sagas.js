@@ -47,7 +47,7 @@ function* getStoreProduct() {
   yield put(getStoreProductByIdSuccess(product));
 }
 
-export function* putChannelRequest() {
+function* putChannelRequest() {
   const channelRequest = yield select(selectChannelRequest());
   yield call(request, PUT_CHANNEL_REQUEST_URI, {
     method: 'POST',
@@ -60,19 +60,19 @@ export function* putChannelRequest() {
   yield put(submitChannelRequestSuccess());
 }
 
-export function* watchGetStore() {
+function* watchGetStore() {
   const watcher = yield takeLatest(GET_STORE_BY_ID, getStoreById);
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
 
-export function* watchGetStoreProducts() {
+function* watchGetStoreProducts() {
   const watcher = yield takeLatest(GET_STORE_PRODUCT_BY_ID, getStoreProduct);
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
 
-export function* watchSubmitChannelRequest() {
+function* watchSubmitChannelRequest() {
   const watcher = yield takeLatest(SUBMIT_CHANNEL_REQUEST, putChannelRequest);
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
@@ -81,4 +81,5 @@ export function* watchSubmitChannelRequest() {
 export default [
   watchGetStore,
   watchGetStoreProducts,
+  watchSubmitChannelRequest,
 ];
