@@ -6,14 +6,17 @@ import {
   GET_STORE_PRODUCT_BY_ID,
   URI_GET_STORE_BY_ID,
   URI_GET_STORE_PRODUCT,
+  SUBMIT_CHANNEL_REQUEST,
+  PUT_CHANNEL_REQUEST_URI,
 } from './constants';
 import {
   getStoreByIdSuccess,
   getStoreByIdNotFound,
   getStoreByIdError,
   getStoreProductByIdSuccess,
+  submitChannelRequestSuccess,
 } from './actions';
-import { selectCurrentStoreId } from './selectors';
+import { selectCurrentStoreId, selectChannelRequest } from './selectors';
 import request from 'utils/request';
 
 function* getStoreById() {
@@ -44,6 +47,19 @@ function* getStoreProduct() {
   yield put(getStoreProductByIdSuccess(product));
 }
 
+export function* putChannelRequest() {
+  const channelRequest = yield select(selectChannelRequest());
+  yield call(request, PUT_CHANNEL_REQUEST_URI, {
+    method: 'POST',
+    body: JSON.stringify(channelRequest),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+  yield put(submitChannelRequestSuccess());
+}
+
 export function* watchGetStore() {
   const watcher = yield takeLatest(GET_STORE_BY_ID, getStoreById);
   yield take(LOCATION_CHANGE);
@@ -52,6 +68,12 @@ export function* watchGetStore() {
 
 export function* watchGetStoreProducts() {
   const watcher = yield takeLatest(GET_STORE_PRODUCT_BY_ID, getStoreProduct);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
+
+export function* watchSubmitChannelRequest() {
+  const watcher = yield takeLatest(SUBMIT_CHANNEL_REQUEST, putChannelRequest);
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
