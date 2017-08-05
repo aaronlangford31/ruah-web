@@ -6,8 +6,22 @@ import BasicForm from '../../styled/BasicForm';
 import Spinner from '../../../components/styled/Spinner';
 import { TextField } from '../Fields';
 
-const SignUpForm = ({ handleSubmit, signUp, loading }) => (
-  <BasicForm onSubmit={handleSubmit(signUp)}>
+const SignUpForm = ({ handleSubmit, signUp, loading, storeId }) => (
+  <BasicForm onSubmit={handleSubmit(signUp)} initialValues={{ storeId }}>
+    { !storeId &&
+      <div>
+        <h2>Choose a store ID:</h2>
+        <Field
+          name="storeId"
+          type="text"
+          component={TextField}
+          label="Store ID"
+          floatingLabelStyle={{ color: 'black' }}
+          underlineStyle={{ borderColor: 'black' }}
+        /><br />
+      </div>
+    }
+    <h2>Set up your credentials:</h2>
     <Field
       name="email"
       type="text"
@@ -47,6 +61,7 @@ SignUpForm.propTypes = {
   handleSubmit: PropTypes.func,
   signUp: PropTypes.func,
   loading: PropTypes.bool,
+  storeId: PropTypes.string,
 };
 
 export default reduxForm({

@@ -2,6 +2,13 @@ import { hasLowerCase, hasUpperCase, isAlphabetical, isValidEmail } from '../../
 
 const validate = (values) => {
   const errors = {};
+
+  if (!values.get('storeId')) {
+    errors.storeId = 'Please choose a store ID!';
+  } else if (values.get('storeId').search(' ') >= 0) {
+    errors.storeId = 'Store ID cannot contain spaces';
+  }
+
   if (!values.get('email')) {
     errors.email = 'Required';
   } else if (isValidEmail(values.get('email'))) {

@@ -7,6 +7,9 @@ import {
   CHECK_SIGN_UP_CODE_SUCCESS,
   CHECK_SIGN_UP_CODE_ERROR,
   REMOVE_ERROR,
+  SET_SIGN_UP_STAGE,
+  SUBMIT_STORE,
+  SET_STORE_ID,
 } from './constants';
 
 export function invalidUserIdDetected() {
@@ -61,5 +64,26 @@ export function signUpCodeCheckingError(error) {
 export function removeError() {
   return {
     type: REMOVE_ERROR,
+  };
+}
+
+export function setSignUpStage(stage) {
+  return {
+    type: SET_SIGN_UP_STAGE,
+    stage,
+  };
+}
+
+export function submitStore(values) {
+  return {
+    type: SUBMIT_STORE,
+    values,
+  };
+}
+
+export function setStoreId(storeId) {
+  return {
+    type: SET_STORE_ID,
+    storeId,
   };
 }

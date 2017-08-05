@@ -6,15 +6,14 @@ import SignUpForm from '../../components/forms/SignUpForm/index';
 import CodeForm from '../../components/forms/CodeForm/index';
 import CreateStoreForm from '../../components/forms/CreateStoreForm/index';
 import * as SignUpActions from './actions';
-import { selectValidSignUpCode, selectError, selectLoading } from './selectors';
+import { selectValidSignUpCode, selectError, selectLoading, selectSignUpStage } from './selectors';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
 
 
-export const SignUpPage = ({ checkSignUpCode, submitStore, submitSignUp, validSignUpCode, error, close, loading }) => {
+export const SignUpPage = ({ signUpStage, checkSignUpCode, submitStore, submitSignUp, validSignUpCode, error, close, loading }) => {
   const renderForm = () => {
-    const foo = 2;
-    switch (foo) {
+    switch (signUpStage) {
       case 1:
         return (
           <div>
@@ -27,18 +26,18 @@ export const SignUpPage = ({ checkSignUpCode, submitStore, submitSignUp, validSi
       case 2:
         return (
           <div>
-            <CreateStoreForm
-              handleSubmit={submitStore}
+            <SignUpForm
+              initialValues={{ code: validSignUpCode }}
+              signUp={submitSignUp}
+              loading={loading}
             />
           </div>
         );
       case 3:
         return (
           <div>
-            <SignUpForm
-              initialValues={{ code: validSignUpCode }}
-              signUp={submitSignUp}
-              loading={loading}
+            <CreateStoreForm
+              handleSubmit={submitStore}
             />
           </div>
         );
@@ -74,6 +73,7 @@ SignUpPage.propTypes = {
   close: PropTypes.func,
   loading: PropTypes.bool,
   submitStore: PropTypes.func,
+  signUpStage: PropTypes.number,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -81,11 +81,12 @@ export function mapDispatchToProps(dispatch) {
     checkSignUpCode: (values) => {
       dispatch(SignUpActions.checkSignUpCode(values));
     },
-
     submitSignUp: (values) => {
       dispatch(SignUpActions.submitSignUp(values));
     },
-
+    submitStore: () => {
+      dispatch(SignUpActions.submitStore());
+    },
     close: () => {
       dispatch(SignUpActions.removeError());
     },
@@ -96,6 +97,7 @@ const mapStateToProps = createStructuredSelector({
   validSignUpCode: selectValidSignUpCode(),
   error: selectError(),
   loading: selectLoading(),
+  signUpStage: selectSignUpStage(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);

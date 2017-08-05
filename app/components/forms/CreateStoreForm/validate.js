@@ -1,7 +1,13 @@
 const validate = (values) => {
   const errors = {};
+
+  if (!values.get('name')) {
+    errors.name = 'Don\'t forget your store name!';
+  }
   if (!values.get('handle')) {
     errors.handle = 'Don\'t forget your handle!';
+  } else if (values.get('handle').search(' ') >= 0) {
+    errors.handle = 'No spaces allowed in handle';
   }
   if (!values.get('slogan')) {
     errors.slogan = 'Don\'t forget your slogan!';
@@ -18,8 +24,6 @@ const validate = (values) => {
   if (!values.get('founded')) {
     errors.founded = 'Don\'t forget year founded!';
   }
-
-  // console.log(values.toJS());
 
   if (!values.get('accessories')
     && !values.get('electronics')

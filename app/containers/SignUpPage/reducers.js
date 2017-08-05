@@ -7,6 +7,8 @@ import {
   SUBMIT_SIGN_UP_ERROR,
   REMOVE_ERROR,
   SUBMIT_SIGN_UP,
+  SET_SIGN_UP_STAGE,
+  SET_STORE_ID,
 } from './constants';
 import { fromJS } from 'immutable';
 
@@ -14,6 +16,8 @@ const initialState = fromJS({
   loading: false,
   error: '',
   validSignUpCode: '',
+  signUpStage: 1,
+  storeId: '',
 });
 
 function signUpPageReducer(state = initialState, action) {
@@ -50,6 +54,12 @@ function signUpPageReducer(state = initialState, action) {
       return state
         .set('error', action.error)
         .set('loading', false);
+    case SET_SIGN_UP_STAGE:
+      return state
+        .set('signUpStage', action.stage);
+    case SET_STORE_ID:
+      return state
+        .set('storeId', action.storeId);
     default:
       return state;
   }

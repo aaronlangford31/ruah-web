@@ -51,6 +51,13 @@ const IntroductionForm = ({ handleSubmit, invalid, pristine }) => (
         label="E-mail"
         component={TextField}
       />
+      <h3 style={{ marginBottom: 0 }}>What is the best phone number to reach you at?</h3>
+      <Field
+        name="phone"
+        type="text"
+        label="Phone Number"
+        component={TextField}
+      />
       <h3>Where do you currently sell things?</h3>
       <Field
         name="websiteChannel"
