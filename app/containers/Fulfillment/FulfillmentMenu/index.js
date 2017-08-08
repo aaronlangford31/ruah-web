@@ -21,7 +21,7 @@ const currentLinkStyle = {
 
 export default function FulfillmentMenu({ location }) {
   return (
-    <Paper style={{ padding: '15px', margin: '10px', width: '225px', height: '90px', display: 'flex', flexDirection: 'column' }}>
+    <Paper style={{ padding: '15px', width: '225px', height: '700px', display: 'flex', flexDirection: 'column' }}>
       <Link to={receivedPath} style={location === receivedPath ? Object.assign({}, linkStyle, currentLinkStyle) : linkStyle}>
         <DownloadIcon color={'#757575'} /> Received Orders
       </Link>

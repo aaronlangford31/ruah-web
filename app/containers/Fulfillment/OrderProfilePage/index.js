@@ -11,9 +11,11 @@ import {
 } from './selectors';
 import {
   selectStoreId,
+  selectStore,
 } from '../../App/selectors';
 import * as OrderProfilePageActions from './actions';
 import Body from '../../../components/styled/Body';
+import Sidebar from '../../../components/partials/Sidebar';
 import {
   Step,
   Stepper,
@@ -27,6 +29,7 @@ import ProductIcon from 'material-ui/svg-icons/action/work';
 import Divider from 'material-ui/Divider';
 import ShippingForm from '../../../components/forms/ShippingForm';
 import NextStepButton from './NextStepButton';
+import Paper from 'material-ui/Paper';
 import OrderPhase from './OrderPhase';
 
 class OrderProfilePage extends Component {
@@ -37,7 +40,7 @@ class OrderProfilePage extends Component {
 
   renderOrder() {
     return (
-      <div style={{ display: 'flex' }}>
+      <Paper style={{ display: 'flex', padding: '20px', flex: 1 }}>
         <div style={{ flex: 10 }}>
           <h4 style={{ marginBottom: 0 }}>Order ID: {this.props.order.OrderId}</h4>
           <div style={{ display: 'flex' }}>
@@ -86,6 +89,10 @@ class OrderProfilePage extends Component {
             }
           </div>
           <Divider />
+          {
+            this.props.currentStoreId === this.props.order.StoreId &&
+              <a href={`https://api.teamruah.com/serverviews/order/packingslip?orderId=${this.props.order.OrderId}`} target={'blank'}>Packing Slip</a>
+          }
           { this.props.order.FulfillmentInfo &&
           <div>
             <h3><ShippedIcon style={{ marginRight: 5 }} /> Fulfillment Info</h3>
@@ -145,7 +152,13 @@ class OrderProfilePage extends Component {
               Product Name: {item.ProductName}
             </p>
             <p>
-              Product Price: ${item.ProductPrice.toFixed(2)}
+              Ruah ID: {item.RuahId}
+            </p>
+            <p>
+              SKU: {item.SKU}
+            </p>
+            <p>
+              Ruah Price: ${item.RuahPrice.toFixed(2)}
             </p>
             <p>
               Quantity: {item.Quantity}
@@ -155,7 +168,7 @@ class OrderProfilePage extends Component {
             </p>
           </div>)}
         </div>
-      </div>
+      </Paper>
     );
   }
 
@@ -172,9 +185,16 @@ class OrderProfilePage extends Component {
             { name: 'description', content: 'Order Page' },
           ]}
         />
-        <Body>
-          {orderLoaded && this.renderOrder()}
-        </Body>
+        <div style={{ display: 'flex' }}>
+          <Sidebar
+            storeImageUri={this.props.currStore.ProfilePicUri}
+            unfulfilledOrders={0}
+            currView={window.location.pathname}
+          />
+          <Body style={{ flex: 1 }}>
+            {orderLoaded && this.renderOrder()}
+          </Body>
+        </div>
       </article>
     );
   }
@@ -182,6 +202,7 @@ class OrderProfilePage extends Component {
 
 OrderProfilePage.propTypes = {
   currentStoreId: PropTypes.string,
+  currStore: PropTypes.object,
   order: PropTypes.object,
   orderId: PropTypes.string,
   orderLoaded: PropTypes.bool,
@@ -220,6 +241,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   currentStoreId: selectStoreId(),
+  currStore: selectStore(),
   order: selectCurrentOrder(),
   orderId: selectCurrentOrderId(),
   orderLoaded: selectCurrentOrderLoaded(),

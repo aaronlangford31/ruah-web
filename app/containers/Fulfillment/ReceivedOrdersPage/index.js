@@ -6,7 +6,9 @@ import { Link } from 'react-router';
 import _ from 'underscore';
 import * as OrderActions from './actions';
 import { selectOrders, selectLoading } from './selectors';
+import { selectStore } from '../../App/selectors';
 import Body from '../../../components/styled/Body';
+import Sidebar from '../../../components/partials/Sidebar';
 import FulfillmentMenu from '../FulfillmentMenu';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
@@ -23,6 +25,7 @@ class OrdersPage extends Component {
     orders: PropTypes.array,
     loading: PropTypes.bool,
     getOrders: PropTypes.func,
+    currStore: PropTypes.object,
   };
 
   componentDidMount() {
@@ -109,11 +112,16 @@ class OrdersPage extends Component {
           ]}
         />
         <div style={{ display: 'flex' }}>
+          <Sidebar
+            storeImageUri={this.props.currStore.ProfilePicUri}
+            unfulfilledOrders={0}
+            currView={window.location.pathname}
+          />
           <FulfillmentMenu location={'/fulfillment/received'} />
-          <Body style={{ padding: '10px' }}>
-            <div style={{ display: 'flex', maxWidth: '1000px' }}>
+          <Body style={{ width: '100%' }}>
+            <Paper style={{ display: 'flex' }}>
               <div style={{ flex: 10 }}>
-                <Table selectable={false}>
+                <Table height={this.props.orders.length && 600} selectable={false}>
                   <TableHeader
                     displaySelectAll={false}
                     adjustForCheckbox={false}
@@ -127,7 +135,7 @@ class OrdersPage extends Component {
                       <TableHeaderColumn>Actions</TableHeaderColumn>
                     </TableRow>
                   </TableHeader>
-                  <TableBody displayRowCheckbox={false}>
+                  <TableBody style={{ overflowY: 'scroll', maxHeight: '650px' }} displayRowCheckbox={false}>
                     {this.renderOrders()}
                   </TableBody>
                 </Table>
@@ -144,7 +152,7 @@ class OrdersPage extends Component {
                   </div>
                 }
               </div>
-            </div>
+            </Paper>
           </Body>
         </div>
       </article>
@@ -163,6 +171,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   orders: selectOrders(),
   loading: selectLoading(),
+  currStore: selectStore(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersPage);
