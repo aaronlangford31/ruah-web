@@ -3,13 +3,19 @@ import { Field, reduxForm } from 'redux-form/immutable';
 import validate from './validate';
 import RaisedButton from 'material-ui/RaisedButton';
 import { TextField, CheckboxField, FileField } from '../Fields';
-import BasicForm from '../../styled/BasicForm';
 
 const CreateStoreForm = ({ handleSubmit, invalid, pristine }) => (
   <div>
-    <BasicForm
-      style={{ marginBottom: '50px' }}
-      onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}
+    <form
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '40px',
+        borderRadius: '3px',
+        background: 'rgba(255, 255, 255, 0.85)',
+        marginBottom: '50px',
+      }}
+      onSubmit={handleSubmit}
     >
       <h1>Set up your store</h1>
       <p style={{ marginBottom: 0 }}>Logo (Please choose a square image)</p>
@@ -137,7 +143,7 @@ const CreateStoreForm = ({ handleSubmit, invalid, pristine }) => (
       <div style={{ marginTop: 12, display: 'flex' }} className="button">
         <RaisedButton type="submit" disabled={pristine || invalid}>Submit</RaisedButton>
       </div>
-    </BasicForm>
+    </form>
   </div>
 );
 

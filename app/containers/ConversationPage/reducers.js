@@ -119,8 +119,10 @@ function conversationsPageReducer(state = initialState, action) {
         RuahId: action.product.RuahId,
         SKU: action.product.SKU,
         ProductName: action.product.ProductName,
-        RetailPrice: action.product.WholesalePrice,
+        RuahPrice: action.product.WholesalePrice,
         ShippingPrice: action.product.ShippingFee,
+        RetailPrice: action.product.WholesalePrice,
+        RetailShippingPrice: action.product.ShippingFee,
       };
       return state
         .set('order', fromJS(order));

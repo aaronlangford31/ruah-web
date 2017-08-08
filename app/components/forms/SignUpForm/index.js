@@ -2,12 +2,20 @@ import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
 import validate from './validate';
 import RaisedButton from 'material-ui/RaisedButton';
-import BasicForm from '../../styled/BasicForm';
 import Spinner from '../../../components/styled/Spinner';
 import { TextField } from '../Fields';
 
-const SignUpForm = ({ handleSubmit, signUp, loading, storeId }) => (
-  <BasicForm onSubmit={handleSubmit(signUp)} initialValues={{ storeId }}>
+const SignUpForm = ({ handleSubmit, loading, storeId }) => (
+  <form
+    onSubmit={handleSubmit}
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '40px',
+      borderRadius: '3px',
+      background: 'rgba(255, 255, 255, 0.85)',
+    }}
+  >
     { !storeId &&
       <div>
         <h2>Choose a store ID:</h2>
@@ -54,12 +62,11 @@ const SignUpForm = ({ handleSubmit, signUp, loading, storeId }) => (
     <div>
       {!loading ? <RaisedButton type="submit">Submit</RaisedButton> : <Spinner />}
     </div>
-  </BasicForm>
+  </form>
 );
 
 SignUpForm.propTypes = {
   handleSubmit: PropTypes.func,
-  signUp: PropTypes.func,
   loading: PropTypes.bool,
   storeId: PropTypes.string,
 };

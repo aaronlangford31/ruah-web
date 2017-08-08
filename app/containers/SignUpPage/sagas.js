@@ -11,11 +11,11 @@ import {
   setSignUpStage,
   setStoreId,
 } from './actions';
-import { selectStoreForm, selectStoreId, selectSignUpFields } from './selectors';
+import { selectCode, selectStoreForm, selectStoreId, selectSignUpFields } from './selectors';
 import request from 'utils/request';
 
-function* checkSignUpCode({ values }) {
-  const signUpCode = values.get('code');
+function* checkSignUpCode() {
+  const signUpCode = yield select(selectCode());
   const requestURL = `https://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${signUpCode}`;
 
   try {

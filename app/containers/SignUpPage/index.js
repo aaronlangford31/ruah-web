@@ -6,49 +6,33 @@ import SignUpForm from '../../components/forms/SignUpForm/index';
 import CodeForm from '../../components/forms/CodeForm/index';
 import CreateStoreForm from '../../components/forms/CreateStoreForm/index';
 import * as SignUpActions from './actions';
-import { selectValidSignUpCode, selectError, selectLoading, selectSignUpStage } from './selectors';
+import { selectValidSignUpCode, selectError, selectLoading, selectSignUpStage, selectStoreId } from './selectors';
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
 
 
-export const SignUpPage = ({ signUpStage, checkSignUpCode, submitStore, submitSignUp, validSignUpCode, error, close, loading }) => {
-  const renderForm = () => {
-    switch (signUpStage) {
-      case 1:
-        return (
-          <div>
-            <CodeForm
-              checkSignUpCode={checkSignUpCode}
-              loading={loading}
-            />
-          </div>
-        );
-      case 2:
-        return (
-          <div>
-            <SignUpForm
-              initialValues={{ code: validSignUpCode }}
-              signUp={submitSignUp}
-              loading={loading}
-            />
-          </div>
-        );
-      case 3:
-        return (
-          <div>
-            <CreateStoreForm
-              handleSubmit={submitStore}
-            />
-          </div>
-        );
-      case 4:
-        return (
-          <div></div>
-        );
-      default:
-        return 'oops';
-    }
-  };
+export const SignUpPage = ({ signUpStage, storeId, checkSignUpCode, submitStore, submitSignUp, validSignUpCode, error, close, loading }) => {
+  const renderForm = () => (
+    <div>
+      {signUpStage === 1 &&
+        <CodeForm
+          onSubmit={() => checkSignUpCode()}
+          loading={loading}
+        />}
+      {signUpStage === 2 &&
+        <SignUpForm
+          initialValues={{ code: validSignUpCode }}
+          onSubmit={() => submitSignUp()}
+          storeId={storeId}
+          loading={loading}
+        />}
+      {signUpStage === 3 &&
+        <CreateStoreForm
+          onSubmit={() => submitStore()}
+        />
+      }
+    </div>
+  );
   return (
     <article>
       <Helmet
@@ -74,6 +58,7 @@ SignUpPage.propTypes = {
   loading: PropTypes.bool,
   submitStore: PropTypes.func,
   signUpStage: PropTypes.number,
+  storeId: PropTypes.string,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -98,6 +83,7 @@ const mapStateToProps = createStructuredSelector({
   error: selectError(),
   loading: selectLoading(),
   signUpStage: selectSignUpStage(),
+  storeId: selectStoreId(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);

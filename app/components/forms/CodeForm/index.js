@@ -1,12 +1,20 @@
 import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form/immutable';
 import RaisedButton from 'material-ui/RaisedButton';
-import BasicForm from '../../styled/BasicForm';
 import Spinner from '../../../components/styled/Spinner';
 import { TextField } from '../Fields';
 
-const CodeForm = ({ handleSubmit, checkSignUpCode, loading }) => (
-  <BasicForm onSubmit={handleSubmit(checkSignUpCode)}>
+const CodeForm = ({ handleSubmit, loading }) => (
+  <form
+    onSubmit={handleSubmit}
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '40px',
+      borderRadius: '3px',
+      background: 'rgba(255, 255, 255, 0.85)',
+    }}
+  >
     <p>Please enter your code to sign up.</p>
     <Field
       name="code"
@@ -19,12 +27,11 @@ const CodeForm = ({ handleSubmit, checkSignUpCode, loading }) => (
     <div className="button">
       {!loading ? <RaisedButton type="submit">Next</RaisedButton> : <Spinner />}
     </div>
-  </BasicForm>
+  </form>
 );
 
 CodeForm.propTypes = {
   handleSubmit: PropTypes.func,
-  checkSignUpCode: PropTypes.func,
   loading: PropTypes.bool,
 };
 
