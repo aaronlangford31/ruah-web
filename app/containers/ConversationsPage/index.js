@@ -7,22 +7,27 @@ import _ from 'underscore';
 import moment from 'moment';
 import {
   getConversations,
-  setView,
+  getConversation,
 } from './actions';
 import {
   selectLoading,
   selectStores,
   selectConversations,
   selectUnfulfilledOrders,
-  selectView,
   selectOrders,
+  selectConversationId,
 } from './selectors';
+import { selectStore } from '../App/selectors';
 import Body from '../../components/styled/Body';
+import Sidebar from '../../components/partials/Sidebar';
+import Conversation from './Conversation';
 import Paper from 'material-ui/Paper';
+import Avatar from 'material-ui/Avatar';
+import { List, ListItem } from 'material-ui/List';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
-import RaisedButton from 'material-ui/RaisedButton';
 import ShippedIcon from 'material-ui/svg-icons/maps/local-shipping';
 import NewIcon from 'material-ui/svg-icons/av/new-releases';
+import MoneyIcon from 'material-ui/svg-icons/editor/attach-money';
 import ProcessingIcon from 'material-ui/svg-icons/action/update';
 
 class ConversationsPage extends Component {
@@ -68,42 +73,37 @@ class ConversationsPage extends Component {
   }
 
   renderConversations() {
-    return _.map(this.props.conversations, (item) =>
-      <Link to={`/conversation/${item.Data.ChannelId}`} key={item.StoreId} style={{ textDecoration: 'none' }}>
-        <Paper style={{ display: 'flex', flexDirection: 'row', width: '750px', margin: '5px' }}>
-          <img
-            src={this.props.stores[item.StoreId] && this.props.stores[item.StoreId].ProfilePicUri}
-            alt={this.props.stores[item.StoreId] && this.props.stores[item.StoreId].Name}
-            style={{ width: '100px', height: '100px', padding: '5px' }}
-          />
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <div>
-              <strong>{this.props.stores[item.StoreId] && this.props.stores[item.StoreId].Name}</strong> <span>{item.StoreId}</span>
+    const convs = _.map(this.props.conversations, (item) =>
+      <ListItem
+        key={item.StoreId}
+        leftAvatar={<Avatar src={this.props.stores[item.StoreId] && this.props.stores[item.StoreId].ProfilePicUri} />}
+        primaryText={
+          <div>
+            <strong>{this.props.stores[item.StoreId] && this.props.stores[item.StoreId].Name}</strong> <span>{item.StoreId}</span>
+            {this.props.currStore.BuysFrom && this.props.currStore.BuysFrom.find((a) => a === item.StoreId) && <MoneyIcon color={'#04BFBF'} /> }
+          </div>
+        }
+        secondaryText={
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ flex: 1 }}>
+              <strong>{item.Data.ConversationTop[0].Author}</strong>
+              &nbsp;{item.Data.ConversationTop[0].Content}
             </div>
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
-              {item.Data.ConversationTop &&
-                <div style={{ backgroundColor: '#CAFCD8', margin: '5px', flex: 1 }}>
-                  <div>
-                    <strong>{item.Data.ConversationTop[0].Author}</strong>
-                    &nbsp;{item.Data.ConversationTop[0].Content}
-                  </div>
-                  <div style={{ display: 'flex' }}>
-                    <span style={{ flex: 1 }} />
-                    <span>{moment(item.Data.ConversationTop[0].Timestamp).fromNow()}</span>
-                  </div>
-                </div>
-              }
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <div>
-                {(item.Data.UnfulfilledOrderIds && item.Data.UnfulfilledOrderIds.length) || 0} unfulfilled orders
-              </div>&nbsp;&nbsp;
-              <div>Credit: ${item.Data.Credit.toFixed(2)}</div>&nbsp;&nbsp;
-              <div>Debit: ${item.Data.Debit.toFixed(2)}</div>
+            <div style={{ textAlign: 'right' }}>
+              {moment(item.Data.ConversationTop[0].Timestamp).fromNow()}
             </div>
           </div>
-        </Paper>
-      </Link>
+        }
+        secondaryTextLines={2}
+        onTouchTap={() => this.props.setConversation(item.Data.ChannelId)}
+      />
+    );
+    return (
+      <Paper style={{ overflowY: 'scroll', height: '650px' }}>
+        <List>
+          {convs}
+        </List>
+      </Paper>
     );
   }
 
@@ -136,17 +136,6 @@ class ConversationsPage extends Component {
     );
   }
 
-  renderSwitch() {
-    switch (this.props.view) {
-      case 'Channels':
-        return this.renderConversations();
-      case 'Orders':
-        return this.renderOrders();
-      default:
-        return (<div />);
-    }
-  }
-
   render() {
     return (
       <article>
@@ -156,33 +145,37 @@ class ConversationsPage extends Component {
             { name: 'description', content: 'Conversations in Ruah' },
           ]}
         />
-        <Body>
+        <Body style={{ justifyContent: 'left' }}>
+          <Sidebar
+            storeImageUri={this.props.currStore.ProfilePicUri}
+            unfulfilledOrders={this.props.unfulfilledOrders}
+            currView={window.location.pathname}
+          />
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              maxWidth: '770px',
+              flex: 2,
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}>
-              <RaisedButton
-                backgroundColor={this.props.view === 'Channels' ? '#04BFBF' : '#FFFFFF'}
-                style={{ marginRight: '10px', color: this.props.view === 'Channels' ? '#FFFFFF' : '#000000' }}
-                onTouchTap={() => this.props.setView('Channels')}
-              >
-                &nbsp;Channels&nbsp;
-              </RaisedButton>
-              <RaisedButton
-                backgroundColor={this.props.view === 'Orders' ? '#04BFBF' : '#FFFFFF'}
-                style={{ marginRight: '10px', color: this.props.view === 'Orders' ? '#FFFFFF' : '#000000' }}
-                onTouchTap={() => this.props.setView('Orders')}
-              >
-                Orders {this.props.unfulfilledOrders > 0 && <span style={{ borderRadius: '20px', backgroundColor: 'red', color: '#FFFFFF', padding: '3px' }}>&nbsp;{this.props.unfulfilledOrders}&nbsp;</span>}
-              </RaisedButton>
-            </div>
             {this.props.loading && this.renderLoading()}
-            {!this.props.loading && this.renderSwitch()}
+            {!this.props.loading && this.renderConversations()}
           </div>
+          <Paper
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 3,
+              padding: '5px',
+            }}
+          >
+            { this.props.currChannelId && <Conversation stores={this.props.stores} /> }
+            { !this.props.currChannelId &&
+              <div style={{ margin: 'auto', color: '#616161' }}>
+                No conversation selected.
+              </div>
+            }
+          </Paper>
         </Body>
       </article>
     );
@@ -190,14 +183,15 @@ class ConversationsPage extends Component {
 }
 
 ConversationsPage.propTypes = {
-  loading: PropTypes.bool,
-  conversations: PropTypes.array,
-  orders: PropTypes.array,
-  stores: PropTypes.object,
-  view: PropTypes.string,
-  setView: PropTypes.func,
-  getConversations: PropTypes.func,
-  unfulfilledOrders: PropTypes.number,
+  loading: React.PropTypes.bool,
+  conversations: React.PropTypes.array,
+  orders: React.PropTypes.array,
+  stores: React.PropTypes.object,
+  getConversations: React.PropTypes.func,
+  unfulfilledOrders: React.PropTypes.number,
+  currStore: React.PropTypes.object,
+  currChannelId: React.PropTypes.string,
+  setConversation: React.PropTypes.func,
 };
 
 ConversationsPage.contextTypes = {
@@ -210,17 +204,18 @@ export function mapDispatchToProps(dispatch) {
     getConversations: () => {
       dispatch(getConversations());
     },
-    setView: (view) => {
-      dispatch(setView(view));
+    setConversation: (channelId) => {
+      dispatch(getConversation(channelId));
     },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   loading: selectLoading(),
+  currStore: selectStore(),
+  currChannelId: selectConversationId(),
   stores: selectStores(),
   orders: selectOrders(),
-  view: selectView(),
   conversations: selectConversations(),
   unfulfilledOrders: selectUnfulfilledOrders(),
 });

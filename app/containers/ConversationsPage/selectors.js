@@ -1,35 +1,70 @@
 import { createSelector } from 'reselect';
 
-const selectMyStorePage = () => (state) => state.get('conversationsPage');
+const selectConversationsPage = () => (state) => state.get('conversationsPage');
 
 const selectLoading = () => createSelector(
-  selectMyStorePage(),
+  selectConversationsPage(),
   (state) => state.get('loading'),
 );
 
 const selectConversations = () => createSelector(
-  selectMyStorePage(),
+  selectConversationsPage(),
   (state) => state.get('conversations').toJS(),
 );
 
 const selectStores = () => createSelector(
-  selectMyStorePage(),
+  selectConversationsPage(),
   (state) => state.get('stores').toJS()
 );
 
 const selectOrders = () => createSelector(
-  selectMyStorePage(),
+  selectConversationsPage(),
   (state) => state.get('orders').toJS()
 );
 
 const selectUnfulfilledOrders = () => createSelector(
-  selectMyStorePage(),
+  selectConversationsPage(),
   (state) => state.get('unfulfilledOrders')
 );
 
-const selectView = () => createSelector(
-  selectMyStorePage(),
-  (state) => state.get('view')
+const selectConversationId = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('channelId')
+);
+
+const selectConversation = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('conversation').toJS(),
+);
+
+const selectMessage = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('message').toJS()
+);
+
+const selectOrderBuilderOpen = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('orderBuilderOpen')
+);
+
+const selectProducts = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('products').toJS()
+);
+
+const selectOrder = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('order').toJS()
+);
+
+const selectShippingFormOpen = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('shippingFormOpen')
+);
+
+const selectShippingFormData = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('orderShipping')
 );
 
 export {
@@ -38,5 +73,12 @@ export {
   selectStores,
   selectOrders,
   selectUnfulfilledOrders,
-  selectView,
+  selectConversationId,
+  selectConversation,
+  selectMessage,
+  selectOrderBuilderOpen,
+  selectProducts,
+  selectOrder,
+  selectShippingFormOpen,
+  selectShippingFormData,
 };
