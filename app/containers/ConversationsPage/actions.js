@@ -12,6 +12,7 @@ import {
   GET_PRODUCT,
   GET_PRODUCT_SUCCESS,
   ADD_ORDER_ITEM,
+  REMOVE_ORDER_ITEM,
   ABORT_ORDER,
   SHOW_SHIPPING_FORM,
   SET_ORDER_SHIPPING,
@@ -26,6 +27,7 @@ import {
   UPDATE_MESSAGE_RECIPIENT,
   UPDATE_MESSAGE_AUTHOR,
   UPDATE_MESSAGE_FILES,
+  GO_TO_PRODUCT_BROWSER,
 } from './constants';
 
 export function getConversations() {
@@ -130,6 +132,13 @@ export function addOrderItem(product) {
   };
 }
 
+export function removeOrderItem(ruahId) {
+  return {
+    type: REMOVE_ORDER_ITEM,
+    ruahId,
+  };
+}
+
 export function abortOrder() {
   return {
     type: ABORT_ORDER,
@@ -211,5 +220,11 @@ export function updateMessageFiles(files) {
   return {
     type: UPDATE_MESSAGE_FILES,
     files,
+  };
+}
+
+export function goToProductBrowser() {
+  return {
+    type: GO_TO_PRODUCT_BROWSER,
   };
 }

@@ -19,6 +19,8 @@ import {
   decrementItemQuantity,
   setRetailPrice,
   setRetailShippingPrice,
+  goToProductBrowser,
+  removeOrderItem,
 } from './actions';
 import {
   selectStores,
@@ -92,59 +94,61 @@ class OrderWizard extends Component {
     return (
       <Dialog
         open={this.props.isOrderBuilderOpen}
-        contentStyle={{ width: '820px', maxWidth: 'none', maxHeight: 'none', display: 'flex', flexDirection: 'column' }}
+        contentStyle={{ width: '1200px', maxWidth: 'none', maxHeight: 'none' }}
         actions={[
           <FlatButton onTouchTap={this.props.abortOrder}>Cancel</FlatButton>,
           <FlatButton backgroundColor={'#A9CF54'} style={{ color: '#FFFFFF' }} onTouchTap={this.props.showShippingForm}>Next</FlatButton>,
         ]}
       >
-        <TextField
-          hintText={'Search by SKU, Ruah ID, or keyword'}
-          onChange={this.handleSearchChange}
-          onKeyPress={this.handleSearchKeyPress}
-          fullWidth
-        />
-        <div>
-          <strong>{this.props.products.length} Results</strong>
-        </div>
-        <div style={{ height: '375px', overflowY: 'scroll' }}>
-          {this.renderRows()}
-        </div>
-        <Divider />
-        <div><strong>Cart:</strong></div>
-        <div style={{ maxHeight: '200px', display: 'flex', flexDirection: 'column', overflowY: 'scroll' }}>
-          {!this.props.order.OrderItems && 'Cart is empty.'}
-          {_.map(this.props.order.OrderItems, (val, key) =>
-            <div key={key} style={{ display: 'flex', flexDirection: 'row' }}>
-              <div style={{ flex: 5, display: 'flex', flexDirection: 'column' }}>
-                <div>{val.ProductName}</div>
-                <div style={{ fontSize: '12px' }}>{val.RuahId}</div>
-                <div style={{ fontSize: '12px' }}>{val.SKU}</div>
-              </div>
-              <div style={{ flex: 1 }}>
-                {val.Quantity}&nbsp;
-                <button onTouchTap={() => this.props.decrementItemQuantity(val.RuahId)} style={{ cursor: 'pointer', backgroundColor: '#F5F5F5' }}>-</button>
-                <button onTouchTap={() => this.props.incrementItemQuantity(val.RuahId)} style={{ cursor: 'pointer', backgroundColor: '#F5F5F5' }}>+</button>
-              </div>
-              <div style={{ flex: 1 }}>
-                ${(val.Quantity * val.RetailPrice).toFixed(2)}
-              </div>
-              <div style={{ flex: 1 }}>
-                ${(val.Quantity * val.ShippingPrice).toFixed(2)}
-              </div>
+        <div style={{ display: 'flex', flexDirection: 'row', flex: 3 }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <TextField
+              hintText={'Search by SKU, Ruah ID, or keyword'}
+              onChange={this.handleSearchChange}
+              onKeyPress={this.handleSearchKeyPress}
+              fullWidth
+            />
+            <div>
+              <strong>{this.props.products.length} Results</strong>
             </div>
-          )}
-        </div>
-        {this.props.order.OrderItems &&
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <div style={{ flex: 6 }}>
-              <strong>Total:</strong>
-            </div>
-            <div style={{ flex: 1 }}>
-              <strong>${_.reduce(this.props.order.OrderItems, (memo, item) => memo + (item.Quantity * (item.RetailPrice + item.ShippingPrice)), 0).toFixed(2)}</strong>
+            <div style={{ height: '500px', overflowY: 'scroll' }}>
+              {this.renderRows()}
             </div>
           </div>
-        }
+          <div style={{ display: 'flex', flexDirection: 'column', padding: '10px', flex: 2 }}>
+            <div><strong>Cart:</strong></div>
+            <div style={{ display: 'flex', flexDirection: 'column', maxHeight: '500px', overflowY: 'scroll' }}>
+              {!this.props.order.OrderItems && 'Cart is empty.'}
+              {_.map(this.props.order.OrderItems, (val, key) =>
+                <div key={key} style={{ display: 'flex', flexDirection: 'row', minHeight: '75px' }}>
+                  <div style={{ flex: 5, display: 'flex', flexDirection: 'column' }}>
+                    <div>{val.ProductName.substring(0, 38).trim()}{val.ProductName.length > 35 && '...'}</div>
+                    <div style={{ fontSize: '12px' }}>{val.RuahId}</div>
+                    <div style={{ fontSize: '12px' }}>{val.SKU}</div>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    {val.Quantity}&nbsp;
+                    <button onTouchTap={() => this.props.decrementItemQuantity(val.RuahId)} style={{ cursor: 'pointer', backgroundColor: '#F5F5F5' }}>-</button>
+                    <button onTouchTap={() => this.props.incrementItemQuantity(val.RuahId)} style={{ cursor: 'pointer', backgroundColor: '#F5F5F5' }}>+</button>
+                  </div>
+                  <div>
+                    <button onTouchTap={() => this.props.removeOrderItem(val.RuahId)} style={{ cursor: 'pointer', backgroundColor: '#F5F5F5' }}>x</button>
+                  </div>
+                </div>
+              )}
+            </div>
+            {this.props.order.OrderItems &&
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ flex: 6 }}>
+                  <strong>Total:</strong>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <strong>${_.reduce(this.props.order.OrderItems, (memo, item) => memo + (item.Quantity * (item.RuahPrice + item.ShippingPrice)), 0).toFixed(2)}</strong>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
       </Dialog>
     );
   }
@@ -161,6 +165,7 @@ class OrderWizard extends Component {
         contentStyle={{ display: 'flex', flexDirection: 'column' }}
         actions={[
           <FlatButton onTouchTap={this.props.abortOrder}>Cancel</FlatButton>,
+          <FlatButton onTouchTap={this.props.goToProductBrowser}>Go Back</FlatButton>,
           <FlatButton backgroundColor={'#A9CF54'} style={{ color: '#FFFFFF' }} onTouchTap={onDone}>Done</FlatButton>,
         ]}
       >
@@ -179,32 +184,34 @@ class OrderWizard extends Component {
               Retail Shipping*
             </div>
           </div>
-          {_.map(this.props.order.OrderItems, (val, key) =>
-            <div key={key} style={{ display: 'flex', flexDirection: 'row' }}>
-              <div style={{ flex: 4, display: 'flex', flexDirection: 'column' }}>
-                <div>{val.ProductName}</div>
-                <div style={{ fontSize: '12px' }}>{val.RuahId}</div>
-                <div style={{ fontSize: '12px' }}>{val.SKU}</div>
+          <div style={{ maxHeight: '250px', overflowY: 'scroll' }}>
+            {_.map(this.props.order.OrderItems, (val, key) =>
+              <div key={key} style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ flex: 4, display: 'flex', flexDirection: 'column' }}>
+                  <div>{val.ProductName}</div>
+                  <div style={{ fontSize: '12px' }}>{val.RuahId}</div>
+                  <div style={{ fontSize: '12px' }}>{val.SKU}</div>
+                </div>
+                <div style={{ flex: 1 }}>
+                  {val.Quantity}
+                </div>
+                <div style={{ flex: 2, display: 'flex', flexDirection: 'row' }}>
+                  $<CurrencyInput
+                    value={val.RetailPrice}
+                    onChangeEvent={(ev, mask, floatVal) => this.onRetailPriceChange(ev, mask, floatVal, key)}
+                    style={{ height: '25px', width: '100px', backgroundColor: '#F5F5F5', padding: '0 5px' }}
+                  />
+                </div>
+                <div style={{ flex: 2, display: 'flex', flexDirection: 'row' }}>
+                  $<CurrencyInput
+                    value={val.RetailShippingPrice}
+                    onChangeEvent={(ev, mask, floatVal) => this.onRetailShippingPriceChange(ev, mask, floatVal, key)}
+                    style={{ height: '25px', width: '100px', backgroundColor: '#F5F5F5', padding: '0 5px' }}
+                  />
+                </div>
               </div>
-              <div style={{ flex: 1 }}>
-                {val.Quantity}
-              </div>
-              <div style={{ flex: 2, display: 'flex', flexDirection: 'row' }}>
-                $<CurrencyInput
-                  value={val.RetailPrice}
-                  onChangeEvent={(ev, mask, floatVal) => this.onRetailPriceChange(ev, mask, floatVal, key)}
-                  style={{ height: '25px', width: '100px', backgroundColor: '#F5F5F5', padding: '0 5px' }}
-                />
-              </div>
-              <div style={{ flex: 2, display: 'flex', flexDirection: 'row' }}>
-                $<CurrencyInput
-                  value={val.RetailShippingPrice}
-                  onChangeEvent={(ev, mask, floatVal) => this.onRetailShippingPriceChange(ev, mask, floatVal, key)}
-                  style={{ height: '25px', width: '100px', backgroundColor: '#F5F5F5', padding: '0 5px' }}
-                />
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
         <br />
         <div style={{ fontSize: '12px' }}>*These fields will tell the seller what price to put on the {"shipment's"} packing slip.</div>
@@ -273,6 +280,8 @@ OrderWizard.propTypes = {
   isShippingFormOpen: PropTypes.bool,
   setRetailPrice: PropTypes.func,
   setRetailShippingPrice: PropTypes.func,
+  goToProductBrowser: PropTypes.func,
+  removeOrderItem: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -303,6 +312,12 @@ export function mapDispatchToProps(dispatch) {
     },
     setRetailShippingPrice: (price, ruahId) => {
       dispatch(setRetailShippingPrice(price, ruahId));
+    },
+    goToProductBrowser: () => {
+      dispatch(goToProductBrowser());
+    },
+    removeOrderItem: (ruahId) => {
+      dispatch(removeOrderItem(ruahId));
     },
   };
 }

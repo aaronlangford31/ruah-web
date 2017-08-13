@@ -6,6 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import MailIcon from 'material-ui/svg-icons/communication/email';
 import PublicIcon from 'material-ui/svg-icons/social/public';
 import OrderIcon from 'material-ui/svg-icons/maps/local-offer';
+import InvoiceIcon from 'material-ui/svg-icons/action/receipt';
 
 const Sidebar = (props) => {
   const { storeImageUri, currView, unfulfilledOrders } = props;
@@ -39,6 +40,14 @@ const Sidebar = (props) => {
           </span>
         }
       </div>
+      <Link to={'/billing/received'}>
+        <IconButton
+          style={{ margin: '10px 0' }}
+          tooltip={'Invoices'}
+        >
+          <InvoiceIcon color={currView && currView.startsWith('/billing') ? '#04BFBF' : '#616161'} />
+        </IconButton>
+      </Link>
     </div>
   );
 };

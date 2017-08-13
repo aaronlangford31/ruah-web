@@ -23,6 +23,7 @@ export const SEND_MESSAGE_SUCCESS = 'ruah/ConversationsPage/SEND_MESSAGE_SUCCESS
 
 export const OPEN_ORDER_BUILDER = 'ruah/ConversationsPage/OPEN_ORDER_BUILDER';
 export const ADD_ORDER_ITEM = 'ruah/ConversationsPage/ADD_ORDER_ITEM';
+export const REMOVE_ORDER_ITEM = 'ruah/ConversationsPage/REMOVE_ORDER_ITEM';
 export const ABORT_ORDER = 'ruah/ConversationsPage/ABORT_ORDER';
 export const SHOW_SHIPPING_FORM = 'ruah/ConversationsPage/SHOW_SHIPPING_FORM';
 export const SET_ORDER_SHIPPING = 'ruah/ConversationsPage/SET_ORDER_SHIPPING';
@@ -30,6 +31,7 @@ export const INCREMENT_ITEM_QUANTITY = 'ruah/ConversationsPage/INCREMENT_ITEM_QU
 export const DECREMENT_ITEM_QUANTITY = 'ruah/ConversationsPage/DECREMENT_ITEM_QUANTITY';
 export const SET_RETAIL_PRICE = 'ruah/ConversationsPage/SET_RETAIL_PRICE';
 export const SET_RETAIL_SHIPPING_PRICE = 'ruah/ConversationsPage/SET_RETAIL_SHIPPING_PRICE';
+export const GO_TO_PRODUCT_BROWSER = 'ruah/ConversationsPage/GO_TO_PRODUCT_BROWSER';
 
 export const GET_PRODUCT = 'ruah/ConversationsPage/GET_PRODUCT';
 export const GET_PRODUCT_SUCCESS = 'ruah/ConversationsPage/GET_PRODUCT_SUCCESS';

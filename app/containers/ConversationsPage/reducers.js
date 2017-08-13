@@ -17,6 +17,7 @@ import {
   OPEN_ORDER_BUILDER,
   GET_PRODUCT_SUCCESS,
   ADD_ORDER_ITEM,
+  REMOVE_ORDER_ITEM,
   ABORT_ORDER,
   SHOW_SHIPPING_FORM,
   SET_ORDER_SHIPPING,
@@ -24,6 +25,7 @@ import {
   DECREMENT_ITEM_QUANTITY,
   SET_RETAIL_PRICE,
   SET_RETAIL_SHIPPING_PRICE,
+  GO_TO_PRODUCT_BROWSER,
 } from './constants';
 
 const initialState = fromJS({
@@ -152,6 +154,12 @@ function conversationsPageReducer(state = initialState, action) {
       return state
         .set('order', fromJS(order));
     }
+    case REMOVE_ORDER_ITEM: {
+      const order = state.get('order').toJS();
+      delete order.OrderItems[action.ruahId];
+      return state
+        .set('order', fromJS(order));
+    }
     case ABORT_ORDER: {
       return state
         .set('order', fromJS({}))
@@ -172,7 +180,7 @@ function conversationsPageReducer(state = initialState, action) {
       const order = state.get('order').toJS();
       const item = order.OrderItems[action.ruahId];
       item.Quantity += 1;
-      item.RetailPrice = item.WholesalePrice * item.Quantity;
+      item.RetailPrice = item.RuahPrice * item.Quantity;
       item.RetailShippingPrice = item.ShippingPrice * item.Quantity;
       order.OrderItems[action.ruahId] = item;
       return state
@@ -199,6 +207,11 @@ function conversationsPageReducer(state = initialState, action) {
       order.OrderItems[action.ruahId].RetailShippingPrice = action.price;
       return state
         .set('order', fromJS(order));
+    }
+    case GO_TO_PRODUCT_BROWSER: {
+      return state
+        .set('orderBuilderOpen', true)
+        .set('shippingFormOpen');
     }
     default:
       return state;

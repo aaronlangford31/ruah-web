@@ -10,6 +10,7 @@ import IconButton from 'material-ui/IconButton';
 import SendIcon from 'material-ui/svg-icons/content/send';
 import AttachIcon from 'material-ui/svg-icons/editor/attach-file';
 import AddShopCartIcon from 'material-ui/svg-icons/action/add-shopping-cart';
+import InvoiceIcon from 'material-ui/svg-icons/action/receipt';
 import {
   updateMessageText,
   updateMessageRecipient,
@@ -37,6 +38,7 @@ class ConversationComponent extends React.Component {
     this.handleFileOpen = this.handleFileOpen.bind(this);
     this.handleFileAttach = this.handleFileAttach.bind(this);
     this.handleOrderBuilder = this.handleOrderBuilder.bind(this);
+    this.launchInvoiceWizard = this.launchInvoiceWizard.bind(this);
   }
 
   componentWillMount() {
@@ -74,6 +76,10 @@ class ConversationComponent extends React.Component {
     });
     this.props.getProduct(null, storeId);
     this.props.openOrderBuilder();
+  }
+
+  launchInvoiceWizard() {
+    // this.props.setInvoiceWizardOpen();
   }
 
   handleKeyPress(ev) {
@@ -149,6 +155,13 @@ class ConversationComponent extends React.Component {
             >
               <AttachIcon />
             </IconButton>
+            <IconButton
+              tooltip={'Send an Invoice'}
+              tooltipPosition={'top-center'}
+              onTouchTap={this.launchInvoiceWizard}
+            >
+              <InvoiceIcon />
+            </IconButton>
           </div>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <TextField
@@ -184,7 +197,7 @@ class ConversationComponent extends React.Component {
                     {val.Quantity}&nbsp;
                   </div>
                   <div style={{ flex: 1 }}>
-                    ${(val.Quantity * val.RetailPrice).toFixed(2)}
+                    ${(val.Quantity * val.RuahPrice).toFixed(2)}
                   </div>
                   <div style={{ flex: 1 }}>
                     ${(val.Quantity * val.ShippingPrice).toFixed(2)}
@@ -243,6 +256,9 @@ export function mapDispatchToProps(dispatch) {
     },
     getProduct: (query, storeId) => {
       dispatch(getProduct(query, storeId));
+    },
+    setInvoiceWizardOpen: () => {
+      // dispatch(setInvoiceWizardOpen());
     },
   };
 }
