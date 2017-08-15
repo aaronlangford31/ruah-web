@@ -121,7 +121,7 @@ class OrdersPage extends Component {
           <Body style={{ width: '100%' }}>
             <Paper style={{ display: 'flex' }}>
               <div style={{ flex: 10 }}>
-                <Table height={this.props.orders.length && 600} selectable={false}>
+                <Table height={this.props.orders.length && '600px'} selectable={false}>
                   <TableHeader
                     displaySelectAll={false}
                     adjustForCheckbox={false}

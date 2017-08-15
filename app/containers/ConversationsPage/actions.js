@@ -28,6 +28,20 @@ import {
   UPDATE_MESSAGE_AUTHOR,
   UPDATE_MESSAGE_FILES,
   GO_TO_PRODUCT_BROWSER,
+  SHOW_INVOICE_SELECTOR,
+  SHOW_INVOICE_DISCOUNTER,
+  SHOW_INVOICE_FINALIZER,
+  GET_INVOICEABLE_ORDERS,
+  GET_INVOICEABLE_ORDERS_SUCCESS,
+  TOGGLE_INVOICE_SELECT_ALL_ORDERS,
+  TOGGLE_INVOICE_SELECT_ORDER,
+  SUBMIT_INVOICE,
+  SUBMIT_INVOICE_SUCCESS,
+  ABORT_INVOICE,
+  SET_INVOICE_RECIPIENT,
+  SET_INVOICE_ORDER_ITEM_PRICE,
+  SET_INVOICE_ORDER_ITEM_SHIPPING_PRICE,
+  SET_INVOICE_DUE_DATE,
 } from './constants';
 
 export function getConversations() {
@@ -226,5 +240,102 @@ export function updateMessageFiles(files) {
 export function goToProductBrowser() {
   return {
     type: GO_TO_PRODUCT_BROWSER,
+  };
+}
+
+export function showInvoiceSelector() {
+  return {
+    type: SHOW_INVOICE_SELECTOR,
+  };
+}
+
+export function showInvoiceDiscounter() {
+  return {
+    type: SHOW_INVOICE_DISCOUNTER,
+  };
+}
+
+export function showInvoiceFinalizer() {
+  return {
+    type: SHOW_INVOICE_FINALIZER,
+  };
+}
+
+export function getInvoiceableOrders(storeId) {
+  return {
+    type: GET_INVOICEABLE_ORDERS,
+    storeId,
+  };
+}
+
+export function getInvoiceableOrdersSuccess(orders) {
+  return {
+    type: GET_INVOICEABLE_ORDERS_SUCCESS,
+    orders,
+  };
+}
+
+export function toggleInvoiceSelectAllOrders() {
+  return {
+    type: TOGGLE_INVOICE_SELECT_ALL_ORDERS,
+  };
+}
+
+
+export function toggleInvoiceSelectOrder(orderId) {
+  return {
+    type: TOGGLE_INVOICE_SELECT_ORDER,
+    orderId,
+  };
+}
+
+export function abortInvoice() {
+  return {
+    type: ABORT_INVOICE,
+  };
+}
+
+export function setInvoiceRecipient(storeId) {
+  return {
+    type: SET_INVOICE_RECIPIENT,
+    storeId,
+  };
+}
+
+export function setInvoiceOrderItemPrice(orderId, ruahId, price) {
+  return {
+    type: SET_INVOICE_ORDER_ITEM_PRICE,
+    orderId,
+    ruahId,
+    price,
+  };
+}
+
+export function setInvoiceOrderItemShippingPrice(orderId, ruahId, price) {
+  return {
+    type: SET_INVOICE_ORDER_ITEM_SHIPPING_PRICE,
+    orderId,
+    ruahId,
+    price,
+  };
+}
+
+export function setInvoiceDueDate(dueDate) {
+  return {
+    type: SET_INVOICE_DUE_DATE,
+    dueDate,
+  };
+}
+
+export function submitInvoice() {
+  return {
+    type: SUBMIT_INVOICE,
+  };
+}
+
+export function submitInvoiceSuccess(invoiceId) {
+  return {
+    type: SUBMIT_INVOICE_SUCCESS,
+    invoiceId,
   };
 }

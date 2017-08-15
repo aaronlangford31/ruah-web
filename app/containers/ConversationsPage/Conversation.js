@@ -20,6 +20,7 @@ import {
   updateMessageChannelId,
   openOrderBuilder,
   getProduct,
+  showInvoiceSelector,
 } from './actions';
 import {
   selectConversationId,
@@ -29,6 +30,7 @@ import {
 } from './selectors';
 import { selectStore } from '../App/selectors';
 import OrderWizard from './OrderWizard';
+import InvoiceWizard from './InvoiceWizard';
 
 class ConversationComponent extends React.Component {
   constructor(props) {
@@ -38,7 +40,6 @@ class ConversationComponent extends React.Component {
     this.handleFileOpen = this.handleFileOpen.bind(this);
     this.handleFileAttach = this.handleFileAttach.bind(this);
     this.handleOrderBuilder = this.handleOrderBuilder.bind(this);
-    this.launchInvoiceWizard = this.launchInvoiceWizard.bind(this);
   }
 
   componentWillMount() {
@@ -76,10 +77,6 @@ class ConversationComponent extends React.Component {
     });
     this.props.getProduct(null, storeId);
     this.props.openOrderBuilder();
-  }
-
-  launchInvoiceWizard() {
-    // this.props.setInvoiceWizardOpen();
   }
 
   handleKeyPress(ev) {
@@ -158,7 +155,7 @@ class ConversationComponent extends React.Component {
             <IconButton
               tooltip={'Send an Invoice'}
               tooltipPosition={'top-center'}
-              onTouchTap={this.launchInvoiceWizard}
+              onTouchTap={this.props.setInvoiceWizardOpen}
             >
               <InvoiceIcon />
             </IconButton>
@@ -208,6 +205,7 @@ class ConversationComponent extends React.Component {
           }
           <input type={'file'} style={{ display: 'none' }} ref={(el) => { this.FileInput = el; }} onChange={this.handleFileAttach} />
           <OrderWizard />
+          <InvoiceWizard />
         </Paper>
       </div>
     );
@@ -229,6 +227,7 @@ ConversationComponent.propTypes = {
   updateMessageFiles: React.PropTypes.func,
   sendMessage: React.PropTypes.func,
   order: React.PropTypes.object,
+  setInvoiceWizardOpen: React.PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -258,7 +257,7 @@ export function mapDispatchToProps(dispatch) {
       dispatch(getProduct(query, storeId));
     },
     setInvoiceWizardOpen: () => {
-      // dispatch(setInvoiceWizardOpen());
+      dispatch(showInvoiceSelector());
     },
   };
 }

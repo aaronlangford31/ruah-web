@@ -67,6 +67,31 @@ const selectShippingFormData = () => createSelector(
   (state) => state.get('orderShipping')
 );
 
+const selectInvoice = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('invoice').toJS()
+);
+
+const selectUninvoicedOrders = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('uninvoicedOrders').toJS()
+);
+
+const selectInvoiceOrderSelectorOpen = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('invoiceOrderSelectorOpen')
+);
+
+const selectInvoiceOrderDiscounterOpen = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('invoiceOrderDiscounterOpen')
+);
+
+const selectInvoiceFinalizerOpen = () => createSelector(
+  selectConversationsPage(),
+  (state) => state.get('invoiceFinalizerOpen')
+);
+
 export {
   selectLoading,
   selectConversations,
@@ -81,4 +106,9 @@ export {
   selectOrder,
   selectShippingFormOpen,
   selectShippingFormData,
+  selectInvoice,
+  selectUninvoicedOrders,
+  selectInvoiceOrderSelectorOpen,
+  selectInvoiceOrderDiscounterOpen,
+  selectInvoiceFinalizerOpen,
 };

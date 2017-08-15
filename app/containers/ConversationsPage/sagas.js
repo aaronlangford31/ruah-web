@@ -15,6 +15,10 @@ import {
   GET_PRODUCT_BY_ID_URI,
   POST_ORDER_URI,
   POST_MESSAGE_URI,
+  GET_INVOICEABLE_ORDERS,
+  GET_INVOICEABLE_ORDERS_URI,
+  SUBMIT_INVOICE,
+  POST_INVOICE_URI,
 } from './constants';
 import {
   getConversationsSuccess,
@@ -24,8 +28,10 @@ import {
   setOutstandingOrders,
   getProductSuccess,
   sendMessageSuccess,
+  getInvoiceableOrdersSuccess,
+  submitInvoiceSuccess,
 } from './actions';
-import { selectMessage, selectConversation, selectOrder, selectShippingFormData } from './selectors';
+import { selectMessage, selectConversation, selectOrder, selectShippingFormData, selectInvoice } from './selectors';
 import { selectStore } from '../App/selectors';
 import request from 'utils/request';
 
@@ -134,18 +140,6 @@ function* postMessage() {
   yield put(sendMessageSuccess());
 }
 
-// function* getOrders() {
-//   const orders = yield call(request, 'https://api.teamruah.com/v1/order/GetReceivedOrders', {
-//     method: 'GET',
-//     credentials: 'include',
-//   });
-//   for (let i = 0; i < orders.Orders.length; i += 1) {
-//     orders.Orders[i].OrderCreatedDate = moment(orders.Orders[i].OrderCreatedDate);
-//   }
-//   orders.Orders.sort((a, b) => b.OrderCreatedDate - a.OrderCreatedDate);
-//   yield put(getOrdersSuccess(orders.Orders));
-// }
-
 function* fetchProduct(action) {
   if (action.query) {
     const result = yield call(request, `${SEARCH_PRODUCT_URI}?query=${action.query}&storeId=${action.storeId}`, {
@@ -169,6 +163,28 @@ function* fetchProduct(action) {
     }
     yield put(getProductSuccess(products));
   }
+}
+
+function* postInvoice() {
+  const invoice = yield select(selectInvoice());
+  const result = yield call(request, POST_INVOICE_URI, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(invoice),
+  });
+
+  yield put(submitInvoiceSuccess(result.id));
+}
+
+function* getInvoiceableOrders({ storeId }) {
+  const orders = yield call(request, `${GET_INVOICEABLE_ORDERS_URI}?storeId=${storeId}`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+  yield put(getInvoiceableOrdersSuccess(orders));
 }
 
 function* watchGetProduct() {
@@ -201,11 +217,17 @@ function* watchSendMessage() {
   yield cancel(watcher);
 }
 
-// function* watchSetView() {
-//   const watcher = yield takeLatest(SET_VIEW, getOrders);
-//   yield take(LOCATION_CHANGE);
-//   yield cancel(watcher);
-// }
+function* watchGetInvoicableOrders() {
+  const watcher = yield takeLatest(GET_INVOICEABLE_ORDERS, getInvoiceableOrders);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
+
+function* watchSubmitInvoice() {
+  const watcher = yield takeLatest(SUBMIT_INVOICE, postInvoice);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
 
 export default [
   watchGetProduct,
@@ -213,5 +235,6 @@ export default [
   watchGetConversation,
   watchGetStore,
   watchSendMessage,
-  //watchSetView,
+  watchGetInvoicableOrders,
+  watchSubmitInvoice,
 ];

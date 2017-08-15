@@ -1,4 +1,5 @@
 import { fromJS } from 'immutable';
+import _ from 'underscore';
 import {
   GET_CONVERSATIONS,
   GET_CONVERSATIONS_SUCCESS,
@@ -26,6 +27,18 @@ import {
   SET_RETAIL_PRICE,
   SET_RETAIL_SHIPPING_PRICE,
   GO_TO_PRODUCT_BROWSER,
+  SHOW_INVOICE_SELECTOR,
+  SHOW_INVOICE_DISCOUNTER,
+  SHOW_INVOICE_FINALIZER,
+  GET_INVOICEABLE_ORDERS_SUCCESS,
+  TOGGLE_INVOICE_SELECT_ALL_ORDERS,
+  TOGGLE_INVOICE_SELECT_ORDER,
+  ABORT_INVOICE,
+  SET_INVOICE_RECIPIENT,
+  SET_INVOICE_ORDER_ITEM_PRICE,
+  SET_INVOICE_ORDER_ITEM_SHIPPING_PRICE,
+  SET_INVOICE_DUE_DATE,
+  SUBMIT_INVOICE_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -42,6 +55,16 @@ const initialState = fromJS({
   products: fromJS([]),
   order: fromJS({}),
   orderShipping: fromJS({}),
+  invoice: fromJS({
+    To: '',
+    From: '',
+    Items: fromJS([]),
+    PayBy: Date.now(),
+  }),
+  uninvoicedOrders: fromJS([]),
+  invoiceOrderSelectorOpen: false,
+  invoiceOrderDiscounterOpen: false,
+  invoiceFinalizerOpen: false,
 });
 
 function conversationsPageReducer(state = initialState, action) {
@@ -212,6 +235,119 @@ function conversationsPageReducer(state = initialState, action) {
       return state
         .set('orderBuilderOpen', true)
         .set('shippingFormOpen');
+    }
+    case SHOW_INVOICE_SELECTOR: {
+      return state
+        .set('invoiceOrderSelectorOpen', true)
+        .set('invoiceOrderDiscounterOpen', false)
+        .set('invoiceFinalizerOpen', false);
+    }
+    case SHOW_INVOICE_DISCOUNTER: {
+      return state
+        .set('invoiceOrderDiscounterOpen', true)
+        .set('invoiceOrderSelectorOpen', false)
+        .set('invoiceFinalizerOpen', false);
+    }
+    case SHOW_INVOICE_FINALIZER: {
+      return state
+      .set('invoiceOrderDiscounterOpen', false)
+      .set('invoiceOrderSelectorOpen', false)
+      .set('invoiceFinalizerOpen', true);
+    }
+    case GET_INVOICEABLE_ORDERS_SUCCESS: {
+      return state
+        .set('uninvoicedOrders', fromJS(action.orders));
+    }
+    case TOGGLE_INVOICE_SELECT_ALL_ORDERS: {
+      const invoice = state.get('invoice').toJS();
+      const orders = state.get('uninvoicedOrders').toJS();
+      if (invoice.Items.length === orders.length) {
+        invoice.Items = [];
+      } else {
+        invoice.Items = _.pluck(orders, 'OrderId');
+      }
+      return state
+        .set('invoice', fromJS(invoice));
+    }
+    case TOGGLE_INVOICE_SELECT_ORDER: {
+      const invoice = state.get('invoice').toJS();
+      const orders = invoice.Items;
+      const ordersFiltered = _.filter(orders, (orderId) => orderId !== action.orderId);
+      if (orders.length === ordersFiltered.length) {
+        ordersFiltered.push(action.orderId);
+      }
+      invoice.Items = ordersFiltered;
+      return state
+        .set('invoice', fromJS(invoice));
+    }
+    case ABORT_INVOICE: {
+      return state
+        .set('invoiceOrderSelectorOpen', false)
+        .set('invoiceOrderDiscounterOpen', false)
+        .set('invoice', fromJS({
+          To: '',
+          From: '',
+          Items: fromJS([]),
+        }));
+    }
+    case SET_INVOICE_RECIPIENT: {
+      const invoice = state.get('invoice').toJS();
+      invoice.To = action.storeId;
+      return state
+        .set('invoice', fromJS(invoice));
+    }
+    case SET_INVOICE_ORDER_ITEM_PRICE: {
+      const orders = state.get('uninvoicedOrders').toJS();
+      for (let i = 0; i < orders.length; i += 1) {
+        const order = orders[i];
+        if (order.OrderId === action.orderId) {
+          for (let j = 0; j < order.OrderItems.length; j += 1) {
+            const item = order.OrderItems[j];
+            if (item.RuahId === action.ruahId) {
+              item.RuahPrice = action.price;
+              break;
+            }
+          }
+        }
+        break;
+      }
+      return state
+        .set('uninvoicedOrders', fromJS(orders));
+    }
+    case SET_INVOICE_ORDER_ITEM_SHIPPING_PRICE: {
+      const orders = state.get('uninvoicedOrders').toJS();
+      for (let i = 0; i < orders.length; i += 1) {
+        const order = orders[i];
+        if (order.OrderId === action.orderId) {
+          for (let j = 0; j < order.OrderItems.length; j += 1) {
+            const item = order.OrderItems[j];
+            if (item.RuahId === action.ruahId) {
+              item.ShippingPrice = action.price;
+              break;
+            }
+          }
+        }
+        break;
+      }
+      return state
+        .set('uninvoicedOrders', fromJS(orders));
+    }
+    case SET_INVOICE_DUE_DATE: {
+      const invoice = state.get('invoice').toJS();
+      invoice.PayBy = action.dueDate.getTime();
+      return state
+        .set('invoice', fromJS(invoice));
+    }
+    case SUBMIT_INVOICE_SUCCESS: {
+      // TODO: add a message to message feed
+      return state
+        .set('invoiceOrderSelectorOpen', false)
+        .set('invoiceOrderDiscounterOpen', false)
+        .set('invoice', fromJS({
+          To: '',
+          From: '',
+          Items: fromJS([]),
+        }));
     }
     default:
       return state;

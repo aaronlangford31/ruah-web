@@ -121,7 +121,7 @@ class OrderWizard extends Component {
               {!this.props.order.OrderItems && 'Cart is empty.'}
               {_.map(this.props.order.OrderItems, (val, key) =>
                 <div key={key} style={{ display: 'flex', flexDirection: 'row', minHeight: '75px' }}>
-                  <div style={{ flex: 5, display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ flex: 4, display: 'flex', flexDirection: 'column' }}>
                     <div>{val.ProductName.substring(0, 38).trim()}{val.ProductName.length > 35 && '...'}</div>
                     <div style={{ fontSize: '12px' }}>{val.RuahId}</div>
                     <div style={{ fontSize: '12px' }}>{val.SKU}</div>
