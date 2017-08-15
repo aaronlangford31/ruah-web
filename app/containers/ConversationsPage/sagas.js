@@ -19,6 +19,7 @@ import {
   GET_INVOICEABLE_ORDERS_URI,
   SUBMIT_INVOICE,
   POST_INVOICE_URI,
+  UPDATE_ORDER_ITEMS_URI,
 } from './constants';
 import {
   getConversationsSuccess,
@@ -31,7 +32,7 @@ import {
   getInvoiceableOrdersSuccess,
   submitInvoiceSuccess,
 } from './actions';
-import { selectMessage, selectConversation, selectOrder, selectShippingFormData, selectInvoice } from './selectors';
+import { selectMessage, selectConversation, selectOrder, selectShippingFormData, selectInvoice, selectUninvoicedOrders } from './selectors';
 import { selectStore } from '../App/selectors';
 import request from 'utils/request';
 
@@ -167,6 +168,20 @@ function* fetchProduct(action) {
 
 function* postInvoice() {
   const invoice = yield select(selectInvoice());
+  const orders = yield select(selectUninvoicedOrders());
+  for (let i = 0; i < invoice.Items.length; i += 1) {
+    const id = invoice.Items[i];
+    const order = _.find(orders, (o) => o.OrderId === id);
+    yield call(request, `${UPDATE_ORDER_ITEMS_URI}?orderId=${id}`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order),
+    });
+  }
+
   const result = yield call(request, POST_INVOICE_URI, {
     method: 'POST',
     credentials: 'include',

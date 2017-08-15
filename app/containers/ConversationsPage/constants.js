@@ -60,3 +60,4 @@ export const GET_PRODUCT_BY_ID_URI = 'https://api.teamruah.com/v1/product/getbyi
 export const POST_ORDER_URI = 'https://api.teamruah.com/v1/order/create';
 export const GET_INVOICEABLE_ORDERS_URI = 'https://api.teamruah.com/v1/order/invoicable';
 export const POST_INVOICE_URI = 'https://api.teamruah.com/v1/invoice/create';
+export const UPDATE_ORDER_ITEMS_URI = 'https://api.teamruah.com/v1/order/updateorderitems';
