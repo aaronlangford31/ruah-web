@@ -12,7 +12,6 @@ import {
   selectLoading,
   selectStores,
   selectConversations,
-  selectUnfulfilledOrders,
   selectConversationId,
 } from './selectors';
 import { selectStore } from '../App/selectors';
@@ -115,11 +114,7 @@ class ConversationsPage extends Component {
           ]}
         />
         <Body style={{ justifyContent: 'left' }}>
-          <Sidebar
-            storeImageUri={this.props.currStore.ProfilePicUri}
-            unfulfilledOrders={this.props.unfulfilledOrders}
-            currView={window.location.pathname}
-          />
+          <Sidebar />
           <div
             style={{
               display: 'flex',
@@ -156,7 +151,6 @@ ConversationsPage.propTypes = {
   conversations: React.PropTypes.array,
   stores: React.PropTypes.object,
   getConversations: React.PropTypes.func,
-  unfulfilledOrders: React.PropTypes.number,
   currStore: React.PropTypes.object,
   currChannelId: React.PropTypes.string,
   setConversation: React.PropTypes.func,
@@ -184,7 +178,6 @@ const mapStateToProps = createStructuredSelector({
   currChannelId: selectConversationId(),
   stores: selectStores(),
   conversations: selectConversations(),
-  unfulfilledOrders: selectUnfulfilledOrders(),
 });
 
 // Wrap the component to inject dispatch and state into it
