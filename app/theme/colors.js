@@ -8,6 +8,7 @@ const colors = {
 
   // other colors
   lightGray: '#e5e5e5',
+  lightText: 'rgba(0, 0, 0, .47)',
 };
 
 export default colors;

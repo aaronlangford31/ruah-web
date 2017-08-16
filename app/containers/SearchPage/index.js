@@ -12,6 +12,8 @@ import Body from '../../components/styled/Body';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
 import LocationIcon from 'material-ui/svg-icons/communication/location-on';
+import Radium from 'radium';
+import colors from '../../theme/colors';
 
 class SearchPage extends Component {
   constructor(props) {
@@ -27,47 +29,52 @@ class SearchPage extends Component {
     );
   }
 
+  renderSeller(storeId, channel) {
+    return (
+      <span>
+        <Link style={{ textDecoration: 'none', color: colors.darkBlue }} to={`/marketplace/store/${storeId}`}>{storeId}</Link>
+        {channel ?
+          <Link to={`/conversation/${channel.ChannelId}`}>
+            Go to conversation
+          </Link>
+          : <i style={{ color: colors.lightText }}> (no relationship)</i>
+        }
+      </span>
+    );
+  }
+
   renderProduct(product) {
     const channel = _.find(this.props.currStore.MsgChannels, (val, key) => key === product.StoreId);
     return (
       <Paper
         key={product.RuahId}
-        style={{ display: 'flex', flexDirection: 'row', width: '750px', margin: '10px' }}
+        style={{ maxWidth: '750px', margin: '16px', padding: '16px', overflow: 'hidden', fontSize: '13px' }}
       >
-        <img
-          src={product.MainImageUri}
-          alt={product.SKU}
-          style={{ width: '100px', height: '100px', padding: '5px' }}
-        />
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div>
-              <strong>{product.ProductName.substr(0, 55)}{product.ProductName.length > 55 && '...'}</strong>
-            </div>
-            <div style={{ fontSize: '12px' }}>
-              Ruah ID: {product.RuahId}
-            </div>
-            <div style={{ fontSize: '12px' }}>
-              SKU: {product.SKU}
-            </div>
-          </div>
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
-            <div style={{ flex: 1 }}>
-              {product.Description.substr(0, 255)}{product.Description.length > 255 && '...'}
-            </div>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <span style={{ flex: 1 }} />
-            {channel ?
-              <Link to={`/conversation/${channel.ChannelId}`}>
-                Go to conversation
-              </Link>
-              : <div>
-                You {"don't"} have a relationship with {product.StoreId} yet. <Link to={`/marketplace/store/${product.StoreId}`}>Click here to connect.</Link>
-              </div>
-            }
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '150px', float: 'left', margin: '8px' }}>
+          <img
+            src={product.MainImageUri}
+            alt={product.SKU}
+            style={{ maxHeight: '150px', maxWidth: '150px' }}
+          />
         </div>
+        <div>
+          <strong style={{ fontSize: '16px' }}>{product.ProductName.substr(0, 55)}{product.ProductName.length > 55 && '...'} </strong>
+          <span style={{ display: 'inline-block' }} >
+            <i style={{ color: colors.lightText }}> by </i>
+            {this.renderSeller(product.StoreId)}
+          </span>
+        </div>
+        <div style={{ fontSize: '12px', color: colors.lightText }}>
+          <div>
+            Ruah ID: {product.RuahId}
+          </div>
+          <div>
+            SKU: {product.SKU}
+          </div> 
+        </div>
+        <span>
+            {product.Description.substr(0, 255)}{product.Description.length > 255 && '...'}
+        </span>
       </Paper>);
   }
 
@@ -113,6 +120,7 @@ class SearchPage extends Component {
   render() {
     return (
       <article>
+        
         <Helmet
           title="Conversations"
           meta={[
@@ -128,7 +136,7 @@ class SearchPage extends Component {
             }}
           >
             {this.props.loading && this.renderLoading()}
-            <div style={{ overflowY: 'scroll', flex: 1, maxHeight: '650px' }}>
+            <div style={{ overflowY: 'scroll', flex: 1 }}>
               {_.map(this.props.searchResults, (item) => (item.RuahId ? this.renderProduct(item) : this.renderStore(item)))}
             </div>
           </div>
@@ -160,4 +168,4 @@ const mapStateToProps = createStructuredSelector({
 });
 
 // Wrap the component to inject dispatch and state into it
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
+export default connect(mapStateToProps, mapDispatchToProps)(Radium(SearchPage));
