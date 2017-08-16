@@ -359,20 +359,20 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/checkout',
-      name: 'checkoutPage',
+      path: '/billing/received',
+      name: 'receivedInvoicesPage',
 
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/CheckoutPage/reducers'),
-          System.import('containers/CheckoutPage/sagas'),
-          System.import('containers/CheckoutPage'),
+          System.import('containers/Billing/ReceivedInvoicesPage/reducers'),
+          System.import('containers/Billing/ReceivedInvoicesPage/sagas'),
+          System.import('containers/Billing/ReceivedInvoicesPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
         importModules.then(([reducer, sagas, component]) => {
-          injectReducer('checkoutPage', reducer.default);
+          injectReducer('receivedInvoicesPage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });

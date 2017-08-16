@@ -9,6 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import DatePicker from 'material-ui/DatePicker';
 import Checkbox from 'material-ui/Checkbox';
 import CurrencyInput from 'react-currency-input';
+import UnhappyFaceIcon from 'material-ui/svg-icons/social/sentiment-dissatisfied';
 
 import {
   showInvoiceSelector,
@@ -46,6 +47,27 @@ class InvoiceWizard extends Component {
   }
 
   renderSelector() {
+    if (this.props.orders.length === 0) {
+      return (
+        <Dialog
+          open={this.props.isSelectorOpen}
+          contentStyle={{ maxWidth: 'none', maxHeight: 'none' }}
+          actions={[
+            <FlatButton onTouchTap={this.props.abortInvoice}>Cancel</FlatButton>,
+          ]}
+        >
+          <div style={{ display: 'flex', flexDirection: 'row', padding: '5px', width: '1000px', backgroundColor: 'white' }}>
+            <span style={{ flex: 5 }} />
+            <div style={{ textAlign: 'center' }}>
+              <UnhappyFaceIcon color={'#BDBDBD'} />
+              <div>You {"don't"} have any orders that you can invoice on this channel at this time.</div>
+              <div>Orders become invoicable after you acknowledge them.</div>
+            </div>
+            <span style={{ flex: 5 }} />
+          </div>
+        </Dialog>
+      );
+    }
     return (
       <Dialog
         open={this.props.isSelectorOpen}

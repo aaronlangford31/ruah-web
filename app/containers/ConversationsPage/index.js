@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import _ from 'underscore';
 import moment from 'moment';
@@ -14,7 +13,6 @@ import {
   selectStores,
   selectConversations,
   selectUnfulfilledOrders,
-  selectOrders,
   selectConversationId,
 } from './selectors';
 import { selectStore } from '../App/selectors';
@@ -107,35 +105,6 @@ class ConversationsPage extends Component {
     );
   }
 
-  renderOrders() {
-    return _.map(this.props.orders, (order) =>
-      <Link to={`/fulfillment/order/${order.OrderId}`} key={order.OrderId} style={{ textDecoration: 'none' }}>
-        <Paper style={{ display: 'flex', flexDirection: 'row', width: '750px', margin: '5px', padding: '5px' }}>
-          <div style={{ flex: 2, display: 'flex', flexDirection: 'column' }}>
-            <div>{order.BuyerName.substring(0, 20)}{order.BuyerName.length > 20 && <span>&hellip;</span>}</div>
-            <div>{order.ShipAddress}</div>
-            <div>{order.ShipAddress2}</div>
-            <div>{order.ShipCity}, {order.ShipState} {order.ShipZip}</div>
-          </div>
-          <div style={{ flex: 2, display: 'flex', flexDirection: 'column' }}>
-            {_.map(order.OrderItems, (item, j) => (
-              <div key={j}>
-                <div>
-                  <strong>Item</strong> <span>{item.ProductName.substring(0, 50)}{item.ProductName.length > 50 && <span>&hellip;</span>}</span>
-                </div>
-                <div>
-                  <strong>Qty</strong> <span>{item.Quantity}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ flex: 1 }}>{this.getOrderPhase(order.OrderPhase)}</div>
-          <div style={{ flex: 1 }}>{order.OrderCreatedDate.fromNow()}</div>
-        </Paper>
-      </Link>
-    );
-  }
-
   render() {
     return (
       <article>
@@ -185,7 +154,6 @@ class ConversationsPage extends Component {
 ConversationsPage.propTypes = {
   loading: React.PropTypes.bool,
   conversations: React.PropTypes.array,
-  orders: React.PropTypes.array,
   stores: React.PropTypes.object,
   getConversations: React.PropTypes.func,
   unfulfilledOrders: React.PropTypes.number,
@@ -215,7 +183,6 @@ const mapStateToProps = createStructuredSelector({
   currStore: selectStore(),
   currChannelId: selectConversationId(),
   stores: selectStores(),
-  orders: selectOrders(),
   conversations: selectConversations(),
   unfulfilledOrders: selectUnfulfilledOrders(),
 });

@@ -80,6 +80,8 @@ function conversationsPageReducer(state = initialState, action) {
     }
     case GET_CONVERSATION: {
       return state
+        .set('message', fromJS({}))
+        .set('uninvoicedOrders', fromJS([]))
         .set('channelId', action.channelId);
     }
     case GET_CONVERSATION_SUCCESS: {
@@ -99,6 +101,8 @@ function conversationsPageReducer(state = initialState, action) {
     }
     case SET_CONVERSATION: {
       return state
+        .set('message', fromJS({}))
+        .set('uninvoicedOrders', fromJS([]))
         .set('channelId', action.channelId);
     }
     case GET_ORDERS_SUCCESS: {
