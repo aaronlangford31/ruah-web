@@ -12,7 +12,7 @@ import Body from '../../components/styled/Body';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
 import LocationIcon from 'material-ui/svg-icons/communication/location-on';
-import Radium from 'radium';
+import radium from 'radium';
 import colors from '../../theme/colors';
 
 class SearchPage extends Component {
@@ -44,7 +44,6 @@ class SearchPage extends Component {
   }
 
   renderProduct(product) {
-    const channel = _.find(this.props.currStore.MsgChannels, (val, key) => key === product.StoreId);
     return (
       <Paper
         key={product.RuahId}
@@ -70,10 +69,10 @@ class SearchPage extends Component {
           </div>
           <div>
             SKU: {product.SKU}
-          </div> 
+          </div>
         </div>
         <span>
-            {product.Description.substr(0, 255)}{product.Description.length > 255 && '...'}
+          {product.Description.substr(0, 255)}{product.Description.length > 255 && '...'}
         </span>
       </Paper>);
   }
@@ -120,7 +119,7 @@ class SearchPage extends Component {
   render() {
     return (
       <article>
-        
+
         <Helmet
           title="Conversations"
           meta={[
@@ -168,4 +167,4 @@ const mapStateToProps = createStructuredSelector({
 });
 
 // Wrap the component to inject dispatch and state into it
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(SearchPage));
+export default connect(mapStateToProps, mapDispatchToProps)(radium(SearchPage));
