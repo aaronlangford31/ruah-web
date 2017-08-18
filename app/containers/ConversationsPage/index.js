@@ -22,43 +22,12 @@ import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
-import ShippedIcon from 'material-ui/svg-icons/maps/local-shipping';
-import NewIcon from 'material-ui/svg-icons/av/new-releases';
 import MoneyIcon from 'material-ui/svg-icons/editor/attach-money';
-import ProcessingIcon from 'material-ui/svg-icons/action/update';
 
 class ConversationsPage extends Component {
   constructor(props) {
     super(props);
     this.props.getConversations();
-  }
-
-  getOrderPhase(phase) {
-    switch (phase) {
-      case 0:
-        return (
-          <div style={{ textAlign: 'center' }}>
-            <NewIcon color="#04BFBF" />
-            <p style={{ margin: 0 }}>New</p>
-          </div>
-        );
-      case 1:
-        return (
-          <div style={{ textAlign: 'center' }}>
-            <ProcessingIcon color="#F7E967" />
-            <p style={{ margin: 0 }}>Processing</p>
-          </div>
-        );
-      case 2:
-        return (
-          <div style={{ textAlign: 'center' }}>
-            <ShippedIcon color="#A9CF54" />
-            <p style={{ margin: 0 }}>Shipped</p>
-          </div>
-        );
-      default:
-        return 'Error';
-    }
   }
 
   renderLoading() {

@@ -21,7 +21,7 @@ const Sidebar = (props) => {
       <Link to={'/mystore'} >
         <Avatar src={storeImageUri} size={50} />
       </Link>
-      <Link to={'/news'}>
+      <Link to={'/feed'}>
         <IconButton style={{ margin: '10px 0' }} tooltip={'Feed'}>
           <PublicIcon color={currView && currView.startsWith('/feed') ? '#04BFBF' : '#616161'} />
         </IconButton>

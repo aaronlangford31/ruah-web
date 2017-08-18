@@ -25,6 +25,7 @@ import checkoutPageReducer from 'containers/CheckoutPage/reducers';
 import conversationsPageReducer from 'containers/ConversationsPage/reducers';
 import conversationPageReducer from 'containers/ConversationPage/reducers';
 import receivedInvoicesPageReducer from 'containers/Billing/ReceivedInvoicesPage/reducers';
+import feedPageReducer from 'containers/FeedPage/reducers';
 import appReducer from 'containers/App/reducers';
 
 /*
@@ -81,6 +82,7 @@ export default function createReducer(asyncReducers) {
     conversationsPage: conversationsPageReducer,
     conversationPage: conversationPageReducer,
     receivedInvoicesPage: receivedInvoicesPageReducer,
+    feedPage: feedPageReducer,
     ...asyncReducers,
   });
 }
