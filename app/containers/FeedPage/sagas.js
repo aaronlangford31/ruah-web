@@ -4,6 +4,8 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   GET_FEED,
   GET_FEED_URI,
+  SUBMIT_FEED_POST_REACTION,
+  FEED_POST_REACT_URI,
 } from './constants';
 import {
   getFeedSuccess,
@@ -19,12 +21,26 @@ function* getFeed() {
   yield put(getFeedSuccess(posts));
 }
 
+function* sendReactPost(action) {
+  yield call(request, `${FEED_POST_REACT_URI}?timestamp=${action.postTimestamp}&reaction=${action.reaction}&author=${action.postAuthor}`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+}
+
 function* watchGetFeed() {
   const watcher = yield takeLatest(GET_FEED, getFeed);
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
 
+function* watchReactPost() {
+  const watcher = yield takeLatest(SUBMIT_FEED_POST_REACTION, sendReactPost);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
+
 export default [
   watchGetFeed,
+  watchReactPost,
 ];

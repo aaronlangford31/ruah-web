@@ -12,7 +12,19 @@ const selectPosts = () => createSelector(
   (state) => state.get('posts').toJS(),
 );
 
+const selectCurrEmojiPickerPost = () => createSelector(
+  selectFeedPage(),
+  (state) => state.get('currEmojiPickerPost'),
+);
+
+const selectReactionPickerAnchor = () => createSelector(
+  selectFeedPage(),
+  (state) => state.get('reactionPickerAnchor'),
+);
+
 export {
   selectPost,
   selectPosts,
+  selectCurrEmojiPickerPost,
+  selectReactionPickerAnchor,
 };

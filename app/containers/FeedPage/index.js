@@ -6,21 +6,30 @@ import _ from 'underscore';
 import moment from 'moment';
 import {
   getFeed,
+  setEmojiPickerOpen,
+  setEmojiPickerClosed,
+  submitFeedPostReaction,
 } from './actions';
 import {
   selectPosts,
+  selectCurrEmojiPickerPost,
+  selectReactionPickerAnchor,
 } from './selectors';
+import { selectStore } from '../App/selectors';
 import Body from '../../components/styled/Body';
 import Sidebar from '../../components/partials/Sidebar';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
-// import FlatButton from 'material-ui/FlatButton';
+import { Emoji, Picker } from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
+import Popover from 'material-ui/Popover';
+import IconButton from 'material-ui/IconButton';
+import JoyIcon from 'material-ui/svg-icons/social/sentiment-very-satisfied';
 
 class FeedPage extends Component {
   componentWillMount() {
     this.props.getFeed();
   }
-
 
   renderPosts() {
     const posts = _.map(this.props.posts, (post) =>
@@ -51,7 +60,31 @@ class FeedPage extends Component {
           </div>
           <div style={{ whiteSpace: 'pre-wrap', display: 'flex', flexDirection: 'row' }}>
             <span style={{ flex: 1 }} />
-            {/* <FlatButton><span style={{ color: '#636464' }}>Comment</span></FlatButton> */}
+            {_.map(post.Reactions, (val, key) =>
+              <div key={key} style={{ margin: 'auto 3px', color: '#636464', fontSize: 14, padding: '2px', border: '1px solid #C4C4C4', borderRadius: '5px' }}>
+                <Emoji size={18} emoji={key} />
+                <span style={{ margin: '0 0 10px 5px' }}>{val.length}</span>
+              </div>
+            )}
+            <Popover
+              open={this.props.currEmojiPickerPost === post.Timestamp}
+              anchorEl={this.props.reactionPickerAnchor}
+              onRequestClose={() => this.props.setEmojiPickerClosed()}
+            >
+              <Picker
+                emojiSize={24}
+                perLine={9}
+                skin={1}
+                exclude={['recent']}
+                autoFocus
+                onClick={(emoji) => {
+                  this.props.submitReaction(emoji.colons, post.Timestamp, post.Author, this.props.currStore.StoreId);
+                }}
+              />
+            </Popover>
+            <IconButton onTouchTap={(ev) => this.props.setEmojiPickerOpen(post.Timestamp, ev.target)}>
+              <JoyIcon color={'#636464'} />
+            </IconButton>
           </div>
         </div>
       </Paper>
@@ -94,8 +127,14 @@ class FeedPage extends Component {
 }
 
 FeedPage.propTypes = {
+  currStore: React.PropTypes.object,
   posts: React.PropTypes.array,
   getFeed: React.PropTypes.func,
+  currEmojiPickerPost: React.PropTypes.number,
+  reactionPickerAnchor: React.PropTypes.object,
+  setEmojiPickerOpen: React.PropTypes.func,
+  setEmojiPickerClosed: React.PropTypes.func,
+  submitReaction: React.PropTypes.func,
 };
 
 FeedPage.contextTypes = {
@@ -108,11 +147,23 @@ export function mapDispatchToProps(dispatch) {
     getFeed: () => {
       dispatch(getFeed());
     },
+    setEmojiPickerOpen: (timestamp, el) => {
+      dispatch(setEmojiPickerOpen(timestamp, el));
+    },
+    setEmojiPickerClosed: () => {
+      dispatch(setEmojiPickerClosed());
+    },
+    submitReaction: (reaction, timestamp, author, reactor) => {
+      dispatch(submitFeedPostReaction(reaction, timestamp, author, reactor));
+    },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
+  currStore: selectStore(),
   posts: selectPosts(),
+  currEmojiPickerPost: selectCurrEmojiPickerPost(),
+  reactionPickerAnchor: selectReactionPickerAnchor(),
 });
 
 // Wrap the component to inject dispatch and state into it

@@ -5,6 +5,8 @@ import {
   SUBMIT_FEED_POST_SUCCESS,
   SUBMIT_FEED_POST_REACTION,
   SUBMIT_FEED_POST_COMMENT,
+  SET_EMOJI_PICKER_OPEN,
+  SET_EMOJI_PICKER_CLOSED,
 } from './constants';
 
 export function getFeed() {
@@ -49,5 +51,20 @@ export function submitFeedPostComment(comment, postTimestamp, postAuthor, commen
     postTimestamp,
     postAuthor,
     commenter,
+  };
+}
+
+export function setEmojiPickerOpen(timestamp, el) {
+  return {
+    type: SET_EMOJI_PICKER_OPEN,
+    timestamp,
+    el,
+  };
+}
+
+export function setEmojiPickerClosed(timestamp) {
+  return {
+    type: SET_EMOJI_PICKER_CLOSED,
+    timestamp,
   };
 }

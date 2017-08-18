@@ -5,11 +5,15 @@ import {
   SUBMIT_FEED_POST_SUCCESS,
   SUBMIT_FEED_POST_REACTION,
   SUBMIT_FEED_POST_COMMENT,
+  SET_EMOJI_PICKER_OPEN,
+  SET_EMOJI_PICKER_CLOSED,
 } from './constants';
 
 const initialState = fromJS({
   post: fromJS({}),
   posts: fromJS([]),
+  currEmojiPickerPost: 0,
+  reactionPickerAnchor: fromJS({}),
 });
 
 function feedPageReducer(state = initialState, action) {
@@ -31,7 +35,7 @@ function feedPageReducer(state = initialState, action) {
       const post = _.find(posts, (p) => p.Timestamp === action.postTimestamp);
       if (!post.Reactions) { post.Reactions = {}; }
       if (!post.Reactions[action.reaction]) { post.Reactions[action.reaction] = []; }
-      post.Reactions[action.reactor].push(action.reactor);
+      post.Reactions[action.reaction].push(action.reactor);
       return state
         .set('posts', fromJS(posts));
     }
@@ -46,6 +50,15 @@ function feedPageReducer(state = initialState, action) {
       });
       return state
         .set('posts', fromJS(posts));
+    }
+    case SET_EMOJI_PICKER_OPEN: {
+      return state
+        .set('currEmojiPickerPost', action.timestamp)
+        .set('reactionPickerAnchor', action.el);
+    }
+    case SET_EMOJI_PICKER_CLOSED: {
+      return state
+        .set('currEmojiPickerPost', 0);
     }
     default:
       return state;
