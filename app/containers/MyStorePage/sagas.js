@@ -1,16 +1,20 @@
 import { takeLatest } from 'redux-saga';
-import { call, put, select } from 'redux-saga/effects';
+import { call, put, take, cancel, select } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import {
+  GET_STORE,
   SAVE_EDIT_STORE,
   PUT_STORE_URI,
+  GET_STORE_URI,
 } from './constants';
 import {
   saveStoreEditsFail,
+  getStoreSuccess,
 } from './actions';
 import { selectStore } from '../App/selectors';
 import request from 'utils/request';
 
-export function* putStore() {
+function* putStore() {
   const store = yield select(selectStore());
   try {
     yield call(request, PUT_STORE_URI, {
@@ -24,10 +28,27 @@ export function* putStore() {
   }
 }
 
-export function* onSaveEditStore() {
-  yield* takeLatest(SAVE_EDIT_STORE, putStore);
+function* getStore() {
+  const store = yield call(request, GET_STORE_URI, {
+    method: 'GET',
+    credentials: 'include',
+  });
+  yield put(getStoreSuccess(store));
+}
+
+function* watchSaveEditStore() {
+  const watcher = yield takeLatest(SAVE_EDIT_STORE, putStore);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
+}
+
+function* watchGetStore() {
+  const watcher = yield takeLatest(GET_STORE, getStore);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export default [
-  onSaveEditStore,
+  watchSaveEditStore,
+  watchGetStore,
 ];

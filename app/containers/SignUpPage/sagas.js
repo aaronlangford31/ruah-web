@@ -129,10 +129,10 @@ function* createStore() {
     }
 
     if (storeForm.buying) {
-      body.MarketResources.push('Buyer');
+      body.MarketResources.push('Suppliers');
     }
     if (storeForm.selling) {
-      body.MarketResources.push('Seller');
+      body.MarketResources.push('Buyers');
     }
 
     try {

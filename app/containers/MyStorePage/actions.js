@@ -1,10 +1,25 @@
 import {
+  GET_STORE,
+  GET_STORE_SUCCESS,
   START_EDIT_STORE,
   CANCEL_EDIT_STORE,
   SAVE_EDIT_STORE,
   SAVE_EDIT_STORE_FAIL,
   EDIT_STORE,
 } from './constants';
+
+export function getStore() {
+  return {
+    type: GET_STORE,
+  };
+}
+
+export function getStoreSuccess(store) {
+  return {
+    type: GET_STORE_SUCCESS,
+    store,
+  };
+}
 
 export function startEditStore() {
   return {
