@@ -16,7 +16,8 @@ import productImportPageReducer from 'containers/ProductImportPage/reducers';
 import receivedOrdersPageReducer from 'containers/Fulfillment/ReceivedOrdersPage/reducers';
 import sentOrdersPageReducer from 'containers/Fulfillment/SentOrdersPage/reducers';
 import orderProfilePageReducer from 'containers/Fulfillment/OrderProfilePage/reducers';
-import myStorePageReducer from 'containers/MyStorePage/reducers';
+import myStoreProfilePageReducer from 'containers/MyStore/ProfilePage/reducers';
+import myStoreProductsPageReducer from 'containers/MyStore/ProductPage/reducers';
 import discoverPageReducer from 'containers/Marketplace/DiscoverPage/reducers';
 import requestsPageReducer from 'containers/Marketplace/RequestsPage/reducers';
 import channelsPageReducer from 'containers/Marketplace/ChannelsPage/reducers';
@@ -73,7 +74,8 @@ export default function createReducer(asyncReducers) {
     receivedOrdersPage: receivedOrdersPageReducer,
     sentOrdersPage: sentOrdersPageReducer,
     orderProfilePage: orderProfilePageReducer,
-    myStorePage: myStorePageReducer,
+    myStoreProfilePage: myStoreProfilePageReducer,
+    myStoreProductsPage: myStoreProductsPageReducer,
     discoverPage: discoverPageReducer,
     requestsPage: requestsPageReducer,
     channelsPage: channelsPageReducer,

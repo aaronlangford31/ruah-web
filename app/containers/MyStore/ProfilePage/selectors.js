@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const selectMyStorePage = () => (state) => state.get('myStorePage');
+const selectMyStorePage = () => (state) => state.get('myStoreProfilePage');
 
 const selectStore = () => createSelector(
   selectMyStorePage(),

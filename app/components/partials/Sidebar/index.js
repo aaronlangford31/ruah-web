@@ -18,7 +18,7 @@ const Sidebar = (props) => {
   const currView = window.location.pathname;
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: '5px' }}>
-      <Link to={'/mystore'} >
+      <Link to={'/mystore/profile'} >
         <Avatar src={storeImageUri} size={50} />
       </Link>
       <Link to={'/feed'}>

@@ -254,20 +254,41 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/myStore',
-      name: 'myStore',
+      path: '/myStore/profile',
+      name: 'myStoreProfilePage',
 
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/MyStorePage/reducers'),
-          System.import('containers/MyStorePage/sagas'),
-          System.import('containers/MyStorePage'),
+          System.import('containers/MyStore/ProfilePage/reducers'),
+          System.import('containers/MyStore/ProfilePage/sagas'),
+          System.import('containers/MyStore/ProfilePage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
         importModules.then(([reducer, sagas, component]) => {
-          injectReducer('myStorePage', reducer.default);
+          injectReducer('myStoreProfilePage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/myStore/product',
+      name: 'myStoreProductsPage',
+
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/MyStore/ProductPage/reducers'),
+          System.import('containers/MyStore/ProductPage/sagas'),
+          System.import('containers/MyStore/ProductPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('myStoreProductsPage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });

@@ -74,7 +74,7 @@ class MyStoreProfileComponent extends Component {
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <label htmlFor={'Name'} style={{ fontSize: '12px' }}>
+              <label htmlFor={'Slogan'} style={{ fontSize: '12px' }}>
                 Your {"store's"} slogan
               </label>
               <textarea
@@ -204,12 +204,12 @@ class MyStoreProfileComponent extends Component {
               />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <label htmlFor={'Name'} style={{ fontSize: '12px' }}>
+              <label htmlFor={'Story'} style={{ fontSize: '12px' }}>
                 Your {"store's"} story
               </label>
               <textarea
                 type={'text'}
-                id={'Slogan'}
+                id={'Story'}
                 onChange={this.onFieldChange}
                 value={this.props.store.Story}
                 style={{ color: '#3D3D3D', width: '500px', height: '500px', border: '1px #636464 solid', backgroundColor: '#EBF6F7', padding: '4px' }}

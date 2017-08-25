@@ -11,7 +11,7 @@ import {
   saveStoreEditsFail,
   getStoreSuccess,
 } from './actions';
-import { selectStore } from '../App/selectors';
+import { selectStore } from './selectors';
 import request from 'utils/request';
 
 function* putStore() {

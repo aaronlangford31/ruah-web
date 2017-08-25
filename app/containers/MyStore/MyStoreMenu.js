@@ -16,12 +16,12 @@ const linkStyle = {
 };
 
 const currentLinkStyle = {
-  backgroundColor: '#CAFCD8',
+  backgroundColor: '#EBF6F7',
 };
 
 export default function MyStoreMenuComponent({ location }) {
   return (
-    <Paper style={{ padding: '15px', minWidth: '200px', height: '700px', display: 'flex', flexDirection: 'column' }}>
+    <Paper style={{ padding: '15px', minWidth: '200px', display: 'flex', flexDirection: 'column' }}>
       <Link to={storeProfilePath} style={location === storeProfilePath ? Object.assign({}, linkStyle, currentLinkStyle) : linkStyle}>
         <StoreIcon color={'#757575'} /> Store Profile
       </Link>

@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { getStore } from './actions';
 import { selectLoading } from './selectors';
-import Body from '../../components/styled/Body';
-import Sidebar from '../../components/partials/Sidebar';
+import Body from '../../../components/styled/Body';
+import Sidebar from '../../../components/partials/Sidebar';
 import StoreProfile from './StoreProfile';
-import MyStoreMenuComponent from './MyStoreMenu';
+import MyStoreMenuComponent from '../MyStoreMenu';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
 
