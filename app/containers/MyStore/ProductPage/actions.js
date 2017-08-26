@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 import {
   FILTER_PRODUCTS,
+  FILTER_PRODUCTS_SUCCESS,
   GET_PRODUCTS,
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS_ERROR,
@@ -11,6 +12,13 @@ export function filterProducts(filter) {
   return {
     type: FILTER_PRODUCTS,
     payload: fromJS({ filter }),
+  };
+}
+
+export function filterProductsSuccess(products) {
+  return {
+    type: FILTER_PRODUCTS_SUCCESS,
+    products,
   };
 }
 

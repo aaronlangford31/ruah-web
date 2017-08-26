@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import * as Actions from './actions';
-import { selectProducts } from './selectors';
+import { selectFilteredProducts } from './selectors';
 import MyStoreMenu from '../MyStoreMenu';
 import ProductCard from '../../Catalog/ProductCard';
 import Sidebar from '../../../components/partials/Sidebar';
 import Body from '../../../components/styled/Body';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
 import FileUploadIcon from 'material-ui/svg-icons/file/file-upload';
 import UnhappyFaceIcon from 'material-ui/svg-icons/social/sentiment-dissatisfied';
 
@@ -69,8 +68,8 @@ class ProductPage extends PureComponent {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
-        padding: '0 12px 12px 12px',
-        margin: '10px 5px 5px 5px',
+        padding: '12px',
+        margin: '5px',
       },
       imageColumn: { width: 75 },
       productNameColumn: { width: 300 },
@@ -94,10 +93,13 @@ class ProductPage extends PureComponent {
           <Body>
             <div style={{ maxWidth: '1000px' }}>
               <Paper style={styles.header}>
-                <div>
-                  <TextField onChange={this.filterProducts} floatingLabelText="Filter" />
-                </div>
-                <Link to={'product/import'}>
+                <input
+                  type={'search'}
+                  placeholder={'Keyword Filter'}
+                  onChange={this.filterProducts}
+                  style={{ color: '#3D3D3D', width: '350px', border: '1px #636464 solid', backgroundColor: '#EBF6F7', padding: '4px', margin: 'auto 0' }}
+                />
+                <Link to={'/product/import'}>
                   <FlatButton label="Import" icon={<FileUploadIcon />} labelPosition="before" />
                 </Link>
               </Paper>
@@ -132,7 +134,7 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  products: selectProducts(),
+  products: selectFilteredProducts(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductPage);

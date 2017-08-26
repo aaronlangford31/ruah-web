@@ -125,7 +125,7 @@ function* createStore() {
       body.TaxonomicClassifications.push('Pet Care & Accessories');
     }
     if (storeForm.other) {
-      body.TaxonomicClassifications.push(storeForm.OtherDetail);
+      body.TaxonomicClassifications.push(storeForm.otherDetail);
     }
 
     if (storeForm.buying) {

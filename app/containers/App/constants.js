@@ -17,6 +17,11 @@ export const GET_STORE = 'ruah/App/GET_STORE';
 export const SUBMIT_SEARCH = 'ruah/App/SUBMIT_SEARCH';
 export const SUBMIT_SEARCH_SUCCESS = 'ruah/App/SUBMIT_SEARCH_SUCCESS';
 
+export const TOGGLE_INVITATION_MODAL_OPEN = 'ruah/App/TOGGLE_INVITATION_MODAL_OPEN';
+export const SUBMIT_INVITE = 'ruah/App/SUBMIT_INVITE';
+export const SUBMIT_INVITE_SUCCESS = 'ruah/App/SUBMIT_INVITE_SUCCESS';
+
 export const GET_STORE_URI = 'https://api.teamruah.com/v1/store/get';
 export const SEARCH_PRODUCT_URI = 'https://api.teamruah.com/v1/product/search';
 export const SEARCH_STORE_URI = 'https://api.teamruah.com/v1/store/search';
+export const SUBMIT_INVITE_URI = 'https://api.teamruah.com/v1/store/invite';

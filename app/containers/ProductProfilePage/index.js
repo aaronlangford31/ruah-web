@@ -19,6 +19,7 @@ import {
   saveCurrentProductEdits,
 } from './actions';
 import { getStore } from '../App/actions';
+import Sidebar from '../../components/partials/Sidebar';
 import Body from '../../components/styled/Body';
 import SadFaceIcon from 'material-ui/svg-icons/social/sentiment-very-dissatisfied';
 import CircularProgress from 'material-ui/CircularProgress/CircularProgress';
@@ -110,49 +111,63 @@ class ProductProfilePage extends Component {
     return (
       <div>
         <Paper style={{ margin: '10px', padding: '10px', display: 'flex', flexDirection: 'row' }}>
-          <TextField
-            multiLine
-            name={'ProductName'}
-            type={'text'}
-            onChange={this.onFieldChange}
-            style={{ flex: 52, margin: 0, paddingRight: '20px' }}
-            value={this.props.product.ProductName}
-          />
-          <div style={{ flex: 16, margin: 0 }}>
-            <CardIcon color={'#757575'} />&nbsp;
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <label htmlFor={'Name'} style={{ fontSize: '12px' }}>
+              Product Name
+            </label>
+            <textarea
+              type={'text'}
+              name={'ProductName'}
+              onChange={this.onFieldChange}
+              value={this.props.product.ProductName}
+              style={{ color: '#3D3D3D', width: '350px', border: '1px #636464 solid', backgroundColor: '#EBF6F7', padding: '4px' }}
+            />
+          </div>
+          &nbsp;
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <label htmlFor={'Name'} style={{ fontSize: '12px' }}>
+              Price per unit
+            </label>
             <CurrencyInput
               name={'WholesalePrice'}
               prefix={'$'}
-              style={{ width: '65px' }}
               onChangeEvent={this.onCurrencyFieldChange}
               value={this.props.product.WholesalePrice}
+              style={{ color: '#3D3D3D', width: '85px', border: '1px #636464 solid', backgroundColor: '#EBF6F7', padding: '4px' }}
             />
           </div>
-          <div style={{ flex: 16, margin: 0 }}>
-            <ShipIcon color={'#757575'} />&nbsp;
+          &nbsp;
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <label htmlFor={'Name'} style={{ fontSize: '12px' }}>
+              Ship per unit
+            </label>
             <CurrencyInput
               name={'ShippingFee'}
               prefix={'$'}
-              style={{ width: '65px' }}
               onChangeEvent={this.onCurrencyFieldChange}
               value={this.props.product.ShippingFee}
+              style={{ color: '#3D3D3D', width: '85px', border: '1px #636464 solid', backgroundColor: '#EBF6F7', padding: '4px' }}
             />
           </div>
-          <div style={{ flex: 16, margin: 0 }}>
-            <strong style={{ color: '#757575' }}>INV</strong>
+          &nbsp;
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <label htmlFor={'Name'} style={{ fontSize: '12px' }}>
+              Inventory
+            </label>
             <input
               name={'Inventory'}
               type={'number'}
-              onChange={this.onFieldChange}
-              style={{ width: '65px' }}
+              prefix={'$'}
+              onChangeEvent={this.onFieldChange}
               value={this.props.product.Inventory}
+              style={{ color: '#3D3D3D', width: '65px', border: '1px #636464 solid', backgroundColor: '#EBF6F7', padding: '4px' }}
             />
           </div>
           <IconButton onTouchTap={this.props.handleCancelEditProduct}>
-            <CancelIcon />
+            <CancelIcon color={'#CA4C4C'} />
           </IconButton>
           <IconButton onTouchTap={this.props.handleSaveProduct}>
-            <SaveIcon color={'#A9CF54'} />
+            <SaveIcon color={'#64BD63'} />
           </IconButton>
         </Paper>
         <Paper style={{ margin: '10px', padding: '10px', display: 'flex', flexWrap: 'nowrap', overflowX: 'auto' }}>
@@ -184,14 +199,15 @@ class ProductProfilePage extends Component {
           ))}
         </Paper>
         <Paper style={{ margin: '10px', padding: '10px', flex: 5 }}>
-          <h3>Description</h3>
-          <TextField
-            multiLine
-            style={{ width: '100%' }}
-            name={'Description'}
+          <label htmlFor={'Name'} style={{ fontSize: '12px' }}>
+            Description
+          </label>
+          <textarea
             type={'text'}
+            name={'Description'}
             onChange={this.onFieldChange}
             value={this.props.product.Description}
+            style={{ color: '#3D3D3D', width: '100%', height: '200px', border: '1px #636464 solid', backgroundColor: '#EBF6F7', padding: '4px' }}
           />
         </Paper>
       </div>
@@ -248,20 +264,23 @@ class ProductProfilePage extends Component {
             { name: 'description', content: 'Product Page' },
           ]}
         />
-        <Body>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <div style={{ width: '250px' }}>
-              {!this.props.notFound && !this.props.loading && this.renderSeller() }
+        <div style={{ display: 'flex' }}>
+          <Sidebar />
+          <Body>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <div style={{ width: '250px' }}>
+                {!this.props.notFound && !this.props.loading && this.renderSeller() }
+              </div>
+              <div style={{ width: '750px' }}>
+                {this.props.loading && this.renderLoading() }
+                {this.props.notFound && this.renderNotFound() }
+                {!this.props.notFound && !this.props.loading && !this.props.isEditing && this.renderProduct()}
+                {!this.props.notFound && !this.props.loading && this.props.isEditing && this.renderEditingProduct()}
+              </div>
+              <div style={{ flex: 1 }} />
             </div>
-            <div style={{ width: '750px' }}>
-              {this.props.loading && this.renderLoading() }
-              {this.props.notFound && this.renderNotFound() }
-              {!this.props.notFound && !this.props.loading && !this.props.isEditing && this.renderProduct()}
-              {!this.props.notFound && !this.props.loading && this.props.isEditing && this.renderEditingProduct()}
-            </div>
-            <div style={{ flex: 1 }} />
-          </div>
-        </Body>
+          </Body>
+        </div>
       </article>
     );
   }

@@ -280,7 +280,7 @@ class InvoiceWizard extends Component {
         contentStyle={{ width: '1200px', maxWidth: 'none', maxHeight: 'none' }}
         actions={[
           <FlatButton onTouchTap={this.props.abortInvoice}>Cancel</FlatButton>,
-          <FlatButton onTouchTap={this.props.showSelector}>Back</FlatButton>,
+          <FlatButton onTouchTap={this.props.showDiscounter}>Back</FlatButton>,
           <FlatButton backgroundColor={'#A9CF54'} style={{ color: '#FFFFFF' }} onTouchTap={this.props.submitInvoice}>Submit</FlatButton>,
         ]}
       >

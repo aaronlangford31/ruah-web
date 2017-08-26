@@ -69,6 +69,11 @@ const selectSearchResults = () => createSelector(
   (state) => state.get('searchResults').toJS(),
 );
 
+const selectInviteModalComponentState = () => createSelector(
+  selectLoginPage(),
+  (state) => state.get('inviteModalComponentState').toJS(),
+);
+
 export {
   selectLocationState,
   selectUserId,
@@ -80,4 +85,5 @@ export {
   selectStore,
   selectLocationOnSuccess,
   selectSearchResults,
+  selectInviteModalComponentState,
 };

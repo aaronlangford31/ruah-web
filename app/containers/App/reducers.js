@@ -22,6 +22,9 @@ import {
   GET_STORE_SUCCESS,
   REQUEST_CREDENTIALS,
   SUBMIT_SEARCH_SUCCESS,
+  TOGGLE_INVITATION_MODAL_OPEN,
+  SUBMIT_INVITE,
+  SUBMIT_INVITE_SUCCESS,
 } from './constants';
 import moment from 'moment';
 import { fromJS } from 'immutable';
@@ -33,6 +36,10 @@ const initialState = fromJS({
   store: fromJS({}),
   locationOnSuccess: '/conversations',
   searchResults: fromJS([]),
+  inviteModalComponentState: fromJS({
+    isOpen: false,
+    loading: false,
+  }),
 });
 
 function appReducer(state = initialState, action) {
@@ -84,6 +91,24 @@ function appReducer(state = initialState, action) {
     case SUBMIT_SEARCH_SUCCESS: {
       return state
         .set('searchResults', fromJS(action.products));
+    }
+    case TOGGLE_INVITATION_MODAL_OPEN: {
+      const inviteModalComponentState = state.get('inviteModalComponentState').toJS();
+      inviteModalComponentState.isOpen = action.isOpen;
+      return state
+        .set('inviteModalComponentState', fromJS(inviteModalComponentState));
+    }
+    case SUBMIT_INVITE: {
+      const inviteModalComponentState = state.get('inviteModalComponentState').toJS();
+      inviteModalComponentState.loading = true;
+      return state
+        .set('inviteModalComponentState', fromJS(inviteModalComponentState));
+    }
+    case SUBMIT_INVITE_SUCCESS: {
+      const inviteModalComponentState = state.get('inviteModalComponentState').toJS();
+      inviteModalComponentState.loading = false;
+      return state
+        .set('inviteModalComponentState', fromJS(inviteModalComponentState));
     }
     default:
       return state;

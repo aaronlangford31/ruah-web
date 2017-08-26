@@ -12,6 +12,8 @@ import {
   SUBMIT_SEARCH,
   SEARCH_PRODUCT_URI,
   SEARCH_STORE_URI,
+  SUBMIT_INVITE,
+  SUBMIT_INVITE_URI,
 } from './constants';
 import {
   logoutSuccess,
@@ -23,6 +25,7 @@ import {
   getStoreSucess,
   getStoreFail,
   submitSearchSuccess,
+  submitInviteSuccess,
 } from './actions';
 import { selectLocationOnSuccess } from './selectors';
 
@@ -129,29 +132,36 @@ function* omniSearch(action) {
   yield put(push(`/search/${action.query}`));
 }
 
-export function* getCheckLoginData() {
+function* sendInvite(action) {
+  yield call(request, `${SUBMIT_INVITE_URI}?email=${action.email}`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+  yield put(submitInviteSuccess());
+}
+
+function* getCheckLoginData() {
   yield* takeLatest(CHECK_LOGIN, checkLogin);
 }
 
-export function* submitLogoutData() {
+function* submitLogoutData() {
   yield* takeLatest(LOGOUT_SUBMIT, submitLogout);
 }
 
-export function* submitLoginData() {
+function* submitLoginData() {
   yield* takeLatest(LOGIN_REQUEST, submitLogin);
 }
 
-export function* onGetStore() {
+function* onGetStore() {
   yield* takeLatest(GET_STORE, getStore);
 }
 
-let watchingSearch = false;
-
 function* watchSearch() {
-  if (!watchingSearch) {
-    watchingSearch = true;
-    yield takeLatest(SUBMIT_SEARCH, omniSearch);
-  }
+  yield takeLatest(SUBMIT_SEARCH, omniSearch);
+}
+
+function* watchSubmitInivite() {
+  yield takeLatest(SUBMIT_INVITE, sendInvite);
 }
 
 export default [
@@ -160,4 +170,5 @@ export default [
   submitLoginData,
   onGetStore,
   watchSearch,
+  watchSubmitInivite,
 ];

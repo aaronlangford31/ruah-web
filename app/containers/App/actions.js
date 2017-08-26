@@ -14,6 +14,9 @@ import {
   GET_STORE_FAIL,
   SUBMIT_SEARCH,
   SUBMIT_SEARCH_SUCCESS,
+  TOGGLE_INVITATION_MODAL_OPEN,
+  SUBMIT_INVITE,
+  SUBMIT_INVITE_SUCCESS,
 } from './constants';
 
 export function login(values) {
@@ -112,5 +115,25 @@ export function submitSearchSuccess(products) {
   return {
     type: SUBMIT_SEARCH_SUCCESS,
     products,
+  };
+}
+
+export function toggleInvitationModalOpen(isOpen) {
+  return {
+    type: TOGGLE_INVITATION_MODAL_OPEN,
+    isOpen,
+  };
+}
+
+export function submitInvite(email) {
+  return {
+    type: SUBMIT_INVITE,
+    email,
+  };
+}
+
+export function submitInviteSuccess() {
+  return {
+    type: SUBMIT_INVITE_SUCCESS,
   };
 }

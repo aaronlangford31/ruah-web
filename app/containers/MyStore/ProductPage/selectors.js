@@ -7,6 +7,11 @@ const selectProducts = () => createSelector(
   (state) => state.get('products').toJS(),
 );
 
+const selectFilteredProducts = () => createSelector(
+  selectProductPage(),
+  (state) => state.get('filteredProducts').toJS(),
+);
+
 const selectLoading = () => createSelector(
   selectProductPage(),
   (state) => state.get('loading'),
@@ -14,5 +19,6 @@ const selectLoading = () => createSelector(
 
 export {
   selectProducts,
+  selectFilteredProducts,
   selectLoading,
 };

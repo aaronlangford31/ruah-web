@@ -1,5 +1,6 @@
 import {
   FILTER_PRODUCTS,
+  FILTER_PRODUCTS_SUCCESS,
   GET_PRODUCTS,
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS_ERROR,
@@ -11,6 +12,7 @@ const initialState = fromJS({
   loading: false,
   filter: '',
   error: '',
+  filteredProducts: fromJS([]),
   products: fromJS([]),
 });
 
@@ -19,6 +21,7 @@ function myProductPageReducer(state = initialState, action) {
     case GET_PRODUCTS_SUCCESS:
       return state
         .set('products', fromJS(action.payload.get('products')))
+        .set('filteredProducts', fromJS(action.payload.get('products')))
         .set('loading', false);
     case GET_PRODUCTS_ERROR:
       return state
@@ -30,6 +33,9 @@ function myProductPageReducer(state = initialState, action) {
     case FILTER_PRODUCTS:
       return state
         .set('filter', action.payload.get('filter'));
+    case FILTER_PRODUCTS_SUCCESS:
+      return state
+        .set('filteredProducts', fromJS(action.products));
     case REMOVE_ERROR:
       return state
         .set('error', false);
