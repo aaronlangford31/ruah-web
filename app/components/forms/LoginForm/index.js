@@ -47,7 +47,7 @@ const LoginForm = ({ handleSubmit, login, loading }) => (
             <RaisedButton backgroundColor={'#04BFBF'} style={{ color: '#FAFAFA' }}>{'Let\'s go!'}</RaisedButton>
           </Link>
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <Link to={'/sign-up'}>
+          <Link to={'/signup'}>
             <RaisedButton>&nbsp;&nbsp;&nbsp;I have a sign-up code&nbsp;&nbsp;&nbsp;</RaisedButton>
           </Link>
         </div>

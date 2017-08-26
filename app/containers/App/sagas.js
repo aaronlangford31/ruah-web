@@ -34,7 +34,7 @@ export function* checkLogin() {
   const isPublicPath = (path) => {
     if (path === '/') {
       return true;
-    } else if (path === '/sign-up') {
+    } else if (path === '/signup') {
       return true;
     } else if (path === '/introduction') {
       return true;
