@@ -108,8 +108,6 @@ class FeedPage extends Component {
           </div>
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
               overflowY: 'scroll',
               height: '650px',
               maxWidth: '750px',
