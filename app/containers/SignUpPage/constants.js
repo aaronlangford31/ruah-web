@@ -1,4 +1,5 @@
 export const CHECK_SIGN_UP_CODE = 'ruah/SignUpPage/CHECK_SIGN_UP_CODE';
+export const CHECK_URI_CODE = 'ruah/SignUpPage/CHECK_URI_CODE';
 export const CHECK_SIGN_UP_CODE_SUCCESS = 'ruah/SignUpPage/CHECK_SIGN_UP_CODE_SUCCESS';
 export const CHECK_SIGN_UP_CODE_ERROR = 'ruah/SignUpPage/CHECK_SIGN_UP_CODE_ERROR';
 export const SUBMIT_SIGN_UP_ERROR = 'ruah/SignUpPage/SUBMIT_SIGN_UP_ERROR';

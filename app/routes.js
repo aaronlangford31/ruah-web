@@ -74,7 +74,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/sign-up',
+      path: '/signup',
       name: 'sign-up',
       getComponent(nextState, cb) {
         const importModules = Promise.all([

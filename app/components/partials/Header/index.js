@@ -25,6 +25,7 @@ class Header extends React.Component {
   }
   tick() {
     this.count += 1;
+    if (!this.CallToActionEl) { return; }
     this.CallToActionEl.textContent = this.callsToAction[this.count % 4];
   }
   count = 0;

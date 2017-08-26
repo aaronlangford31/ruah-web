@@ -4,6 +4,7 @@ import {
   SUBMIT_SIGN_UP_SUCCESS,
   SUBMIT_SIGN_UP_ERROR,
   CHECK_SIGN_UP_CODE,
+  CHECK_URI_CODE,
   CHECK_SIGN_UP_CODE_SUCCESS,
   CHECK_SIGN_UP_CODE_ERROR,
   REMOVE_ERROR,
@@ -44,6 +45,13 @@ export function checkSignUpCode(values) {
   return {
     type: CHECK_SIGN_UP_CODE,
     values,
+  };
+}
+
+export function checkUriCode(code) {
+  return {
+    type: CHECK_URI_CODE,
+    code,
   };
 }
 

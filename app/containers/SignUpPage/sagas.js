@@ -1,7 +1,7 @@
 import { takeLatest } from 'redux-saga';
 import { call, put, select } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
-import { CHECK_SIGN_UP_CODE, SUBMIT_SIGN_UP, SUBMIT_STORE } from './constants';
+import { CHECK_SIGN_UP_CODE, SUBMIT_SIGN_UP, SUBMIT_STORE, CHECK_URI_CODE } from './constants';
 import {
   signUpCodeChecked,
   signUpCodeCheckingError,
@@ -14,14 +14,19 @@ import {
 import { selectCode, selectStoreForm, selectStoreId, selectSignUpFields } from './selectors';
 import request from 'utils/request';
 
-function* checkSignUpCode() {
-  const signUpCode = yield select(selectCode());
-  const requestURL = `https://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${signUpCode}`;
-
+function* checkCode({ code }) {
+  let requestURL = `https://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${code}`;
+  if (!code) {
+    const codeFromState = yield select(selectCode());
+    requestURL = `https://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${codeFromState}`;
+  }
   try {
-    const validSignUpCodeStatus = yield call(request, requestURL, {});
+    const validSignUpCodeStatus = yield call(request, requestURL, {
+      method: 'GET',
+      credentials: 'include',
+    });
     if (validSignUpCodeStatus.Valid) {
-      yield put(signUpCodeChecked(signUpCode));
+      yield put(signUpCodeChecked(code));
     } else {
       yield put(signUpCodeCheckingError('Invalid Sign Up Code'));
       return;
@@ -156,7 +161,7 @@ function* createStore() {
 }
 
 function* signUpCodeData() {
-  yield* takeLatest(CHECK_SIGN_UP_CODE, checkSignUpCode);
+  yield* takeLatest(CHECK_SIGN_UP_CODE, checkCode);
 }
 
 function* signUpSubmitData() {
@@ -167,8 +172,13 @@ function* watchSubmitStore() {
   yield* takeLatest(SUBMIT_STORE, createStore);
 }
 
+function* watchCheckUriCode() {
+  yield* takeLatest(CHECK_URI_CODE, checkCode);
+}
+
 export default [
   signUpCodeData,
   signUpSubmitData,
   watchSubmitStore,
+  watchCheckUriCode,
 ];

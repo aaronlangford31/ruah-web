@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -10,47 +10,54 @@ import { selectValidSignUpCode, selectError, selectLoading, selectSignUpStage, s
 import ErrorBox from '../App/ErrorBox';
 import Body from '../../components/styled/Body';
 
-
-export const SignUpPage = ({ signUpStage, storeId, checkSignUpCode, submitStore, submitSignUp, validSignUpCode, error, close, loading }) => {
-  const renderForm = () => (
+export class SignUpPage extends Component {
+  componentWillMount() {
+    if (this.props.location.query && this.props.location.query.code) {
+      this.props.checkUriCode(this.props.location.query.code);
+    }
+  }
+  renderForm = () => (
     <div>
-      {signUpStage === 1 &&
+      {this.props.signUpStage === 1 &&
         <CodeForm
-          onSubmit={() => checkSignUpCode()}
-          loading={loading}
+          onSubmit={() => this.props.checkSignUpCode()}
+          loading={this.props.loading}
         />}
-      {signUpStage === 2 &&
+      {this.props.signUpStage === 2 &&
         <SignUpForm
-          initialValues={{ code: validSignUpCode }}
-          onSubmit={() => submitSignUp()}
-          storeId={storeId}
-          loading={loading}
+          initialValues={{ code: this.props.validSignUpCode }}
+          onSubmit={() => this.props.submitSignUp()}
+          storeId={this.props.storeId}
+          loading={this.props.loading}
         />}
-      {signUpStage === 3 &&
+      {this.props.signUpStage === 3 &&
         <CreateStoreForm
-          onSubmit={() => submitStore()}
+          onSubmit={() => this.props.submitStore()}
         />
       }
     </div>
   );
-  return (
-    <article>
-      <Helmet
-        title="Sign Up"
-        meta={[
-          { name: 'description', content: 'Sign Up Page' },
-        ]}
-      />
-      <Body useBackground>
-        {renderForm()}
-      </Body>
-      <ErrorBox error={error} show={!!error} close={close} />
-    </article>
-  );
-};
+  render() {
+    return (
+      <article>
+        <Helmet
+          title="Sign Up"
+          meta={[
+            { name: 'description', content: 'Sign Up Page' },
+          ]}
+        />
+        <Body useBackground>
+          {this.renderForm()}
+        </Body>
+        <ErrorBox error={this.props.error} show={!!this.props.error} close={this.props.close} />
+      </article>
+    );
+  }
+}
 
 SignUpPage.propTypes = {
   checkSignUpCode: PropTypes.func,
+  checkUriCode: PropTypes.func,
   submitSignUp: PropTypes.func,
   validSignUpCode: PropTypes.string,
   error: PropTypes.string,
@@ -59,12 +66,16 @@ SignUpPage.propTypes = {
   submitStore: PropTypes.func,
   signUpStage: PropTypes.number,
   storeId: PropTypes.string,
+  location: PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
     checkSignUpCode: (values) => {
       dispatch(SignUpActions.checkSignUpCode(values));
+    },
+    checkUriCode: (code) => {
+      dispatch(SignUpActions.checkUriCode(code));
     },
     submitSignUp: (values) => {
       dispatch(SignUpActions.submitSignUp(values));
