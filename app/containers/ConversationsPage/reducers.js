@@ -288,6 +288,7 @@ function conversationsPageReducer(state = initialState, action) {
       return state
         .set('invoiceOrderSelectorOpen', false)
         .set('invoiceOrderDiscounterOpen', false)
+        .set('invoiceFinalizerOpen', false)
         .set('invoice', fromJS({
           To: '',
           From: '',
