@@ -6,7 +6,7 @@ import { TextField, DatePickerField } from '../Fields';
 import Grid from '../../styled/Grid';
 import validate from './validate';
 
-const ShippingForm = ({ handleCancel, handleSubmit }) => (
+const ShippingForm = ({ handleCancel, handleSubmit, valid }) => (
   <BasicForm style={{ padding: 6 }}>
     <p style={{ marginLeft: 12, marginBottom: 0 }}>Enter Shipping Details.</p>
     <Grid size={3}>
@@ -47,6 +47,7 @@ const ShippingForm = ({ handleCancel, handleSubmit }) => (
       />
       <FlatButton
         label="Submit"
+        disabled={!valid}
         onTouchTap={handleSubmit}
       />
     </div>
@@ -56,6 +57,7 @@ const ShippingForm = ({ handleCancel, handleSubmit }) => (
 ShippingForm.propTypes = {
   handleSubmit: PropTypes.func,
   handleCancel: PropTypes.func,
+  valid: PropTypes.bool,
 };
 
 export default reduxForm({
