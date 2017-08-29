@@ -292,6 +292,7 @@ function conversationsPageReducer(state = initialState, action) {
           To: '',
           From: '',
           Items: fromJS([]),
+          PayBy: Date.now(),
         }));
     }
     case SET_INVOICE_RECIPIENT: {

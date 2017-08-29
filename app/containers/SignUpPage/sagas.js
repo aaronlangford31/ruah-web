@@ -16,9 +16,10 @@ import request from 'utils/request';
 
 function* checkCode({ code }) {
   let requestURL = `https://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${code}`;
+  let properCode = code;
   if (!code) {
-    const codeFromState = yield select(selectCode());
-    requestURL = `https://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${codeFromState}`;
+    properCode = yield select(selectCode());
+    requestURL = `https://api.teamruah.com/v1/user/isValidSignUpCode?signUpCode=${properCode}`;
   }
   try {
     const validSignUpCodeStatus = yield call(request, requestURL, {
@@ -26,7 +27,7 @@ function* checkCode({ code }) {
       credentials: 'include',
     });
     if (validSignUpCodeStatus.Valid) {
-      yield put(signUpCodeChecked(code));
+      yield put(signUpCodeChecked(properCode));
     } else {
       yield put(signUpCodeCheckingError('Invalid Sign Up Code'));
       return;
