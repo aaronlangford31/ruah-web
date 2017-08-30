@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga';
-import { call, put, select } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+import { call, put, select, take, cancel } from 'redux-saga/effects';
+import { push, LOCATION_CHANGE } from 'react-router-redux';
 import { CHECK_SIGN_UP_CODE, SUBMIT_SIGN_UP, SUBMIT_STORE, CHECK_URI_CODE } from './constants';
 import {
   signUpCodeChecked,
@@ -162,19 +162,27 @@ function* createStore() {
 }
 
 function* signUpCodeData() {
-  yield* takeLatest(CHECK_SIGN_UP_CODE, checkCode);
+  const watcher = yield takeLatest(CHECK_SIGN_UP_CODE, checkCode);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 function* signUpSubmitData() {
-  yield* takeLatest(SUBMIT_SIGN_UP, submitSignUp);
+  const watcher = yield takeLatest(SUBMIT_SIGN_UP, submitSignUp);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 function* watchSubmitStore() {
-  yield* takeLatest(SUBMIT_STORE, createStore);
+  const watcher = yield takeLatest(SUBMIT_STORE, createStore);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 function* watchCheckUriCode() {
-  yield* takeLatest(CHECK_URI_CODE, checkCode);
+  const watcher = yield takeLatest(CHECK_URI_CODE, checkCode);
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export default [

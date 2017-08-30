@@ -12,6 +12,9 @@ const validate = (values) => {
   if (!values.get('slogan')) {
     errors.slogan = 'Don\'t forget your slogan!';
   }
+  if (!values.get('story')) {
+    errors.story = 'Don\'t forget your story. Hint: you can edit this later.';
+  }
   if (!values.get('city')) {
     errors.city = 'Don\'t forget your city!';
   }

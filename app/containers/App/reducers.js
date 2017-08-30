@@ -107,6 +107,7 @@ function appReducer(state = initialState, action) {
     case SUBMIT_INVITE_SUCCESS: {
       const inviteModalComponentState = state.get('inviteModalComponentState').toJS();
       inviteModalComponentState.loading = false;
+      inviteModalComponentState.isOpen = false;
       return state
         .set('inviteModalComponentState', fromJS(inviteModalComponentState));
     }
