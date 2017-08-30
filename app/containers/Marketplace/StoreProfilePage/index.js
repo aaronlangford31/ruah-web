@@ -59,6 +59,13 @@ class StoreProfilePage extends Component {
   }
 
   renderRows = () => {
+    if (this.props.storeProducts.length === 0) {
+      return (
+        <Paper style={{ padding: '15px', margin: '10px', display: 'flex', flexDirection: 'column' }}>
+          This store {"hasn't"} listed any product yet.
+        </Paper>
+      );
+    }
     const rows = [];
     for (let i = 0; i < this.props.storeProducts.length / PRODUCT_ROW_WIDTH; i += 1) {
       rows.push(this.renderRow(i));

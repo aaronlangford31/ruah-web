@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 import _ from 'underscore';
 import moment from 'moment';
@@ -39,29 +40,32 @@ class FeedPage extends Component {
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <Avatar
+            src={post.AuthorProfilePicUri}
             backgroundColor={'#1BBCBE'}
             color={'#EBF6F7'}
-          >
-            {post.Author[1].toUpperCase()}
-          </Avatar>
+          />
           <div style={{ flex: 1 }}>
             &nbsp;
           </div>
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '8px 8px 0 8px' }}>
-          <div style={{ display: 'flex', flexDirection: 'row', fontSize: '14px', paddingBottom: '8px' }}>
-            <strong style={{ color: '#3D3D3D' }}>Author&nbsp;</strong>
-            <span style={{ color: '#636464' }}>{post.Author}</span>
+          <Link to={`/marketplace/store/${post.Author}`} style={{ display: 'flex', flexDirection: 'row', fontSize: '14px', paddingBottom: '8px', cursor: 'pointer', textDecoration: 'none' }}>
+            <strong style={{ color: '#3D3D3D' }}>{post.AuthorName}</strong>
+            <span style={{ color: '#636464' }}>&nbsp;{post.Author}</span>
             <span style={{ flex: 1 }} />
-            <span>{moment(post.Timestamp).fromNow()}</span>
-          </div>
+            <span style={{ color: '#636464' }}>{moment(post.Timestamp).fromNow()}</span>
+          </Link>
           <div style={{ whiteSpace: 'pre-wrap' }}>
             {post.Content}
           </div>
           <div style={{ whiteSpace: 'pre-wrap', display: 'flex', flexDirection: 'row' }}>
             <span style={{ flex: 1 }} />
             {_.map(post.Reactions, (val, key) =>
-              <div key={key} style={{ margin: 'auto 3px', color: '#636464', fontSize: 14, padding: '2px', border: '1px solid #C4C4C4', borderRadius: '5px' }}>
+              <div
+                key={key}
+                style={{ margin: 'auto 3px', color: '#636464', fontSize: 14, padding: '2px', border: '1px solid #C4C4C4', borderRadius: '5px', cursor: 'pointer' }}
+                onTouchTap={() => this.props.submitReaction(key, post.Timestamp, post.Author, this.props.currStore.StoreId)}
+              >
                 <Emoji size={18} emoji={key} />
                 <span style={{ margin: '0 0 10px 5px' }}>{val.length}</span>
               </div>
